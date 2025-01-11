@@ -142,10 +142,14 @@ public class GameBoardController implements Initializable {
             
                 buttonPressed.setText(card);
                 if(card.equals("X")){
+                    buttonPressed.setStyle("-fx-text-fill: Black;");
+                    
                     card = "O";
-                }else{
-                
+                    
+                }else{ 
+                    buttonPressed.setStyle("-fx-text-fill: #FFA500;");
                     card = "X";
+                    
                     
                 }
                checkState();     
@@ -357,24 +361,29 @@ public class GameBoardController implements Initializable {
     public void winAnimation(){
        
         String winMessage;
+        String winVideo;
+        
         
         winStage = new Stage();
         winStage.setTitle("Game Over");
         
-        Media media = new Media(getClass().getResource("/Resources/playerWins.mp4").toExternalForm());
+         if(isP1Win){
+            winMessage = "Player One Wins!!";
+            winVideo = "/Resources/player1Wins.mp4";
+        }else {        
+            winMessage = "Player Two Wins!!"; 
+            winVideo = "/Resources/player2Wins.mp4";
+        }
+        
+        Media media = new Media(getClass().getResource(winVideo).toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
                 
         mediaPlayer.setAutoPlay(true);
         
-        if(isP1Win){
-            winMessage = "Player One Wins!!";
-        }else {        
-            winMessage = "Player Two Wins!!";            
-        }
-            Text winText = new Text(winMessage);
-            winText.setFont(Font.font("Chewy",FontWeight.BOLD,50));
-            winText.setFill(Color.WHITE);
+        Text winText = new Text(winMessage);
+        winText.setFont(Font.font("Chewy",FontWeight.BOLD,50));
+        winText.setFill(Color.RED);
         
         
         StackPane root = new StackPane(mediaView,winText);
@@ -464,21 +473,7 @@ public class GameBoardController implements Initializable {
             pauseAgain.play();
             
         }
-           
-          /*
-           pauseAgain.setOnFinished(new EventHandler <ActionEvent>(){
-           
-               public void handle(ActionEvent e){
-               
-                   winAnimation();
-               
-               }
-     
-           });
-           */
-        
-        }
-       
     }
+}
         
 
