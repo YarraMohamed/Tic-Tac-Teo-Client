@@ -77,3 +77,9 @@
     -fx-effect: dropshadow(gaussian, black, 20, 0, 5, 5);
     
 }
+
+.board{
+    -fx-font-family:"Chewy";
+    -fx-background-color: transparent;
+    -fx-font-size: 60px;
+}
