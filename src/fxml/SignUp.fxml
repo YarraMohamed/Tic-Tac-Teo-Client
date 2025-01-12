@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" styleClass="backgroundColor" stylesheets="@../resources/Pages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignUpController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="893.0" styleClass="backgroundColor" stylesheets="@../resources/Pages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignUpController">
    <bottom>
-      <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" BorderPane.alignment="TOP_CENTER">
+      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="893.0" BorderPane.alignment="TOP_CENTER">
          <children>
-            <Button fx:id="LogIn" alignment="CENTER" layoutX="274.0" layoutY="19.0" mnemonicParsing="false" onAction="#goToModePage" prefHeight="37.0" prefWidth="150.0" styleClass="Buttons" text="Sign Up" textFill="WHITE">
+            <Button fx:id="LogIn" alignment="CENTER" layoutX="274.0" layoutY="19.0" mnemonicParsing="false" onAction="#goToModePage" prefHeight="26.0" prefWidth="150.0" styleClass="buttons" text="Sign Up" textFill="WHITE">
                <font>
                   <Font name="Comic Sans MS Bold" size="18.0" />
                </font>
@@ -29,17 +29,17 @@
       </HBox>
    </bottom>
    <top>
-      <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="123.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="153.0" prefWidth="893.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" styleClass="title" text="Sign Up" textAlignment="CENTER" textFill="#f1f1f1">
                <font>
                   <Font size="35.0" />
                </font>
                <FlowPane.margin>
-                  <Insets bottom="15.0" top="30.0" />
+                  <Insets bottom="15.0" top="50.0" />
                </FlowPane.margin>
             </Label>
-            <Label alignment="CENTER" text="Welcome to Tic-Tac-Teo Game." textFill="#f1f1f1">
+            <Label alignment="CENTER" styleClass="texts" text="Welcome to Tic-Tac-Teo Game." textFill="#f1f1f1">
                <font>
                   <Font name="Comic Sans MS" size="15.0" />
                </font>
@@ -48,9 +48,9 @@
       </FlowPane>
    </top>
    <center>
-      <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="339.0" prefWidth="799.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefWidth="81.0" styleClass="title" text="Name" textFill="#f1f1f1">
+            <Label prefWidth="81.0" styleClass="textFieldLabels" text="Name" textFill="#f1f1f1">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -63,7 +63,7 @@
                   <Insets bottom="25.0" />
                </FlowPane.margin>
             </TextField>
-            <Label layoutX="235.0" layoutY="72.0" prefWidth="81.0" styleClass="title" text="Email" textFill="#f1f1f1">
+            <Label layoutX="235.0" layoutY="72.0" prefWidth="81.0" styleClass="textFieldLabels" text="Email" textFill="#f1f1f1">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -73,7 +73,7 @@
                   <Insets bottom="25.0" />
                </FlowPane.margin>
             </TextField>
-            <Label layoutX="235.0" layoutY="132.0" styleClass="title" text="Password" textFill="#f1f1f1">
+            <Label layoutX="235.0" layoutY="132.0" styleClass="textFieldLabels" text="Password" textFill="#f1f1f1">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -81,7 +81,10 @@
                   <Insets bottom="5.0" />
                </FlowPane.margin>
             </Label>
-            <PasswordField promptText="Enter your password" styleClass="textField" />
+            <PasswordField promptText="Enter your password" styleClass="textField">
+               <FlowPane.margin>
+                  <Insets />
+               </FlowPane.margin></PasswordField>
          </children>
       </FlowPane>
    </center>

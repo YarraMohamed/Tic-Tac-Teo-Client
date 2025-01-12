@@ -30,7 +30,12 @@
 .title{
     -fx-font-family:"Chewy";
     -fx-font-size: 35px;
+}
 
+.textFieldLabels{
+     -fx-font-family:"Chewy";
+    -fx-font-size: 28px;
+    
 }
 
 .textField {
@@ -44,9 +49,7 @@
 .usernametitle{
     
     -fx-font-family: "Chewy";
-    -fx-font-size: 60px;
-    
-    
+    -fx-font-size: 60px;    
 }
 
 .texts{
