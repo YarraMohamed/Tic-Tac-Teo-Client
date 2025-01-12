@@ -12,7 +12,7 @@ public class Main extends Application {
     Parent root = FXMLLoader.load(getClass().getResource("/fxml/SignIn.fxml"));
         
         Scene scene = new Scene(root);
-        
+        scene.getStylesheets().add(getClass().getResource("/Resources/Pages.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
