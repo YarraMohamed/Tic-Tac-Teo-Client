@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="685.0" prefWidth="707.0" style="-fx-background-color: linear-gradient(to bottom,#86AEE9,#09316D);" stylesheets="@../resources/styles/PlayPageUi.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.GameBoardController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="685.0" prefWidth="707.0" style="-fx-background-color: linear-gradient(to bottom,#86AEE9,#09316D);" stylesheets="@../Resources/Pages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.GameBoardController">
     <children>
         <Button fx:id="leaveButton" layoutX="291.0" layoutY="591.0" onAction="#handleButtonAction" prefHeight="54.0" prefWidth="297.0" style="-fx-background-color: linear-gradient(to bottom,#1F60C1,#8D9CB3); -fx-background-radius: 15;" styleClass="texts" text="Leave" textFill="WHITE">
          <effect>
