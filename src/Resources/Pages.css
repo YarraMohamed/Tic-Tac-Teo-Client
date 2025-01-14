@@ -19,16 +19,23 @@
     -fx-effect: dropshadow(gaussian, black, 20, 0, 5, 5);
 }
 
-.Buttons{
+.buttons{
    -fx-background-color: linear-gradient(to bottom, #1F60C1, #8D9CB3); 
    -fx-background-radius: 28;
    -fx-border-radius: 28;
    -fx-cursor: hand ;
+   -fx-effect: dropshadow(gaussian, black, 20, 0, 5, 5);
 }
 
 .title{
     -fx-font-family:"Chewy";
+    -fx-font-size: 35px;
+}
 
+.textFieldLabels{
+     -fx-font-family:"Chewy";
+    -fx-font-size: 28px;
+    
 }
 
 .textField {
@@ -37,4 +44,45 @@
     -fx-border-radius: 28; 
     -fx-padding: 10; 
     -fx-border-color: transparent; 
+}
+
+.usernametitle{
+    
+    -fx-font-family: "Chewy";
+    -fx-font-size: 60px;    
+}
+
+.texts{
+    
+    -fx-font-family:"Chewy";
+    -fx-font-size: 22px;
+    
+    
+}
+
+.smallTexts{
+    
+    -fx-font-family:"Chewy";
+    -fx-font-size: 15px;
+    
+    
+}
+
+.buttonTexts{
+    
+    -fx-font-family:"Chewy";
+    -fx-font-size:18px;
+    
+}
+
+.dropShadowOnly{
+    
+    -fx-effect: dropshadow(gaussian, black, 20, 0, 5, 5);
+    
+}
+
+.board{
+    -fx-font-family:"Chewy";
+    -fx-background-color: transparent;
+    -fx-font-size: 60px;
 }
