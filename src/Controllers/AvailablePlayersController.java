@@ -5,14 +5,20 @@
  */
 package Controllers;
 
-import com.sun.javafx.geom.Rectangle;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -21,7 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
+import javafx.stage.Stage;
 
 /**
  *
@@ -35,19 +41,31 @@ public class AvailablePlayersController implements Initializable {
     @FXML
     private VBox  userContainer;
     
+    
+    @FXML
+    public void onNavBack(Event event) {
+    try {
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    } catch (IOException ex) {
+        Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
+    }
+}
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-//        System.out.println();
-//        root.getScene().getStylesheets().add(getClass().getResource("/resources/style/list_screen_style.css").toExternalForm());
-    
-    VBox.setVgrow(userContainer, Priority.ALWAYS);
-    label.setText("Let’s Play");
-    addCompoent("ziad");
-    addCompoent("fawzy");
-    addCompoent("yara");
-    addCompoent("mariem");
-    addCompoent("amira");
+        
+        VBox.setVgrow(userContainer, Priority.ALWAYS);
+        label.setText("Let’s Play");
+        addCompoent("ziad");
+        addCompoent("fawzy");
+        addCompoent("yara");
+        addCompoent("mariem");
+        addCompoent("amira");
 
 
     
@@ -55,9 +73,6 @@ public class AvailablePlayersController implements Initializable {
      
     }
     private void addCompoent(String user){
-//        Rectangle rect=new Rectangle(1000, 60);
-//        Box b=new Box();
-//        b.set
          // Create a box
         HBox box = new HBox();
         
@@ -75,9 +90,12 @@ public class AvailablePlayersController implements Initializable {
         );
         box.setBackground(new Background(backgroundFill));
         Label label = new Label(user);
+        label.setStyle("-fx-text-fill: black;");
         box.getChildren().add(label);
         userContainer.getChildren().add(box);
         
+    
     }
+    
     
 }

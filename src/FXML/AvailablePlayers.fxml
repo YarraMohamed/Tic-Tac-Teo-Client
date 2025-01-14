@@ -16,6 +16,11 @@
             <Image url="@../Resources/TopRight.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="82.0" fitWidth="72.0" layoutX="14.0" layoutY="1.0" onMouseClicked="#onNavBack" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/OpenBackArrow.png" />
+         </image>
+      </ImageView>
       <Label fx:id="label" layoutX="137.0" layoutY="21.0" styleClass="Main_txt" text="Let’s Play" textAlignment="CENTER" textFill="WHITE">
          </Label>
       <Label id="lbl2" layoutX="204.0" layoutY="130.0" text="Choose  opponent!" textFill="WHITE">
