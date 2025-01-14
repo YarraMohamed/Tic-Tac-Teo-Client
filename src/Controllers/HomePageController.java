@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tictactoe;
+package Controllers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +42,6 @@ public class HomePageController implements Initializable {
     @FXML
     public void clickPlayButton(ActionEvent event) {
         try {
-            System.out.println("Play Button Clicked!");
             FXMLLoader loader= new FXMLLoader(getClass().getResource("ModePage.fxml"));
             Parent root= loader.load();
             //    Parent root = FXMLLoader.load(getClass().getResource("ModePage.fxml"));
@@ -58,8 +57,17 @@ public class HomePageController implements Initializable {
     
     @FXML
       private void clickSignInButton(ActionEvent event) {
-        System.out.println("Sign in Button Clicked!");
-        
+        try {
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("SignIn.fxml"));
+            Parent root= loader.load();
+            ModePageController modePageController =loader.getController();
+            Scene scene = new Scene(root);
+            stage= (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();        
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

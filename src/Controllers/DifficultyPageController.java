@@ -3,17 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tictactoe;
+package Controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -46,36 +54,19 @@ public class DifficultyPageController implements Initializable {
     private GridPane grid=new GridPane();
 
     private Game game;
+    
+     private Parent root;
+    private Scene scene;
+    private Stage stage;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Arrays.fill(board,' ');
-        createBoard();
     }   
     
-    public void createBoard()
-    {
-        //use gridpane instead of borderpane
-        borderPane.getChildren().clear();
-        for(int i=0;i<9;i++)
-        {
-            Button button= new Button(" ");
-            //button.setMinSize(50,50);
-            
-            int index=i;
-            button.setOnAction(e -> handleMove(index, button)); 
-           grid.add(button,i%3,i/3);
-        }
-        
-        borderPane.setCenter(grid);
-    }
-   
-
       
-       
     private void handleMove(int index, Button button)
     {
         if(gameOver ||board[index]!=' ')
@@ -104,9 +95,11 @@ public class DifficultyPageController implements Initializable {
     @FXML 
     private void handleEasy()
     {
-        computerPlayer=new Easy('O');
-        currentPlayer='X';
-        createBoard();
+       
+            computerPlayer=new Easy('O');
+            currentPlayer='X';
+            
+
     }
    
      @FXML 
@@ -120,7 +113,6 @@ public class DifficultyPageController implements Initializable {
     {
         computerPlayer= new Hard('O');
         currentPlayer='X';
-        createBoard();
     }
 }
     
