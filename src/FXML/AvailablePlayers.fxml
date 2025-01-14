@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="616.0" stylesheets="@../Resources/Pages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AvailablePlayersController">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="453.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/TopRight.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="label" layoutX="137.0" layoutY="21.0" styleClass="Main_txt" text="Let’s Play" textAlignment="CENTER" textFill="WHITE">
+         </Label>
+      <Label id="lbl2" layoutX="204.0" layoutY="130.0" text="Choose  opponent!" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font></Label>
+      <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutY="200.0" prefHeight="200.0" prefWidth="616.0" style="-fx-background-color: transparent;">
+         <content>
+               <VBox fx:id="userContainer" prefHeight="185.0" prefWidth="616.0" spacing="10.0" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+     
+      
+   </children>
+</AnchorPane>
