@@ -191,6 +191,7 @@ public class GameBoardController implements Initializable {
         sqTwoXo.setText("");
         sqThreeXo.setText("");
         sqFourXo.setText("");
+        
         sqFiveXo.setText("");
         sqSixXo.setText("");
         sqSevenXo.setText("");
