@@ -39,8 +39,9 @@ public class GameBoardController implements Initializable {
     private Line line;
     private Stage playAgainStage;
     private Stage winStage; 
-    
-    
+     private Mode mode; 
+     private char[][] board;
+
     
     @FXML
     private AnchorPane anchorPane;
@@ -109,6 +110,22 @@ public class GameBoardController implements Initializable {
     }
     */
     
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+    
+     public void handleComputerMove() {
+        if (mode != null) {
+            int[] move = mode.getMove();
+            updateBoardWithComputerMove(move);
+        }
+    }
+     
+     private void updateBoardWithComputerMove(int[] move) {
+        // Update the board with the move received from the AI
+        board[move[0]][move[1]] = 'O';  // assuming 'O' is the AI's symbol
+    }
+
     public void resetButtonAction(ActionEvent e){    
         resetGame();
         
@@ -120,6 +137,7 @@ public class GameBoardController implements Initializable {
         sqTwoXo.setText("");
         sqThreeXo.setText("");
         sqFourXo.setText("");
+        
         sqFiveXo.setText("");
         sqSixXo.setText("");
         sqSevenXo.setText("");

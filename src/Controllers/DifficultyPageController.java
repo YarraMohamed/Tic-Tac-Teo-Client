@@ -43,17 +43,15 @@ public class DifficultyPageController implements Initializable {
     @FXML
     private Button hardButton;
     
-    private char currentPlayer='X';
+   // private char currentPlayer='X';
     
-    private Mode computerPlayer;
+    //private Mode computerPlayer;
     
-    private char[] board = new char[9];
+    private Button[][] board = new Button[3][3];
     
     private boolean gameOver=false;
     
-    private GridPane grid=new GridPane();
-
-    private Game game;
+    private Mode mode;
     
      private Parent root;
     private Scene scene;
@@ -64,56 +62,60 @@ public class DifficultyPageController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        for (Button[] row : board) {
+            Arrays.fill(row, ' ');
+        }
     }   
     
       
-    private void handleMove(int index, Button button)
-    {
-        if(gameOver ||board[index]!=' ')
-        {
-            return;
-        }
-        
-        board[index]=currentPlayer;
-        button.setText(String.valueOf(currentPlayer));
-        if(game.checkWinner(currentPlayer))
-        {
-           gameOver=true;
-           return;
-        }
-        
-        currentPlayer=(currentPlayer=='X')?'O':'X';
-
-        
-        if(currentPlayer=='O'&&computerPlayer!=null)
-        {
-            int move=computerPlayer.getMove(new Game(board));
-            
-            handleMove(move,(Button)borderPane.getChildren().get(move));
+ public void setMode(String difficulty, char computerSymbol, char playerSymbol) {
+        switch (difficulty.toLowerCase()) {
+            case "easy":
+                mode = new Easy(board, computerSymbol, playerSymbol);
+                break;
+            case "medium":
+                mode = new Medium(board, computerSymbol, playerSymbol);
+                break;
+           // case "hard":
+             //   mode = new Hard(board, computerSymbol, playerSymbol);
+               // break;
+            default:
+                throw new IllegalArgumentException("Invalid difficulty level!");
+                
         }
     }
-    @FXML 
-    private void handleEasy()
-    {
-       
-            computerPlayer=new Easy('O');
-            currentPlayer='X';
-            
-
-    }
-   
-     @FXML 
-    private void handleMedium()
-    {
-        
+    public int[] getComputerMove() {
+        return mode.getMove();
     }
     
-     @FXML 
-    private void handleHard()
-    {
-        computerPlayer= new Hard('O');
-        currentPlayer='X';
-    }
+    @FXML
+private GameBoardController gameBoardController; 
+
+public void setGameBoardController(GameBoardController gameBoardController)
+{
+    this.gameBoardController = gameBoardController;
 }
-    
 
+    @FXML
+private void handleEasy() {
+    setMode("easy", 'O', 'X');
+    modeLabel1.setText("Easy Mode Selected");
+    gameBoardController.setMode(new Easy(board, 'O', 'X'));
+}
+
+@FXML
+private void handleMedium() {
+    setMode("medium", 'O', 'X');
+    modeLabel1.setText("Medium Mode Selected");
+    gameBoardController.setMode(new Medium(board, 'O', 'X'));
+}
+
+@FXML
+private void handleHard()
+{
+    setMode("hard", 'O', 'X');
+    modeLabel1.setText("Hard Mode Selected");
+    //gameBoardController.setMode(new Hard(board, 'O', 'X'));
+}
+
+}
