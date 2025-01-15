@@ -67,10 +67,8 @@ public class AvailablePlayersController implements Initializable {
         addCompoent("mariem");
         addCompoent("amira");
 
-    
-
-     
     }
+  
     private void addCompoent(String user){
          // Create a box
         HBox box = new HBox();
