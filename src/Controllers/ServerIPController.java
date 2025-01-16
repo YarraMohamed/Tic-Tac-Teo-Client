@@ -1,5 +1,6 @@
 package Controllers;
 
+import Utils.Navigation;
 import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +24,7 @@ public class ServerIPController {
     @FXML
     private Button enterButton;
     private String ipAddress;
+    private Navigation nav = new Navigation();
 
     @FXML
     private void ShowDialog(ActionEvent event) throws IOException{
@@ -31,17 +33,7 @@ public class ServerIPController {
         if(result){
            enterButton.getScene().getWindow().hide();
         } else {
-            FXMLLoader alertLoader = new FXMLLoader(getClass().getResource("/FXML/ErrorAlert.fxml"));
-            Parent alertRoot = alertLoader.load();
-
-            ErrorAlertController errorAlertController = alertLoader.getController();
-
-           Stage alertStage = new Stage();
-           alertStage.initModality(Modality.APPLICATION_MODAL);
-           alertStage.initOwner(((Node) event.getSource()).getScene().getWindow());
-           alertStage.setScene(new Scene(alertRoot));
-           alertStage.setTitle("Error Message");
-           alertStage.showAndWait();  
+           nav.ShowAlerts("InvalidMessage", event);
         }
     }
 

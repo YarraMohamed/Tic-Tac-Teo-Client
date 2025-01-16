@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import Utils.Navigation;
 
 public class SignUpController  {
 
@@ -20,14 +21,11 @@ public class SignUpController  {
     @FXML TextField nameTextField;
     @FXML TextField passTextField;
     @FXML TextField emailTextField;
+    private Navigation nav = new Navigation();
     
     
     public void goToModePage(ActionEvent event) throws IOException {
         String message = Encapsulator.encapsulate("signup",nameTextField.getText(), passTextField.getText(),emailTextField.getText());
-        root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("ModePage", event);
     }
 }
