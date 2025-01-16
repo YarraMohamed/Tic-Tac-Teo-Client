@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -58,21 +60,36 @@ public class HomePageController implements Initializable {
     @FXML
       private void clickSignInButton(ActionEvent event) throws IOException {
         try {
-            FXMLLoader loader= new FXMLLoader(getClass().getResource("/FXML/SignIn.fxml"));
-            Parent root= loader.load();
-            SignInController signInController =loader.getController();
-            Scene scene = new Scene(root);
-            stage= (Stage)((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();        
-        } catch (IOException ex) {
-            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+        FXMLLoader dialogLoader = new FXMLLoader(getClass().getResource("/FXML/ServerIP.fxml"));
+        Parent alertRoot = dialogLoader.load();
+
+        ServerIPController dialogController = dialogLoader.getController();
+
+        Stage alertStage = new Stage();
+        alertStage.initModality(Modality.APPLICATION_MODAL);
+        alertStage.initOwner(((Node) event.getSource()).getScene().getWindow());
+        alertStage.setScene(new Scene(alertRoot));
+        alertStage.setTitle("Enter Server IP");
+        alertStage.showAndWait();
+        
+        String serverIP = dialogController.getIpAddress();
+        
+        if (serverIP != null && !serverIP.isEmpty()) {
+            SharedData.getInstance().setServerIp(serverIP);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/SignIn.fxml"));
+            Parent root = loader.load();
+            SignInController signInController = loader.getController();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
         }
- 
+    } catch (IOException ex) {
+        Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+    }  
     }
+      
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }     
 }
