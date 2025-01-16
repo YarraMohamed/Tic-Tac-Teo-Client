@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="893.0" styleClass="backgroundColor" stylesheets="@../Resources/Pages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AvailablePlayersController">
    <children>
-      <ImageView fitHeight="82.0" fitWidth="72.0" layoutX="14.0" layoutY="1.0" onMouseClicked="#onNavBack" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="navBack" fitHeight="82.0" fitWidth="72.0" layoutX="14.0" layoutY="1.0" onMouseClicked="#onNavBack" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Resources/OpenBackArrow.png" />
          </image>

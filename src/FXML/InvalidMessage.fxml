@@ -27,7 +27,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="title" styleClass="texts" text="Something went wrong." textFill="WHITE">
+            <Label fx:id="title" styleClass="texts" text="Wrong input data." textFill="#fcfcfc">
                <padding>
                   <Insets top="30.0" />
                </padding>

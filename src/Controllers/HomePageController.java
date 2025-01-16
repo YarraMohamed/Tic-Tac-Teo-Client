@@ -5,6 +5,8 @@
  */
 package Controllers;
 
+import Utils.Navigation;
+import Utils.ServerConnection;
 import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
@@ -38,9 +40,8 @@ public class HomePageController implements Initializable {
     private Parent root;
     private Scene scene;
     private Stage stage;
-    
-
-    
+    private Navigation nav = new Navigation();
+   
     @FXML
     public void clickPlayButton(ActionEvent event) throws IOException {
         try {
@@ -60,28 +61,26 @@ public class HomePageController implements Initializable {
     @FXML
       private void clickSignInButton(ActionEvent event) throws IOException {
         try {
-        FXMLLoader dialogLoader = new FXMLLoader(getClass().getResource("/FXML/ServerIP.fxml"));
-        Parent alertRoot = dialogLoader.load();
-
-        ServerIPController dialogController = dialogLoader.getController();
-
-        Stage alertStage = new Stage();
-        alertStage.initModality(Modality.APPLICATION_MODAL);
-        alertStage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        alertStage.setScene(new Scene(alertRoot));
-        alertStage.setTitle("Enter Server IP");
-        alertStage.showAndWait();
+           
+            String serverIP = nav.ShowServerDialog(event);
         
-        String serverIP = dialogController.getIpAddress();
-        
-        if (serverIP != null && !serverIP.isEmpty()) {
-            SharedData.getInstance().setServerIp(serverIP);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/SignIn.fxml"));
-            Parent root = loader.load();
-            SignInController signInController = loader.getController();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+        if (serverIP != null && !serverIP.isEmpty() && SharedData.isValidIP(serverIP)) {
+            ServerConnection connection = new ServerConnection();
+            boolean result = connection.checkServerAvailibily(serverIP);
+            System.out.println(result);
+            if(result){
+                SharedData.getInstance().setServerIp(serverIP);
+                nav.goToPage("SignIn", event);
+                /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/SignIn.fxml"));
+                Parent root = loader.load();
+                SignInController signInController = loader.getController();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();*/
+            } else {
+                nav.ShowAlerts("ErrorAlert", event);
+            }
+            
         }
     } catch (IOException ex) {
         Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
