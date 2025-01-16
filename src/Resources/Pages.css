@@ -86,3 +86,13 @@
     -fx-background-color: transparent;
     -fx-font-size: 60px;
 }
+
+.Main_txt{
+
+    -fx-font-family:'Chewy';
+    -fx-font-size: 80px;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+

@@ -25,10 +25,22 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 
 public class GameBoardController implements Initializable {
     
-    private String card; 
+    private String card;
     private Button buttonPressed;
     private int p1Score;
     private int p2Score;
@@ -39,6 +51,11 @@ public class GameBoardController implements Initializable {
     private Line line;
     private Stage playAgainStage;
     private Stage winStage; 
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+
     
     
     
@@ -78,8 +95,11 @@ public class GameBoardController implements Initializable {
     @FXML
     private Text p2Text;
     
+
     // GameRecorder instance to be intialized only when record button is clicked
     private GameRecorder gameRecorder;
+    
+
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -114,7 +134,7 @@ public class GameBoardController implements Initializable {
     
     }
     
-    
+
     public void resetButtonAction(ActionEvent e){    
         resetGame();
         
@@ -140,11 +160,13 @@ public class GameBoardController implements Initializable {
     }
        
     public void gamePlayAction(ActionEvent e){
-        
+
+    
         if(!winner){
             
             buttonPressed = (Button) e.getSource();
             if(buttonPressed.getText().equals("")){
+
                 if (gameRecorder != null) {
                     gameRecorder.saveMovement(buttonPressed.getId(), card);
                 }
@@ -366,7 +388,7 @@ public class GameBoardController implements Initializable {
     
     }
     
-    
+
     public void winAnimation(){
        
         String winMessage;
@@ -412,6 +434,10 @@ public class GameBoardController implements Initializable {
     public void playAgainWindow() {
         playAgainStage = new Stage();
         playAgainStage.setTitle("Run it Back");
+
+        
+        playAgainStage.initStyle(StageStyle.UNDECORATED);
+
 
         Text againText = new Text("Another Game?");
         againText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
@@ -460,7 +486,11 @@ public class GameBoardController implements Initializable {
             playAgainStage.close();
         
         }else if(buttonPressed.getText().equals("No")){
+
             playAgainStage.close();
+
+            playAgainStage.close();  
+
         }
     }
     
@@ -483,6 +513,53 @@ public class GameBoardController implements Initializable {
             
         }
     }
+
+    
+    public void exitGame(ActionEvent event) {
+    Stage confirmExitStage = new Stage();
+    confirmExitStage.initStyle(StageStyle.UNDECORATED);
+    confirmExitStage.setTitle("Confirm Exit");
+
+    Text confirmText = new Text("Are you sure you want to exit?");
+    confirmText.setFont(Font.font("Chewy", FontWeight.BOLD, 40));
+    confirmText.setFill(Color.WHITE);
+
+    Button yesButton = new Button("Yes");
+    Button noButton = new Button("No");
+
+    yesButton.setOnAction(e -> {
+        confirmExitStage.close();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    });
+
+    noButton.setOnAction(e -> confirmExitStage.close());
+
+    yesButton.setFont(Font.font("Chewy", FontWeight.BOLD, 30));
+    yesButton.setStyle("-fx-background-color: linear-gradient(to bottom,#1F60C1,#8D9CB3); -fx-background-radius: 30; -fx-text-fill:#ffffff;");
+    noButton.setFont(Font.font("Chewy", FontWeight.BOLD, 30));
+    noButton.setStyle("-fx-background-color: linear-gradient(to bottom,#1F60C1,#8D9CB3); -fx-background-radius: 30; -fx-text-fill:#ffffff;");
+
+    HBox buttonBox = new HBox(30, yesButton, noButton);
+    buttonBox.setAlignment(Pos.CENTER);
+
+    BorderPane borderPane = new BorderPane();
+    borderPane.setCenter(confirmText);
+    borderPane.setBottom(buttonBox);
+    borderPane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #86AEE9, #09316D);");
+
+    Scene scene = new Scene(borderPane, 500, 250);
+    confirmExitStage.setScene(scene);
+    confirmExitStage.showAndWait(); 
+}
+
+
 }
         
 
