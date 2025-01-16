@@ -1,8 +1,3 @@
-/*
-    - I need to have a track of the games that doesn't reset when the game is closed
-
-    - If I make a file to keep track of the games will it be made in this class?
-*/
 package Controllers;
 
 import java.io.BufferedWriter;
@@ -12,9 +7,6 @@ import java.io.IOException;
 
 public class GameRecorder {
     
-    /* Do I need them? */
-    // private String buttonId;
-    // private String movement;
     private String directoryPath;
     private String fileName;
     
@@ -33,7 +25,7 @@ public class GameRecorder {
     }
     
     
-    // Make file for a game recording: makeRecordingFile
+    // Make a file for a game recording
     public void prepareRecordingFile() {
         checkDirectoryExists();
         this.fileName = directoryPath + "game_";
@@ -41,7 +33,6 @@ public class GameRecorder {
     
     
     
-    // Save player movements: maybe writeMovementToFile
     public void saveMovement(String buttonId, String movement) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) { 
             writer.write(buttonId + "," + movement); 
