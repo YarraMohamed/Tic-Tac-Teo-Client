@@ -45,13 +45,14 @@ public class HomePageController implements Initializable {
     @FXML
     public void clickPlayButton(ActionEvent event) throws IOException {
         try {
-            FXMLLoader loader= new FXMLLoader(getClass().getResource("/FXML/DifficultyPage.fxml"));
+            /*FXMLLoader loader= new FXMLLoader(getClass().getResource("/FXML/DifficultyPage.fxml"));
             Parent root= loader.load();
             DifficultyPageController difficultyPageController  =loader.getController();
             Scene scene = new Scene(root);
             stage= (Stage)((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
-            stage.show();
+            stage.show();*/
+            nav.goToPage("DifficultyPage", event);
         } catch (IOException ex) {
             Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -65,18 +66,11 @@ public class HomePageController implements Initializable {
             String serverIP = nav.ShowServerDialog(event);
         
         if (serverIP != null && !serverIP.isEmpty() && SharedData.isValidIP(serverIP)) {
-            ServerConnection connection = new ServerConnection();
-            boolean result = connection.checkServerAvailibily(serverIP);
+            boolean result = ServerConnection.getInstance().checkServerAvailibily(serverIP);
             System.out.println(result);
             if(result){
                 SharedData.getInstance().setServerIp(serverIP);
                 nav.goToPage("SignIn", event);
-                /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/SignIn.fxml"));
-                Parent root = loader.load();
-                SignInController signInController = loader.getController();
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();*/
             } else {
                 nav.ShowAlerts("ErrorAlert", event);
             }
