@@ -1,5 +1,6 @@
 package Controllers;
 
+import Utils.Encapsulator;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
