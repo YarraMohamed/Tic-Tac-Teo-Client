@@ -3,3 +3,7 @@
 
 /nbproject/
 /test/
+
+/lib/
+/manifest.mf
+/nbbuild.xml

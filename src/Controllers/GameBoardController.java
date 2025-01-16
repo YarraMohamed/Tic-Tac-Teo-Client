@@ -51,9 +51,11 @@ public class GameBoardController implements Initializable {
     private Line line;
     private Stage playAgainStage;
     private Stage winStage; 
+
     private Stage stage;
     private Scene scene;
     private Parent root;
+
     
     
     
@@ -93,7 +95,11 @@ public class GameBoardController implements Initializable {
     @FXML
     private Text p2Text;
     
+
+    // GameRecorder instance to be intialized only when record button is clicked
+    private GameRecorder gameRecorder;
     
+
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -117,13 +123,18 @@ public class GameBoardController implements Initializable {
     public void leaveButtonAction(ActionEvent e){
     
     
+    }*/ 
+    
+    // Button to record the game
+    public void recordButtonAction(ActionEvent recordGameAction){
+        if (gameRecorder == null) {
+            gameRecorder = new GameRecorder();
+            gameRecorder.prepareRecordingFile();
+        }
+    
     }
-    public void recordButtonAction(ActionEvent e){
     
-    
-    }
-    */
-    
+
     public void resetButtonAction(ActionEvent e){    
         resetGame();
         
@@ -149,12 +160,17 @@ public class GameBoardController implements Initializable {
     }
        
     public void gamePlayAction(ActionEvent e){
+
     
         if(!winner){
             
             buttonPressed = (Button) e.getSource();
             if(buttonPressed.getText().equals("")){
-            
+
+                if (gameRecorder != null) {
+                    gameRecorder.saveMovement(buttonPressed.getId(), card);
+                }
+                
                 buttonPressed.setText(card);
                 if(card.equals("X")){
                     buttonPressed.setStyle("-fx-text-fill: Black;");
@@ -372,6 +388,7 @@ public class GameBoardController implements Initializable {
     
     }
     
+
     public void winAnimation(){
        
         String winMessage;
@@ -417,8 +434,10 @@ public class GameBoardController implements Initializable {
     public void playAgainWindow() {
         playAgainStage = new Stage();
         playAgainStage.setTitle("Run it Back");
+
         
         playAgainStage.initStyle(StageStyle.UNDECORATED);
+
 
         Text againText = new Text("Another Game?");
         againText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
@@ -467,7 +486,11 @@ public class GameBoardController implements Initializable {
             playAgainStage.close();
         
         }else if(buttonPressed.getText().equals("No")){
+
+            playAgainStage.close();
+
             playAgainStage.close();  
+
         }
     }
     
@@ -490,6 +513,7 @@ public class GameBoardController implements Initializable {
             
         }
     }
+
     
     public void exitGame(ActionEvent event) {
     Stage confirmExitStage = new Stage();
@@ -534,6 +558,7 @@ public class GameBoardController implements Initializable {
     confirmExitStage.setScene(scene);
     confirmExitStage.showAndWait(); 
 }
+
 
 }
         

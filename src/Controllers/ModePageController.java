@@ -33,6 +33,7 @@ public class ModePageController {
         stage.show();
     }
     
+
     public void goToLocalMode(ActionEvent event) throws IOException {
         String message = Encapsulator.encapsulate("signout");
         root = FXMLLoader.load(getClass().getResource("/FXML/GameBoard.fxml"));
@@ -59,4 +60,5 @@ public class ModePageController {
         stage.show();
     }
     
+
 }

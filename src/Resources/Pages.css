@@ -86,6 +86,7 @@
     -fx-background-color: transparent;
     -fx-font-size: 60px;
 }
+
 .Main_txt{
 
     -fx-font-family:'Chewy';
@@ -94,3 +95,4 @@
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
+
