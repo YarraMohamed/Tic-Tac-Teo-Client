@@ -28,7 +28,7 @@ import javafx.util.Duration;
 
 public class GameBoardController implements Initializable {
     
-    private String card; // Player movement: 'X' or 'O'
+    private String card; 
     private Button buttonPressed;
     private int p1Score;
     private int p2Score;
@@ -50,8 +50,6 @@ public class GameBoardController implements Initializable {
     private Button leaveButton;
     @FXML
     private Button recordButton;
-    
-    // 9 buttons for the borad: get the id from them
     @FXML
     private Button sqOneXo;
     @FXML
@@ -143,16 +141,10 @@ public class GameBoardController implements Initializable {
        
     public void gamePlayAction(ActionEvent e){
         
-        // In here you get an error
-        /*if (gameRecorder != null) {
-            gameRecorder.saveMovement(buttonPressed.getId(), card);
-        }*/
-        
         if(!winner){
             
             buttonPressed = (Button) e.getSource();
             if(buttonPressed.getText().equals("")){
-                // Moved to here instead
                 if (gameRecorder != null) {
                     gameRecorder.saveMovement(buttonPressed.getId(), card);
                 }
