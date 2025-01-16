@@ -1,6 +1,8 @@
 package Utils;
 
 import java.io.DataInputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -10,8 +12,19 @@ import java.util.logging.Logger;
 public class ServerConnection {
     
     private Socket socket;
-    DataInputStream in;
-    PrintStream out;
+    private BufferedReader  in;
+    private PrintStream out;
+    private static ServerConnection instance;
+    
+    private ServerConnection(){
+    }
+    
+     public static ServerConnection getInstance() {
+        if (instance == null) {
+            instance = new ServerConnection();
+        }
+        return instance;
+    }
     
     public boolean checkServerAvailibily(String serverIP){
         try {
@@ -26,12 +39,12 @@ public class ServerConnection {
     public void openConnection() throws IOException{
         String serverIP = SharedData.getInstance().getServerIp();
         socket = new Socket(serverIP,5005);
-        in = new DataInputStream(socket.getInputStream());
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintStream(socket.getOutputStream());
     }
     
     public String sendRequest(String request) throws IOException {
-        String response;
+        String response ="sending data";
         if (socket == null || socket.isClosed()) {
             response = "Connection is not open";
         }
