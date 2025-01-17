@@ -1,5 +1,8 @@
 package Controllers;
 
+import Modes.Easy;
+import Modes.Mode;
+import com.sun.rowset.internal.Row;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
@@ -24,6 +27,19 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.net.URL;
+import java.util.Random;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+ 
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +56,7 @@ import javafx.stage.StageStyle;
 
 public class GameBoardController implements Initializable {
     
+    private Mode pc;
     private String card;
     private Button buttonPressed;
     private int p1Score;
@@ -52,12 +69,15 @@ public class GameBoardController implements Initializable {
     private Stage playAgainStage;
     private Stage winStage; 
 
+     private Mode mode; 
+     private char[][] board;
+
+
+
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    
-    
     
     @FXML
     private AnchorPane anchorPane;
@@ -86,6 +106,7 @@ public class GameBoardController implements Initializable {
     @FXML
     private Button sqNineXo;
     
+     private Button[][] board;
     
     ///////////////text
     @FXML
@@ -95,28 +116,50 @@ public class GameBoardController implements Initializable {
     @FXML
     private Text p2Text;
     
+    private String mode ="";
+    
 
     // GameRecorder instance to be intialized only when record button is clicked
     private GameRecorder gameRecorder;
     
 
     
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-    }
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-                            
-    card = "X";
-    p1Score = 0;
-    p2Score = 0;
-    tieScore = 0;
-    isP1Win = false;
-    isP2Win = false;
-    winner = false;
-    line = null;
+        
+        
+        sqOneXo.setText("");
+        sqTwoXo.setText("");
+        sqThreeXo.setText("");
+        sqFourXo.setText("");
+        sqFiveXo.setText("");
+        sqSixXo.setText("");
+        sqSevenXo.setText("");
+        sqEightXo.setText("");
+        sqNineXo.setText("");
+        
+        
+        board = new Button[3][3];
+        board[0][0] = sqOneXo;
+        board[0][1] = sqTwoXo;
+        board[0][2] = sqThreeXo;
+        board[1][0] = sqFourXo;
+        board[1][1] = sqFiveXo;
+        board[1][2] = sqSixXo;
+        board[2][0] = sqSevenXo;
+        board[2][1] = sqEightXo;
+        board[2][2] = sqNineXo;
+
+        card = "X";
+        p1Score = 0;
+        p2Score = 0;
+        tieScore = 0;
+        isP1Win = false;
+        isP2Win = false;
+        winner = false;
+        line = null;
     } 
     
     /*
@@ -134,6 +177,25 @@ public class GameBoardController implements Initializable {
     
     }
     
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+    
+     public void handleComputerMove() {
+        if (mode != null) {
+            int[] move = mode.getMove();
+            updateBoardWithComputerMove(move);
+        }
+    }
+     
+     private void updateBoardWithComputerMove(int[] move) {
+        // Update the board with the move received from the AI
+        board[move[0]][move[1]] = 'O';  // assuming 'O' is the AI's symbol
+    }
+
+    public void setMode(String m){
+        this.mode = m;
+    }
 
     public void resetButtonAction(ActionEvent e){    
         resetGame();
@@ -146,6 +208,7 @@ public class GameBoardController implements Initializable {
         sqTwoXo.setText("");
         sqThreeXo.setText("");
         sqFourXo.setText("");
+        
         sqFiveXo.setText("");
         sqSixXo.setText("");
         sqSevenXo.setText("");
@@ -162,8 +225,7 @@ public class GameBoardController implements Initializable {
     public void gamePlayAction(ActionEvent e){
 
     
-        if(!winner){
-            
+        if(!winner){ 
             buttonPressed = (Button) e.getSource();
             if(buttonPressed.getText().equals("")){
 
@@ -186,9 +248,69 @@ public class GameBoardController implements Initializable {
                checkState();     
             }
         }
-    
+        if(!winner){
+            Button choosenBtn;
+            switch(mode){
+                case "pc_Easy": {
+                     pc = new Easy(board,'O','X');
+                     int[] move = pc.getMove();
+                    int row = move[0];
+                    int col = move[1];
+                    choosenBtn=clikedButton(row, col);
+                    choosenBtn.setText(card);
+                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
+            } 
+            card=(card.equals("X"))?"O":"X";
+            checkState();
+        }
+        
+        
+        }
     }
     
+    private Button clikedButton(int row,int col){
+        if(row == 0){
+                     switch(col){
+                         case 0:{
+                             return sqOneXo;
+                             
+                         }
+                         case 1:{
+                             return sqTwoXo;
+                             
+                         }
+                         case 2:{
+                             return sqThreeXo;
+                         }
+                     }
+                 }else if(row==1){
+                     switch(col){
+                         case 0:{
+                            return sqFourXo;
+                            
+                         }
+                         case 1:{
+                             return sqFiveXo;
+                         }
+                         case 2:{
+                            return sqSixXo;
+                         }
+                     }
+                 }else if(row==2){
+                     switch(col){
+                         case 0:{
+                             return sqSevenXo;
+                         }
+                         case 1:{
+                            return sqEightXo;
+                         }
+                         case 2:{
+                            return sqNineXo;
+                         }
+                     }
+                 }
+        return null;
+    }    
     private void drawLine(Button startButton, Button endButton){
     
         Bounds bound1 = startButton.localToScene(startButton.getBoundsInLocal());
