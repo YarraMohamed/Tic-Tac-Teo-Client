@@ -33,4 +33,37 @@ public class ModePageController {
         stage.show();
     }
     
+<<<<<<< Updated upstream
+=======
+    public void goToLocalMode(ActionEvent event) throws IOException {
+        String message = Encapsulator.encapsulate("signout");
+        root = FXMLLoader.load(getClass().getResource("/FXML/GameBoard.fxml"));
+//        FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
+//        root = x.load();
+//        GameBoardController c = x.getController();
+//        c.setMode("pc_Easy");
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+     public void goToDifficultyMode(ActionEvent event) throws IOException {
+        String message = Encapsulator.encapsulate("signout");
+        root = FXMLLoader.load(getClass().getResource("/FXML/DifficultyPage.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void getPlayersList(ActionEvent event) throws IOException {
+        String message = Encapsulator.encapsulate("signout");
+        root = FXMLLoader.load(getClass().getResource("/FXML/AvailablePlayers.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+>>>>>>> Stashed changes
 }
