@@ -28,7 +28,7 @@ public class GameRecorder {
     // Make a file for a game recording
     public void prepareRecordingFile() {
         checkDirectoryExists();
-        this.fileName = directoryPath + "game_";
+        this.fileName = directoryPath + "game_" + System.currentTimeMillis()+".txt";
     }
     
     
@@ -41,11 +41,5 @@ public class GameRecorder {
             e.printStackTrace(); 
             System.out.println("Error while making the recording file.");
         } 
-    } 
-    
-    
-    
-    
-    
-    
+    }     
 }
