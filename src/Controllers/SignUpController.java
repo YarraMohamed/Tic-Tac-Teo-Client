@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
+import org.json.JSONObject;
 
 public class SignUpController  {
 
@@ -28,16 +29,26 @@ public class SignUpController  {
     
     
     public void goToModePage(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signup",nameTextField.getText(),emailTextField.getText(),passTextField.getText());
+        
+        String message = Encapsulator.encapsulateSignUp(nameTextField.getText(), 
+                                                         emailTextField.getText() ,passTextField.getText());
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        
         if(result){
+            
             connection.openConnection();
-            String response = connection.sendRequest(message);
+            String responseJSON = connection.sendRequest(message);
+            JSONObject jsonReceived = new JSONObject(responseJSON);
+            String response = jsonReceived.getString("response");
+            
             if(response.equals("Success")){
-            nav.goToPage("ModePage", event);
+                int playerID = Integer.parseInt(jsonReceived.optString("Player_ID"));
+                SharedData.getInstance().setPlayerID(playerID);
+                nav.goToPage("ModePage", event);
             } else {
                 nav.ShowAlerts("InvalidMessage", event);
             }
+            
         }else{
             nav.ShowAlerts("ErrorAlert", event);
         }

@@ -55,7 +55,7 @@
             </Rectangle>
             <VBox alignment="CENTER" prefHeight="358.0" prefWidth="800.0">
                <children>
-                  <Button fx:id="easyButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="172.0" text="Easy" textFill="WHITE">
+                  <Button fx:id="easyButton" mnemonicParsing="false" onAction="#onEasyMode" prefHeight="48.0" prefWidth="172.0" text="Easy" textFill="WHITE">
                      <font>
                         <Font name="Comic Sans MS" size="20.0" />
                      </font>
