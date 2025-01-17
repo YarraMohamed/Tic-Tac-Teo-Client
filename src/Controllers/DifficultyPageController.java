@@ -63,9 +63,10 @@ public class DifficultyPageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         for (Button[] row : board) {
-            Arrays.fill(row, ' ');
+            Arrays.fill(row, null);
         }
     }   
+    
     
       
  public void setMode(String difficulty, char computerSymbol, char playerSymbol) {
@@ -76,9 +77,9 @@ public class DifficultyPageController implements Initializable {
             case "medium":
                 mode = new Medium(board, computerSymbol, playerSymbol);
                 break;
-           // case "hard":
-             //   mode = new Hard(board, computerSymbol, playerSymbol);
-               // break;
+                case "hard":
+                  mode = new Hard(board, computerSymbol, playerSymbol);
+                break;
             default:
                 throw new IllegalArgumentException("Invalid difficulty level!");
                 
@@ -115,7 +116,7 @@ private void handleHard()
 {
     setMode("hard", 'O', 'X');
     modeLabel1.setText("Hard Mode Selected");
-    //gameBoardController.setMode(new Hard(board, 'O', 'X'));
+    gameBoardController.setMode(new Hard(board, 'O', 'X'));
 }
 
 }
