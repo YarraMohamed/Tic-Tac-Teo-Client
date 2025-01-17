@@ -5,6 +5,10 @@
  */
 package Controllers;
 
+
+import Utils.Navigation;
+import Utils.ServerConnection;
+import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -36,6 +41,7 @@ public class HomePageController implements Initializable {
     private Parent root;
     private Scene scene;
     private Stage stage;
+
     
 
     
@@ -74,4 +80,50 @@ public class HomePageController implements Initializable {
         // TODO
     }    
     
+
+    private Navigation nav = new Navigation();
+   
+    @FXML
+    public void clickPlayButton(ActionEvent event) throws IOException {
+        try {
+            /*FXMLLoader loader= new FXMLLoader(getClass().getResource("/FXML/DifficultyPage.fxml"));
+            Parent root= loader.load();
+            DifficultyPageController difficultyPageController  =loader.getController();
+            Scene scene = new Scene(root);
+            stage= (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();*/
+            nav.goToPage("DifficultyPage", event);
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    }
+    
+    @FXML
+      private void clickSignInButton(ActionEvent event) throws IOException {
+        try {
+           
+            String serverIP = nav.ShowServerDialog(event);
+        
+        if (serverIP != null && !serverIP.isEmpty() && SharedData.isValidIP(serverIP)) {
+            boolean result = ServerConnection.getInstance().checkServerAvailibily(serverIP);
+            System.out.println(result);
+            if(result){
+                SharedData.getInstance().setServerIp(serverIP);
+                nav.goToPage("SignIn", event);
+            } else {
+                nav.ShowAlerts("ErrorAlert", event);
+            }
+            
+        }
+    } catch (IOException ex) {
+        Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+    }  
+    }
+      
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }     
 }

@@ -20,6 +20,7 @@ public class Main extends Application {
         DifficultyPageController difficultyPageController = loader.getController();
 
         difficultyPageController.setGameBoardController(gameBoardController);
+       Parent root = FXMLLoader.load(getClass().getResource("/FXML/HomePage.fxml"));
 
         Scene scene = new Scene(root);
         //primaryStage.setScene(scene);
