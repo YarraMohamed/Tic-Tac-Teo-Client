@@ -21,23 +21,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import Utils.Navigation;
+
 /**
  *
  * @author Maryam Muhammad
  */
 public class DifficultyPageController{
-     private Stage stage;
+    private Stage stage;
     private Scene scene;
     private Parent root;
+    private Navigation nav = new Navigation();
     
 
     public void Back(ActionEvent event) throws IOException {
-        /* check if signed in or not to decide which screen will load*/
-        root = FXMLLoader.load(getClass().getResource("/FXML/HomePage.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("HomePage", event);  
     }
  
 }
