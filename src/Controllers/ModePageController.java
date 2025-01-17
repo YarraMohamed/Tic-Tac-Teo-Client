@@ -1,5 +1,6 @@
 package Controllers;
 
+import Utils.Encapsulator;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,57 +12,37 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import Utils.Navigation;
+
 public class ModePageController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private Navigation nav = new Navigation();
 
     public void goToProfile(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/FXML/ProfilePageFXML.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("ProfilePageFXML", event);
+        
     }
     
     public void signout(ActionEvent event) throws IOException {
         String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/SignIn.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("HomePage", event);
     }
     
 
     public void goToLocalMode(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/GameBoard.fxml"));
-//        FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
-//        root = x.load();
-//        GameBoardController c = x.getController();
-//        c.setMode("pc_Easy");
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+       nav.goToPage("GameBoard", event);
+       
     }
     
      public void goToDifficultyMode(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/DifficultyPage.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("DifficultyPage", event);
     }
     public void getPlayersList(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/AvailablePlayers.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("AvailablePlayers", event);
+        
     }
     
+
 }

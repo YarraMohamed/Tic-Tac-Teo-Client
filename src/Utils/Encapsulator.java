@@ -1,4 +1,4 @@
-package Controllers;
+package Utils;
 
 public class Encapsulator {
     
