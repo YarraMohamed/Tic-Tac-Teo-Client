@@ -31,17 +31,18 @@ public class SignInController  {
     
     public void goToModePage(ActionEvent event) throws IOException {
         String message = Encapsulator.encapsulate("signin",nameTextField.getText(), passTextField.getText());
-        System.out.println(message);
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
-        System.out.println(result);
         if(result){
-            /*will check for the response to decide what will happen next*/
             connection.openConnection();
             String response = connection.sendRequest(message);
-            System.out.println(response);
+            if(response.equals("Success")){
             nav.goToPage("ModePage", event);
-        } else {
+            } else {
+                nav.ShowAlerts("InvalidMessage", event);
+            }
+        }else{
             nav.ShowAlerts("ErrorAlert", event);
         }
+       
     }
 }
