@@ -29,8 +29,13 @@ public abstract class Mode {
     
     // Consolidated checkWin function
     protected boolean checkWin(char symbol) {
+<<<<<<< HEAD
         // Check rows and columns
         for (int i = 0; i < 3; i++) {
+=======
+        for (int i = 0; i < 3; i++) {
+            //Button in row i, column 0.
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
             if ((board[i][0].getText().charAt(0) == symbol && board[i][1].getText().charAt(0)  == symbol && board[i][2].getText().charAt(0)  == symbol) ||
                 (board[0][i].getText().charAt(0)  == symbol && board[1][i].getText().charAt(0)  == symbol && board[2][i].getText().charAt(0)  == symbol)) {
                 return true;
@@ -45,6 +50,19 @@ public abstract class Mode {
     {
         return board[row][col].getText().isEmpty(); 
     }
+<<<<<<< HEAD
+=======
+    
+    protected boolean isBoardFull() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (isCellEmpty(i, j)) 
+                    return false;
+            }
+        }
+        return true;
+    }
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
 };
 
 class Easy extends Mode {
@@ -57,14 +75,28 @@ class Easy extends Mode {
     @Override
     public int[] getMove() {
         int row, col;
+<<<<<<< HEAD
+=======
+//    //Pick a random cell → Check if it's empty → Repeat if necessary.
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
         do {
             row = random.nextInt(3);
             col = random.nextInt(3);
         } while (!isCellEmpty(row,col));
         return new int[]{row, col};
     }
+<<<<<<< HEAD
 }
 
+=======
+};
+
+/*
+Choose a winning move for itself (if it can win),
+Block the player from winning (if the player is about to win),
+Or select a random empty cell if no immediate win or block is needed.
+*/
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
 class Medium extends Mode {
     
     public Medium(Button[][] board, char computerSymbol, char playerSymbol) {
@@ -79,6 +111,7 @@ class Medium extends Mode {
                 if (isCellEmpty(i,j)){
                     board[i][j].setText(String.valueOf(computerSymbol));
                     if (checkWin(computerSymbol)) {
+<<<<<<< HEAD
                         board[i][j].setText("");   
                         return new int[]{i, j};
                     }
@@ -88,16 +121,35 @@ class Medium extends Mode {
                     if (checkWin(playerSymbol)) {
                         board[i][j].setText("");  
                         return new int[]{i, j};
+=======
+                        board[i][j].setText("");   //This is likely to (undo the move) for evaluation purposes before returning the position
+                        return new int[]{i, j}; //found a winning move and return it to record the position of the move made by the computer, and the game can use it in the record game feature
+                    }
+                    board[i][j].setText(""); //It ensures that the board cell does not retain any unwanted values or results.
+
+                    board[i][j].setText(String.valueOf(playerSymbol)); //The AI temporarily places the player’s symbol (playerSymbol) in the empty cell.
+                    if (checkWin(playerSymbol)) { //Calls checkWin(playerSymbol) to see if this move allows the player to win.
+                        board[i][j].setText("");   
+                        return new int[]{i, j}; // Block the player's winning move
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
                     }
                     board[i][j].setText("");  
                 }
             }
         }
 
+<<<<<<< HEAD
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (isCellEmpty(j, j)) {
                     return new int[]{i, j};
+=======
+        //If no winning or blocking move is found, the AI picks the first available cell.
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (isCellEmpty(i, j)) {
+                    return new int[]{i, j}; //return the available positions to play in 
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
                 }
             }
         }
@@ -105,14 +157,61 @@ class Medium extends Mode {
     }
 }
 
+<<<<<<< HEAD
+=======
+/*
+The minimax algorithm is a game-tree search algorithm that looks ahead at all possible future moves and 
+evaluates them. The idea is to "minimize the maximum possible loss" by choosing the best move considering 
+both the AI's and the opponent's future moves.
+
+Minimax works by recursively simulating all possible game states and assigning scores to 
+terminal states (win, lose, or draw). The algorithm then selects the move that maximizes the AI's score 
+while minimizing the opponent's potential score.
+
+*/
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
 class Hard extends Mode {
     public Hard(Button[][] board, char computerSymbol, char playerSymbol) {
         super(board, computerSymbol, playerSymbol);
     }
 
+<<<<<<< HEAD
     @Override
     public int[] getMove() {
         int bestScore = Integer.MIN_VALUE;
+=======
+     private int minimax(boolean isMaximizing) { //The isMaximizing flag indicates whether it is the maximizing player's (the computer's) turn or the minimizing player's (the player’s) turn.
+        if (checkWin(computerSymbol))
+            return 1;
+        if (checkWin(playerSymbol)) 
+            return -1;
+        if (isBoardFull()) 
+            return 0;
+
+        int bestScore = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE; // it is the maximizing player's (computer’s) turn or the minimizing player’s (player’s) turn. 
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (isCellEmpty(i, j)) {
+                    board[i][j].setText(isMaximizing ? String.valueOf(computerSymbol) : String.valueOf(playerSymbol));
+                    int score = minimax(!isMaximizing); //so it alternates between the computer’s and the player’s turn)
+                    board[i][j].setText("");
+                    bestScore = isMaximizing ? Math.max(bestScore, score) : Math.min(bestScore, score);
+                }
+            }
+        }
+        return bestScore;
+    }
+     
+     
+    @Override
+    public int[] getMove() {
+        //This value is used when you want to initialize a variable that will later store the maximum value in a comparison process.
+        //When you set a variable to Integer.MIN_VALUE,
+        //you are saying, "I'm starting with the smallest value, and later, I will update this value to something larger when I find a better option.
+        int bestScore = Integer.MIN_VALUE; //constant that represents the smallest possible value an int can have. Its value is -2,147,483,648
+        
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
         int[] bestMove = new int[]{-1, -1};
 
         for (int i = 0; i < board.length; i++) {
@@ -131,6 +230,7 @@ class Hard extends Mode {
         return bestMove;
     }
 
+<<<<<<< HEAD
     private int minimax(boolean isMaximizing) {
         if (checkWin(computerSymbol))
             return 1;
@@ -164,6 +264,11 @@ class Hard extends Mode {
         }
         return true;
     }
+=======
+   
+
+    
+>>>>>>> 7e3e0859beb0f21f55c8b33a611df16a0c528ca9
 }
 
 

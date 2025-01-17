@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+
 import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
@@ -40,6 +41,46 @@ public class HomePageController implements Initializable {
     private Parent root;
     private Scene scene;
     private Stage stage;
+
+    
+
+    
+    @FXML
+    public void clickPlayButton(ActionEvent event) {
+        try {
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("ModePage.fxml"));
+            Parent root= loader.load();
+            //    Parent root = FXMLLoader.load(getClass().getResource("ModePage.fxml"));
+            ModePageController modePageController =loader.getController();
+            Scene scene = new Scene(root);
+            stage= (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+      private void clickSignInButton(ActionEvent event) {
+        try {
+            FXMLLoader loader= new FXMLLoader(getClass().getResource("SignIn.fxml"));
+            Parent root= loader.load();
+            ModePageController modePageController =loader.getController();
+            Scene scene = new Scene(root);
+            stage= (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();        
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+    
+
     private Navigation nav = new Navigation();
    
     @FXML
