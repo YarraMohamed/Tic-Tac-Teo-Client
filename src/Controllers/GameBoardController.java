@@ -1,6 +1,9 @@
 package Controllers;
 
 import Modes.Easy;
+import Modes.Medium;
+import Modes.Hard;
+
 import Modes.Mode;
 import com.sun.rowset.internal.Row;
 import java.net.URL;
@@ -242,9 +245,39 @@ public class GameBoardController implements Initializable {
                     choosenBtn=clikedButton(row, col);
                     choosenBtn.setText(card);
                     choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
-            } 
-            card=(card.equals("X"))?"O":"X";
-            checkState();
+                    card=(card.equals("X"))?"O":"X";
+
+                    break;
+                } 
+                case"pc_Medium":
+                {
+                    
+                   pc = new Medium(board,'O','X');
+                     int[] move = pc.getMove();
+                    int row = move[0];
+                    int col = move[1];
+                    choosenBtn=clikedButton(row, col);
+                    choosenBtn.setText(card);
+                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
+                    card=(card.equals("X"))?"O":"X";
+
+                    break;
+                    
+                }
+                case"pc_Hard":
+                    {
+                    
+                   pc = new Hard (board,'O','X');
+                     int[] move = pc.getMove();
+                    int row = move[0];
+                    int col = move[1];
+                    choosenBtn=clikedButton(row, col);
+                    choosenBtn.setText(card);
+                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
+                   
+                }
+                card=(card.equals("X"))?"O":"X";
+                checkState();
         }
         
         
