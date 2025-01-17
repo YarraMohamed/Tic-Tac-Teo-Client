@@ -50,7 +50,7 @@ public class DifficultyPageController{
          } catch (IOException ex) {
              Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
          }
-    
+    }
 
     public void Back(ActionEvent event) throws IOException {
         nav.goToPage("HomePage", event);  

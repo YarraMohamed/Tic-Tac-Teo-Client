@@ -174,7 +174,7 @@ public class GameBoardController implements Initializable {
         }
     
     }
-    */
+    
     public void setMode(String m){
         this.mode = m;
     }
