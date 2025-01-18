@@ -1,5 +1,7 @@
 import Controllers.DifficultyPageController;
 import Controllers.GameBoardController;
+import Utils.ServerConnection;
+import java.io.IOException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +17,14 @@ public class Main extends Application {
        Parent root = FXMLLoader.load(getClass().getResource("/FXML/HomePage.fxml"));
 
         Scene scene = new Scene(root);
-        //primaryStage.setScene(scene);
-        //primaryStage.show();
+
         stage.setScene(scene);
+        
+        stage.setOnCloseRequest(event -> {
+            ServerConnection.getInstance().closeConnection();
+            System.out.println("Connection closed successfully.");
+        });
+        
         stage.show();
     }
 

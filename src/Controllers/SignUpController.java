@@ -30,6 +30,11 @@ public class SignUpController  {
     
     public void goToModePage(ActionEvent event) throws IOException {
         
+        if(!emailTextField.getText().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+            nav.ShowAlerts("InvalidMessage", event);
+            return;
+        }
+        
         String message = Encapsulator.encapsulateSignUp(nameTextField.getText(), 
                                                          emailTextField.getText() ,passTextField.getText());
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
@@ -42,7 +47,7 @@ public class SignUpController  {
             String response = jsonReceived.getString("response");
             
             if(response.equals("Success")){
-                int playerID = Integer.parseInt(jsonReceived.optString("Player_ID"));
+                int playerID = jsonReceived.optInt("Player_ID");
                 SharedData.getInstance().setPlayerID(playerID);
                 nav.goToPage("ModePage", event);
             } else {
