@@ -42,4 +42,14 @@ public abstract class Mode {
     {
         return board[row][col].getText().equals(""); 
     }
+    
+    protected boolean isBoardFull() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (isCellEmpty(i, j)) 
+                    return false;
+            }
+        }
+        return true;
+    }
 };
