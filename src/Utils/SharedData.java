@@ -18,11 +18,7 @@ public class SharedData {
     
     public static SharedData getInstance() {
     if (instance == null) {
-        synchronized (SharedData.class) {
-            if (instance == null) {
-                instance = new SharedData();
-            }
-        }
+        instance = new SharedData();
     }
     return instance;
 }
