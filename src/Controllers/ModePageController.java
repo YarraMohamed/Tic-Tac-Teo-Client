@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import Utils.Navigation;
+import Utils.SharedData;
 
 public class ModePageController {
     private Stage stage;
@@ -26,7 +27,7 @@ public class ModePageController {
     }
     
     public void signout(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
+        String message = Encapsulator.encapsulateSignOut(SharedData.getInstance().getPlayerID());
         nav.goToPage("HomePage", event);
     }
     

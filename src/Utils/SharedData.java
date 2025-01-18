@@ -1,8 +1,17 @@
 package Utils;
 
 public class SharedData {
-     private static SharedData instance;
+    private static SharedData instance;
     private String serverIp;
+    private int playerID;
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
+    }
 
     private SharedData() {
     }
