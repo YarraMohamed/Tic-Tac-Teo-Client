@@ -43,7 +43,7 @@ public class SignInController  {
             String response = jsonReceived.getString("response");
             
             if(response.equals("Success")){
-                int playerID = Integer.parseInt(jsonReceived.optString("Player_ID"));
+                int playerID = jsonReceived.optInt("Player_ID");
                 SharedData.getInstance().setPlayerID(playerID);
                 nav.goToPage("ModePage", event);
             } else {

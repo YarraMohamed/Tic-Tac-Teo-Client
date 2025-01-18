@@ -3,7 +3,7 @@ package Utils;
 public class SharedData {
     private static SharedData instance;
     private String serverIp;
-    private int playerID;
+    private int playerID = 0;
 
     public int getPlayerID() {
         return playerID;

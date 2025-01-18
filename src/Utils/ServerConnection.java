@@ -56,10 +56,14 @@ public class ServerConnection {
         return response;
     }
     
-    public void closeConnection() throws IOException{
-        if(socket!=null) {
-            socket.close();
-        }
+   public void closeConnection() {
+    try {
+        if (in != null) in.close();
+        if (out != null) out.close();
+        if (socket != null && !socket.isClosed()) socket.close();
+    } catch (IOException e) {
+        System.err.println("Error closing client resources: " + e.getMessage());
     }
+}
     
 }
