@@ -28,7 +28,7 @@ public class ModePageController {
     
     public void signout(ActionEvent event) throws IOException {
         String message = Encapsulator.encapsulateSignOut(SharedData.getInstance().getPlayerID());
-        nav.goToPage("HomePage", event);
+        nav.goToPage("HomePage", event);  
     }
     
 
