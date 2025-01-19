@@ -125,16 +125,8 @@ public class GameBoardController implements Initializable {
     
     private String mode ="";
     
-
-    
-    
-
-    
-
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         
         sqOneXo.setText("");
         sqTwoXo.setText("");
@@ -145,7 +137,6 @@ public class GameBoardController implements Initializable {
         sqSevenXo.setText("");
         sqEightXo.setText("");
         sqNineXo.setText("");
-        
         
         board = new Button[3][3];
         board[0][0] = sqOneXo;
@@ -169,19 +160,7 @@ public class GameBoardController implements Initializable {
         movesMade = 0;
         gameRecorder = null;
     } 
-    
-    
-    
-    // Button to record the game
-    public void recordButtonAction(ActionEvent recordGameAction){
-        if (gameRecorder == null) {
-            gameRecorder = new GameRecorder();
-            gameRecorder.prepareRecordingFile();
-
-        }
-    
-    }
-    
+        
     public void setMode(String m){
         this.mode = m;
     }
