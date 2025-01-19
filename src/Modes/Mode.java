@@ -46,16 +46,6 @@ public abstract class Mode {
             board[1][1].getText().length() > 0 && board[1][1].getText().charAt(0) == symbol && 
             board[2][0].getText().length() > 0 && board[2][0].getText().charAt(0) == symbol);
 }
-
-    // Check diagonals
-    return (board[0][0].getText().length() > 0 && board[0][0].getText().charAt(0) == symbol &&
-            board[1][1].getText().length() > 0 && board[1][1].getText().charAt(0) == symbol &&
-            board[2][2].getText().length() > 0 && board[2][2].getText().charAt(0) == symbol) ||
-
-           (board[0][2].getText().length() > 0 && board[0][2].getText().charAt(0) == symbol &&
-            board[1][1].getText().length() > 0 && board[1][1].getText().charAt(0) == symbol &&
-            board[2][0].getText().length() > 0 && board[2][0].getText().charAt(0) == symbol);
-}
    
    public boolean isComputerPlayerWon()
    {
