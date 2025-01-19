@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
  *
  * @author Maryam Muhammad
  */
+
 public class Hard extends Mode {
       public Hard(Button[][] board, char computerSymbol, char playerSymbol) {
         super(board, computerSymbol, playerSymbol);

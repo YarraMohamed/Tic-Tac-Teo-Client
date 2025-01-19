@@ -1,6 +1,8 @@
 package Controllers;
 
 import Modes.Easy;
+import Modes.Hard;
+import Modes.Medium;
 import Modes.Mode;
 import com.sun.rowset.internal.Row;
 import java.net.URL;
@@ -204,9 +206,73 @@ public class GameBoardController implements Initializable {
         card = "X";
     }
        
-    public void gamePlayAction(ActionEvent e){
+   public void gamePlayAction(ActionEvent e) {
+    if (!winner) {
+        buttonPressed = (Button) e.getSource();
 
+        if (buttonPressed != null && buttonPressed.getText().equals("")) {
+            // Save movement if game recorder is initialized
+            if (gameRecorder != null) {
+                gameRecorder.saveMovement(buttonPressed.getId(), card);
+            }
+
+            // Mark the button with the current player's card
+            buttonPressed.setText(card);
+            updateButtonStyle(buttonPressed);
+
+            // Switch turns between players
+            card = (card.equals("X")) ? "O" : "X";
+            checkState();
+        } else {
+            System.out.println("Error: Button is either null or already marked.");
+        }
+    }
+
+    // If no winner yet, process AI's move
+    if (!winner) {
+        Button choosenBtn = null;
+        switch (mode) {
+            case "pc_Easy":
+                pc = new Easy(board, 'O', 'X');
+                break;
+            case "pc_Medium":
+                pc = new Medium(board, 'O', 'X');
+                break;
+            case "pc_Hard":
+                pc = new Hard(board, 'O', 'X');
+                break;
+        }
+
+        // Get AI move and update the board
+        if (pc != null) {
+            int[] move = pc.getMove();
+            int row = move[0];
+            int col = move[1];
+            choosenBtn = clikedButton(row, col);
+
+            if (choosenBtn != null) {
+                choosenBtn.setText(card);
+                updateButtonStyle(choosenBtn);
+
+                // Switch turns between players
+                card = (card.equals("X")) ? "O" : "X";
+                checkState();
+            } else {
+                System.out.println("Error: Button at position (" + row + "," + col + ") is not valid.");
+            }
+        } else {
+            System.out.println("Error: PC mode is not set correctly.");
+        }
+    }
+}
+
+// Method to update button style based on card
+private void updateButtonStyle(Button button) {
+    button.setStyle((card.equals("X")) ? "-fx-text-fill: Black;" : "-fx-text-fill: #FFA500;");
+}
     
+    /*
+    public void gamePlayAction(ActionEvent e){
         if(!winner){ 
             buttonPressed = (Button) e.getSource();
             if(buttonPressed.getText().equals("")){
@@ -233,7 +299,8 @@ public class GameBoardController implements Initializable {
         if(!winner){
             Button choosenBtn;
             switch(mode){
-                case "pc_Easy": {
+                case "pc_Easy":
+                {
                      pc = new Easy(board,'O','X');
                      int[] move = pc.getMove();
                     int row = move[0];
@@ -241,15 +308,42 @@ public class GameBoardController implements Initializable {
                     choosenBtn=clikedButton(row, col);
                     choosenBtn.setText(card);
                     choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
-            } 
-            card=(card.equals("X"))?"O":"X";
+                    card=(card.equals("X"))?"O":"X";
+
+                    break;
+                }
+                    case "pc_Medium":
+                    {
+                     pc = new Medium(board,'O','X');
+                     int[] move = pc.getMove();
+                    int row = move[0];
+                    int col = move[1];
+                    choosenBtn=clikedButton(row, col);
+                    choosenBtn.setText(card);
+                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
+                    card=(card.equals("X"))?"O":"X";
+
+                    break;
+                    }
+                    case "pc_Hard":
+                    {
+                     pc = new Hard(board,'O','X');
+                     int[] move = pc.getMove();
+                    int row = move[0];
+                    int col = move[1];
+                    choosenBtn=clikedButton(row, col);
+                    choosenBtn.setText(card);
+                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
+                    card=(card.equals("X"))?"O":"X";
+
+                    }
+                    
             checkState();
         }
         
-        
         }
     }
-    
+    */
     private Button clikedButton(int row,int col){
         if(row == 0){
                      switch(col){
@@ -492,7 +586,73 @@ public class GameBoardController implements Initializable {
     
     }
     
+    public void winAnimation() {
+    String winMessage = null;
+    String winVideo = null;
 
+    winStage = new Stage();
+    winStage.setTitle("Game Over");
+
+    // Ensure the necessary objects are not null
+    if (isP1Win) {
+        winMessage = "Player One Wins!!";
+        winVideo = "/Resources/player1Wins.mp4";
+    } else if (pc != null && pc.isComputerPlayerWon()) {
+        winMessage = "Computer Wins!!";  // Adjusted message
+        winVideo = null;  // No video for computer win
+        playAgainWindow();
+    } else {
+        winMessage = "Player Two Wins!!";
+        winVideo = "/Resources/player2Wins.mp4";
+    }
+
+    // Make sure winVideo is not null before attempting to play the media
+    if (winVideo != null) {
+        try {
+            Media media = new Media(getClass().getResource(winVideo).toExternalForm());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            MediaView mediaView = new MediaView(mediaPlayer);
+
+            mediaPlayer.setAutoPlay(true);
+
+            Text winText = new Text(winMessage);
+            winText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
+            winText.setFill(Color.RED);
+
+            StackPane root = new StackPane(mediaView, winText);
+            StackPane.setAlignment(winText, Pos.TOP_CENTER);
+            Scene scene = new Scene(root, 800, 450);
+            winStage.setScene(scene);
+            winStage.show();
+
+            winStage.setOnCloseRequest(event -> {
+                mediaPlayer.stop();
+                playAgainWindow();
+            });
+        } catch (Exception e) {
+            // Handle potential errors in loading the video or media file
+            System.err.println("Error loading media: " + e.getMessage());
+            // You could also show a default message or video in case of an error
+        }
+    } else {
+        // If no win video is available, just show the message
+        Text winText = new Text(winMessage);
+        winText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
+        winText.setFill(Color.RED);
+
+        StackPane root = new StackPane(winText);
+        StackPane.setAlignment(winText, Pos.TOP_CENTER);
+        Scene scene = new Scene(root, 800, 450);
+        winStage.setScene(scene);
+        winStage.show();
+
+        winStage.setOnCloseRequest(event -> {
+            playAgainWindow();
+        });
+    }
+}
+
+/*
     public void winAnimation(){
        
         String winMessage;
@@ -505,7 +665,16 @@ public class GameBoardController implements Initializable {
          if(isP1Win){
             winMessage = "Player One Wins!!";
             winVideo = "/Resources/player1Wins.mp4";
-        }else {        
+        }
+         else if(pc.isComputerPlayerWon())
+         {
+            winMessage = "Player One Wins!!";
+            winVideo=null;
+            playAgainWindow();
+
+         }
+         else {        
+             
             winMessage = "Player Two Wins!!"; 
             winVideo = "/Resources/player2Wins.mp4";
         }
@@ -532,7 +701,7 @@ public class GameBoardController implements Initializable {
             playAgainWindow();
         });  
     }
-    
+    */
     
     
     public void playAgainWindow() {

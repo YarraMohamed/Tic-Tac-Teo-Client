@@ -51,6 +51,36 @@ public class DifficultyPageController{
              Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
+    
+    public void onMediumMode(Event event){
+         try {
+             FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
+             root = x.load();
+             GameBoardController c = x.getController();
+             c.setMode("pc_Medium");
+             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+             scene = new Scene(root);
+             stage.setScene(scene);
+             stage.show();
+         } catch (IOException ex) {
+             Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+    
+    public void onHardMode(Event event){
+         try {
+             FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
+             root = x.load();
+             GameBoardController c = x.getController();
+            c.setMode("pc_Hard");
+             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+             scene = new Scene(root);
+             stage.setScene(scene);
+             stage.show();
+         } catch (IOException ex) {
+             Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
 
     public void Back(ActionEvent event) throws IOException {
         nav.goToPage("HomePage", event);  
