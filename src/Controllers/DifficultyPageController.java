@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import Utils.Navigation;
+import Utils.SharedData;
 
 /**
  *
@@ -88,7 +89,11 @@ public class DifficultyPageController{
              
     }
     public void Back(ActionEvent event) throws IOException {
-        nav.goToPage("HomePage", event);  
+        if(SharedData.getInstance().getPlayerID()!=0){
+            nav.goToPage("ModePage", event);
+        }else{
+             nav.goToPage("HomePage", event); 
+        }  
     }
  
 }

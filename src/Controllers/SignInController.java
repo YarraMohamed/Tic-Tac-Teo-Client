@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 public class SignInController  {
 
@@ -30,16 +31,25 @@ public class SignInController  {
     }
     
     public void goToModePage(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signin",nameTextField.getText(), passTextField.getText());
+        
+        String message = Encapsulator.encapsulateSignIn(nameTextField.getText(), passTextField.getText());
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        
         if(result){
+            
             connection.openConnection();
-            String response = connection.sendRequest(message);
+            String responseJSON = connection.sendRequest(message);
+            JSONObject jsonReceived = new JSONObject(responseJSON);
+            String response = jsonReceived.getString("response");
+            
             if(response.equals("Success")){
-            nav.goToPage("ModePage", event);
+                int playerID = jsonReceived.optInt("Player_ID");
+                SharedData.getInstance().setPlayerID(playerID);
+                nav.goToPage("ModePage", event);
             } else {
                 nav.ShowAlerts("InvalidMessage", event);
             }
+            
         }else{
             nav.ShowAlerts("ErrorAlert", event);
         }
