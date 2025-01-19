@@ -53,14 +53,12 @@ public class DifficultyPageController{
          }
     }
     
-@FXML
-    public void onMediumMode(Event event)
-    {
-          try {
+    public void onMediumMode(Event event){
+         try {
              FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
              root = x.load();
-             GameBoardController gameBoardController = x.getController();
-             gameBoardController.setMode("pc_Medium");
+             GameBoardController c = x.getController();
+             c.setMode("pc_Medium");
              stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
              scene = new Scene(root);
              stage.setScene(scene);
@@ -68,17 +66,14 @@ public class DifficultyPageController{
          } catch (IOException ex) {
              Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
          }
-             
     }
     
-    @FXML
-    public void onHardMode(Event event)
-    {
-        try {
+    public void onHardMode(Event event){
+         try {
              FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
              root = x.load();
-             GameBoardController gameBoardController = x.getController();
-             gameBoardController.setMode("pc_Hard");
+             GameBoardController c = x.getController();
+            c.setMode("pc_Hard");
              stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
              scene = new Scene(root);
              stage.setScene(scene);
@@ -86,8 +81,8 @@ public class DifficultyPageController{
          } catch (IOException ex) {
              Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
          }
-             
     }
+
     public void Back(ActionEvent event) throws IOException {
         if(SharedData.getInstance().getPlayerID()!=0){
             nav.goToPage("ModePage", event);

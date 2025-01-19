@@ -67,7 +67,7 @@
                         <String fx:value="texts" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="mediumButton" layoutX="371.0" layoutY="223.0" mnemonicParsing="false" onAction="#onMediumMode" prefHeight="48.0" prefWidth="172.0" text="Medium" textFill="WHITE">
+                  <Button fx:id="easyButton1" layoutX="371.0" layoutY="223.0" mnemonicParsing="false" onAction="#onMediumMode" prefHeight="48.0" prefWidth="172.0" text="Medium" textFill="WHITE">
                      <font>
                         <Font name="Comic Sans MS" size="20.0" />
                      </font>
@@ -79,7 +79,7 @@
                         <String fx:value="texts" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="hardButton" layoutX="371.0" layoutY="272.0" mnemonicParsing="false" onAction="#onHardMode" prefHeight="48.0" prefWidth="172.0" text="Hard" textFill="WHITE">
+                  <Button fx:id="easyButton11" layoutX="371.0" layoutY="272.0" mnemonicParsing="false" onAction="#onHardMode" prefHeight="48.0" prefWidth="172.0" text="Hard" textFill="WHITE">
                      <font>
                         <Font name="Comic Sans MS" size="20.0" />
                      </font>
