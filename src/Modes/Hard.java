@@ -17,13 +17,13 @@ public class Hard extends Mode {
         super(board, computerSymbol, playerSymbol);
     }
 
-   
-     private int minimax(boolean isMaximizing) { //The isMaximizing flag indicates whether it is the maximizing player's (the computer's) turn or the minimizing player's (the player’s) turn.
+      public static  final int Max_Depth=9;
+     private int minimax(int depth,boolean isMaximizing) { //The isMaximizing flag indicates whether it is the maximizing player's (the computer's) turn or the minimizing player's (the player’s) turn.
         if (checkWin(computerSymbol))
             return 1;
         if (checkWin(playerSymbol)) 
             return -1;
-        if (isBoardFull()) 
+        if (isBoardFull()||depth==Max_Depth) 
             return 0;
 
         int bestScore = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE; // it is the maximizing player's (computer’s) turn or the minimizing player’s (player’s) turn. 
@@ -32,7 +32,7 @@ public class Hard extends Mode {
             for (int j = 0; j < board[i].length; j++) {
                 if (isCellEmpty(i, j)) {
                     board[i][j].setText(isMaximizing ? String.valueOf(computerSymbol) : String.valueOf(playerSymbol));
-                    int score = minimax(!isMaximizing); //so it alternates between the computer’s and the player’s turn)
+                    int score = minimax(depth+1, !isMaximizing); //so it alternates between the computer’s and the player’s turn)
                     board[i][j].setText("");
                     bestScore = isMaximizing ? Math.max(bestScore, score) : Math.min(bestScore, score);
                 }
@@ -55,7 +55,7 @@ public class Hard extends Mode {
             for (int j = 0; j < board[i].length; j++) {
                 if (isCellEmpty(i, j)) {
                     board[i][j].setText(String.valueOf(computerSymbol));
-                    int score = minimax(false);
+                    int score = minimax(0,false);
                     board[i][j].setText("");
                     if (score > bestScore) {
                         bestScore = score;
