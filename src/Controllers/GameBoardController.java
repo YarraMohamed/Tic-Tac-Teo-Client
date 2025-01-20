@@ -600,7 +600,7 @@ private void updateButtonStyle(Button button) {
         winVideo = "/Resources/player1Wins.mp4";
     } else if (pc != null && pc.isComputerPlayerWon()) {
         winMessage = "Computer Wins!!";  // Adjusted message
-        winVideo = null;  // No video for computer win
+        winVideo = "/Resources/loser.mp4";  // No video for computer win
         playAgainWindow();
     } else {
         winMessage = "Player Two Wins!!";
@@ -617,7 +617,7 @@ private void updateButtonStyle(Button button) {
             mediaPlayer.setAutoPlay(true);
 
             Text winText = new Text(winMessage);
-            winText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
+            winText.setFont(Font.font("Chewy", FontWeight.BOLD, 35));
             winText.setFill(Color.RED);
 
             StackPane root = new StackPane(mediaView, winText);
