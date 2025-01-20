@@ -140,6 +140,7 @@ public class AvailablePlayersController implements Initializable {
                 // Add player to the list
                 playersList.add(playerName);
             }
+            
         } else {
             System.out.println("Error: 'players' key not found in JSON.");
         }
@@ -167,10 +168,15 @@ public class AvailablePlayersController implements Initializable {
         int playerID = 1; // Replace with the actual playerID, which you should have when the player signs in
         List<String> availablePlayers = getAvailablePlayers(currentPlayerID); // Fetch the list of online players
         // Iterate through the list of available players and add them to the UI
+        if (availablePlayers.isEmpty()) {
+        System.out.println("No online players available.");
+        } else {
         for (String player : availablePlayers) {
+            
             addCompoent(player);
-}
-    }
+        }
+        }
+  }
 
       
   
