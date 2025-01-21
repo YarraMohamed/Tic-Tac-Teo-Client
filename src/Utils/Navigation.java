@@ -54,6 +54,7 @@ public class Navigation {
      public void goToPage(String Path,ActionEvent event) throws IOException{
         root = FXMLLoader.load(getClass().getResource("/FXML/"+Path+".fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Tic Tac Toe game");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();   

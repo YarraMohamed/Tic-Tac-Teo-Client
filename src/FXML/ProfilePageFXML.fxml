@@ -35,11 +35,11 @@
          </font>
       </Text>
       <Button fx:id="ghostButton" layoutX="66.0" layoutY="265.0" mnemonicParsing="false" onAction="#goBack" prefHeight="49.0" prefWidth="790.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15;" styleClass="dropShadowOnly" />
-      <Text fx:id="titleProfileText" layoutX="83.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="smallTexts" text="Title" wrappingWidth="755.2041015625">
+      <Text fx:id="titleProfileText" layoutX="83.0" layoutY="284.0" onMouseClicked="#viewGame" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="smallTexts" text="Title" wrappingWidth="755.2041015625">
          <font>
             <Font name="Comic Sans MS Bold" size="15.0" />
          </font>
       </Text>
-      <Text fx:id="descriptionText" layoutX="108.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="smallTexts" text="Description" wrappingWidth="747.31494140625" />
+      <Text fx:id="descriptionText" layoutX="108.0" layoutY="306.0" onMouseClicked="#viewGame" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="smallTexts" text="Description" wrappingWidth="747.31494140625" />
    </children>
 </AnchorPane>

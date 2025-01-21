@@ -41,5 +41,5 @@ public class GameRecorder {
             e.printStackTrace(); 
             System.out.println("Error while making the recording file.");
         } 
-    }     
+    }  
 }
