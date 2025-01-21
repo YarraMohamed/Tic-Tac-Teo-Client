@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Modes;
 
 import javafx.scene.control.Button;
 
-/**
- *
- * @author Ziad
- */
+
 public abstract class Mode {
     protected Button[][] board;
     protected char computerSymbol;
@@ -24,10 +17,9 @@ public abstract class Mode {
 
     public abstract int[] getMove(); 
     
-    // Consolidated checkWin function
    protected boolean checkWin(char symbol) {
-    // Check rows and columns
     for (int i = 0; i < 3; i++) {
+        //All buttons in the row or column must contain the same symbol, and none of them should be empty.
         if ((board[i][0].getText().length() > 0 && board[i][0].getText().charAt(0) == symbol &&
              board[i][1].getText().length() > 0 && board[i][1].getText().charAt(0) == symbol &&
              board[i][2].getText().length() > 0 && board[i][2].getText().charAt(0) == symbol) ||
@@ -37,8 +29,7 @@ public abstract class Mode {
              board[2][i].getText().length() > 0 && board[2][i].getText().charAt(0) == symbol)) {
             return true;
         }
-    }
-    // Check diagonals
+    }    // Check diagonals
     return (board[0][0].getText().length() > 0 && board[0][0].getText().charAt(0) == symbol && 
             board[1][1].getText().length() > 0 && board[1][1].getText().charAt(0) == symbol && 
             board[2][2].getText().length() > 0 && board[2][2].getText().charAt(0) == symbol) ||

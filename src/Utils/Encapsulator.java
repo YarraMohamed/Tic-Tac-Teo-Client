@@ -26,5 +26,25 @@ public class Encapsulator {
         json.put("Player_ID", PlayerID);
         return json.toString();
     }
+    
+//public static String encapsulateGetPlayers(int playerID) {
+//    JSONObject json = new JSONObject();
+//    json.put("requestType", "GET_AVAILABLE_PLAYERS");
+//
+//    if (playerID > 0) {
+//        json.put("playerID", playerID);
+//    } else {
+//        System.err.println(" Warning: Player ID is invalid.");
+//    }
+//
+//    return json.toString();
+//}
+    
+//    public static String encapsulateGetOnlinePlayers(int playerID) {
+//    JSONObject request = new JSONObject();
+//    request.put("requestType", "GET_ONLINE_PLAYERS");
+//    request.put("playerID", playerID);
+//    return request.toString(); //⚠
+//}
 }
 
