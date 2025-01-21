@@ -4,6 +4,8 @@ import Modes.Easy;
 import Modes.Hard;
 import Modes.Medium;
 import Modes.Mode;
+import Utils.Navigation;
+import Utils.SharedData;
 import com.sun.rowset.internal.Row;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -113,6 +115,8 @@ public class GameBoardController implements Initializable {
     @FXML
     private Button sqNineXo;
     
+    private Navigation nav ;
+    
      private Button[][] board;
     
     ///////////////text
@@ -159,6 +163,7 @@ public class GameBoardController implements Initializable {
         line = null;
         movesMade = 0;
         gameRecorder = null;
+        nav = new Navigation();
     } 
         
     public void setMode(String m){
@@ -888,10 +893,18 @@ private void updateButtonStyle(Button button) {
     yesButton.setOnAction(e -> {
         confirmExitStage.close();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            if(SharedData.getInstance().getPlayerID()!=0){
+                Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }else{
+                Parent root = FXMLLoader.load(getClass().getResource("/FXML/DifficultyPage.fxml"));
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }
+            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
