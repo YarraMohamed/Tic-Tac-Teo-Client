@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(to bottom,#86AEE9,#09316D);" stylesheets="@../Resources/Pages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.GameBoardController">
+    <children>
+      <GridPane layoutX="45.0" layoutY="160.0" prefHeight="313.0" prefWidth="570.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Rectangle fx:id="r1" arcHeight="20.0" arcWidth="20.0" fill="#fcfcfc" height="90.0" stroke="BLACK" strokeType="INSIDE" width="140.0">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r2" arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="90.0" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.columnIndex="1">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r3" arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="90.0" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.columnIndex="2">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r4" arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="90.0" smooth="false" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.rowIndex="1">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r5" arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="90.0" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r6" arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="90.0" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r7" arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="90.0" smooth="false" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.rowIndex="2">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r8" arcHeight="20.0" arcWidth="20.0" fill="#f2f2f2" height="90.0" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+            <Rectangle fx:id="r9" arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="90.0" stroke="BLACK" strokeType="INSIDE" width="140.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <effect>
+                  <DropShadow offsetX="5.0" offsetY="5.0" />
+               </effect></Rectangle>
+         </children>
+      </GridPane>
+      <Text fx:id="gameTitleText" fill="WHITE" layoutX="185.0" layoutY="86.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 55;" styleClass="usernametitle" text="Tic Tac Toe" wrappingWidth="251.16406053304672">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="168.0" fitWidth="168.0" layoutX="447.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/TopRight.png" />
+         </image>
+      </ImageView>
+      <Text fill="WHITE" layoutX="212.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="texts" text="Replay Game" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="176.07421875" />
+    </children>
+</AnchorPane>

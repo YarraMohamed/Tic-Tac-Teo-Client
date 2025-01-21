@@ -20,9 +20,9 @@ public class Encapsulator {
         return json.toString();
     }
     
-    public static String encapsulateSignOut(String requestType,int PlayerID) {
+    public static String encapsulateID(String requestType,int PlayerID) {
         JSONObject json = new JSONObject();
-        json.put("requestType", requestType);
+        json.put("requestType", requestType); 
         json.put("Player_ID", PlayerID);
         return json.toString();
     }

@@ -45,6 +45,7 @@ public class SignInController  {
             if(response.equals("Success")){
                 int playerID = jsonReceived.optInt("Player_ID");
                 SharedData.getInstance().setPlayerID(playerID);
+                System.out.println(SharedData.getInstance().getPlayerID());
                 nav.goToPage("ModePage", event);
             } else {
                 nav.ShowAlerts("InvalidMessage", event);
