@@ -30,7 +30,7 @@ public class ModePageController {
     }
     
     public void signout(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulateSignOut("SIGN_OUT",SharedData.getInstance().getPlayerID());
+        String message = Encapsulator.encapsulateID("SIGN_OUT",SharedData.getInstance().getPlayerID());
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){

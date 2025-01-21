@@ -5,6 +5,8 @@ import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class SignInController  {
@@ -55,4 +58,11 @@ public class SignInController  {
         }
        
     }
+//    public String getAvailablePlayers() throws IOException 
+//    {
+//    String requestMessage = Encapsulator.encapsulateGetPlayers();
+//    String responseJSON = connection.sendRequest(requestMessage);
+//    return responseJSON;
+//    }
+ 
 }
