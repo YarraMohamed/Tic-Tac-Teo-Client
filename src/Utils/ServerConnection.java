@@ -56,6 +56,10 @@ public class ServerConnection {
         return response;
     }
     
+    public String reciveRequset() throws IOException{
+        return in.readLine();
+    }
+    
    public void closeConnection() {
     try {
         if (in != null) in.close();
