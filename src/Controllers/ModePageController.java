@@ -27,7 +27,7 @@ public class ModePageController {
     public void goToProfile(ActionEvent event) throws IOException {
         
         
-        String message = Encapsulator.encapsulateSignOut("USER_NAME",SharedData.getInstance().getPlayerID());
+        String message = Encapsulator.encapsulateID("USER_NAME",SharedData.getInstance().getPlayerID());
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
