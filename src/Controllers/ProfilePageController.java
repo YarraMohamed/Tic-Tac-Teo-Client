@@ -85,10 +85,6 @@ public class ProfilePageController implements Initializable {
         
     @FXML
     public void goBack(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("ModePage", event);
     } 
 }
