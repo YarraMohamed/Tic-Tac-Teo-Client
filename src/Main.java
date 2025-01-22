@@ -13,8 +13,14 @@ public class Main extends Application {
        Parent root = FXMLLoader.load(getClass().getResource("/FXML/HomePage.fxml"));
       
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/Resources/Pages.css").toExternalForm());
-        stage.setScene(scene);
+
+        stage.setScene(scene); 
+        
+        stage.setOnCloseRequest(event -> {
+            ServerConnection.getInstance().closeConnection();
+            System.out.println("Connection closed successfully.");
+        });
+        
         stage.show();
     }
 
