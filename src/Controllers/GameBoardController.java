@@ -602,6 +602,8 @@ private void updateButtonStyle(Button button) {
         winMessage = "Computer Wins!!";  // Adjusted message
         winVideo = "/Resources/loser.mp4";  // No video for computer win
         playAgainWindow();
+        playAgainStage.close();
+
     } else {
         winMessage = "Player Two Wins!!";
         winVideo = "/Resources/player2Wins.mp4";
@@ -763,7 +765,7 @@ private void updateButtonStyle(Button button) {
 
             playAgainStage.close();
 
-            playAgainStage.close();  
+           playAgainStage.close();  
 
         }
     }
