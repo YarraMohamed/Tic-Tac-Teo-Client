@@ -122,6 +122,7 @@ public class GameBoardController implements Initializable {
     // GameRecorder instance to be intialized only when record button is clicked
     private GameRecorder gameRecorder;
     
+    private int turn;
 
     
 
@@ -129,16 +130,8 @@ public class GameBoardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        
-        sqOneXo.setText("");
-        sqTwoXo.setText("");
-        sqThreeXo.setText("");
-        sqFourXo.setText("");
-        sqFiveXo.setText("");
-        sqSixXo.setText("");
-        sqSevenXo.setText("");
-        sqEightXo.setText("");
-        sqNineXo.setText("");
+        turn=1;
+        resetGame();
         
         
         board = new Button[3][3];
@@ -208,7 +201,7 @@ public class GameBoardController implements Initializable {
     }
        
    public void gamePlayAction(ActionEvent e) {
-    if (!winner) {
+    if (!winner && turn ==1) {
         buttonPressed = (Button) e.getSource();
 
         if (buttonPressed != null && buttonPressed.getText().equals("")) {
@@ -220,9 +213,11 @@ public class GameBoardController implements Initializable {
             // Mark the button with the current player's card
             buttonPressed.setText(card);
             updateButtonStyle(buttonPressed);
-
             // Switch turns between players
+            
             card = (card.equals("X")) ? "O" : "X";
+            turn=2;
+            
             checkState();
         } else {
             System.out.println("Error: Button is either null or already marked.");
@@ -230,21 +225,47 @@ public class GameBoardController implements Initializable {
     }
 
     // If no winner yet, process AI's move
-    if (!winner) {
+    if (!winner && turn==2) {
         Button choosenBtn = null;
         switch (mode) {
             case "pc_Easy":
                 pc = new Easy(board, 'O', 'X');
+                handlePcMove(choosenBtn);
                 break;
             case "pc_Medium":
                 pc = new Medium(board, 'O', 'X');
+                handlePcMove(choosenBtn);
                 break;
             case "pc_Hard":
                 pc = new Hard(board, 'O', 'X');
+                handlePcMove(choosenBtn);
                 break;
         }
 
-        // Get AI move and update the board
+//        // Get AI move and update the board
+//        if (pc != null) {
+//            int[] move = pc.getMove();
+//            int row = move[0];
+//            int col = move[1];
+//            choosenBtn = clikedButton(row, col);
+//
+//            if (choosenBtn != null) {
+//                choosenBtn.setText(card);
+//                updateButtonStyle(choosenBtn);
+//
+//                // Switch turns between players
+//                card = (card.equals("X")) ? "O" : "X";
+//                checkState();
+//            } else {
+//                System.out.println("Error: Button at position (" + row + "," + col + ") is not valid.");
+//            }
+//        } else {
+//            System.out.println("Error: PC mode is not set correctly.");
+//        }
+    }
+}
+   private void handlePcMove(Button choosenBtn){
+       // Get AI move and update the board
         if (pc != null) {
             int[] move = pc.getMove();
             int row = move[0];
@@ -257,6 +278,7 @@ public class GameBoardController implements Initializable {
 
                 // Switch turns between players
                 card = (card.equals("X")) ? "O" : "X";
+                turn=1;
                 checkState();
             } else {
                 System.out.println("Error: Button at position (" + row + "," + col + ") is not valid.");
@@ -264,9 +286,7 @@ public class GameBoardController implements Initializable {
         } else {
             System.out.println("Error: PC mode is not set correctly.");
         }
-    }
-}
-
+   }
 // Method to update button style based on card
 private void updateButtonStyle(Button button) {
     button.setStyle((card.equals("X")) ? "-fx-text-fill: Black;" : "-fx-text-fill: #FFA500;");
