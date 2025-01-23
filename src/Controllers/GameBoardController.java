@@ -4,6 +4,7 @@ import Modes.Easy;
 import Modes.Hard;
 import Modes.Medium;
 import Modes.Mode;
+import Modes.OnlineGame;
 import com.sun.rowset.internal.Row;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,6 +47,8 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -124,7 +127,8 @@ public class GameBoardController implements Initializable {
     
     private int turn;
 
-    
+    private OnlineGame onlineGame;
+    private int p2ID;
 
     
     @Override
@@ -170,10 +174,32 @@ public class GameBoardController implements Initializable {
     
     }
     
+    public void setp2ID(int id){
+        p2ID=id;
+    }
     public void setMode(String m){
         this.mode = m;
+        initializeMode();
     }
-    
+    public void initializeMode(){
+        switch (mode) {
+            case "pc_Easy":
+                pc = new Easy(board, 'O', 'X');
+//                handlePcMove(choosenBtn);
+                break;
+            case "pc_Medium":
+                pc = new Medium(board, 'O', 'X');
+//                handlePcMove(choosenBtn);
+                break;
+            case "pc_Hard":
+                pc = new Hard(board, 'O', 'X');
+//                handlePcMove(choosenBtn);
+                break;
+            case "pvp_online":
+                onlineGame=new OnlineGame(p2ID);
+                break;
+        }
+    }
 
     public void resetButtonAction(ActionEvent e){    
         resetGame();
@@ -213,6 +239,9 @@ public class GameBoardController implements Initializable {
             // Mark the button with the current player's card
             buttonPressed.setText(card);
             updateButtonStyle(buttonPressed);
+             if ("pvp_online".equals(mode)) {
+                onlineGame.sendMove(buttonPressed.getId());
+            }
             // Switch turns between players
             
             card = (card.equals("X")) ? "O" : "X";
@@ -228,43 +257,88 @@ public class GameBoardController implements Initializable {
     if (!winner && turn==2) {
         Button choosenBtn = null;
         switch (mode) {
+            case "pvp_local":
+                turn=1;
+                break;
             case "pc_Easy":
-                pc = new Easy(board, 'O', 'X');
+//                pc = new Easy(board, 'O', 'X');
                 handlePcMove(choosenBtn);
                 break;
             case "pc_Medium":
-                pc = new Medium(board, 'O', 'X');
+//                pc = new Medium(board, 'O', 'X');
                 handlePcMove(choosenBtn);
                 break;
             case "pc_Hard":
-                pc = new Hard(board, 'O', 'X');
+//                pc = new Hard(board, 'O', 'X');
                 handlePcMove(choosenBtn);
                 break;
+            case "pvp_online":
+                waitP2Move();
+                break;
         }
-
-//        // Get AI move and update the board
-//        if (pc != null) {
-//            int[] move = pc.getMove();
-//            int row = move[0];
-//            int col = move[1];
-//            choosenBtn = clikedButton(row, col);
-//
-//            if (choosenBtn != null) {
-//                choosenBtn.setText(card);
-//                updateButtonStyle(choosenBtn);
-//
-//                // Switch turns between players
-//                card = (card.equals("X")) ? "O" : "X";
-//                checkState();
-//            } else {
-//                System.out.println("Error: Button at position (" + row + "," + col + ") is not valid.");
-//            }
-//        } else {
-//            System.out.println("Error: PC mode is not set correctly.");
-//        }
     }
 }
-   private void handlePcMove(Button choosenBtn){
+private void waitP2Move(){
+    Task<Void> task = new Task<Void>() {
+        @Override
+        protected Void call() throws Exception {
+            System.out.println("in call function");
+            while (!winner && turn == 2) {
+                System.out.println("in the while loop!!");
+                // Replace this with your actual logic to check for server response
+                String response = onlineGame.reciveMove() ;
+                System.out.println(response);
+                if (response != null && !response.isEmpty()) {
+                    System.out.println(response);
+                    Platform.runLater(() -> processOpponentMove(response));
+                    break;
+                }
+                Thread.sleep(500); // Polling interval
+            }
+            return null;
+        }
+    };
+
+    Thread thread = new Thread(task);
+//    thread.setDaemon(true); 
+    thread.start();
+
+}
+public void processOpponentMove(String response){
+    Button recivedBtn=findButtonById(response);
+    if (recivedBtn != null) {
+        recivedBtn.setText(card);
+        updateButtonStyle(recivedBtn);
+        card = card.equals("X") ? "O" : "X";
+        turn=1;
+        checkState();
+    }
+}
+public Button findButtonById(String Id){
+    switch(Id){
+        case "sqOneXo":
+            return sqOneXo;
+        case "sqTwoXo":
+            return sqTwoXo;
+        case "sqThreeXo":
+            return sqThreeXo;
+        case "sqFourXo":
+            return sqFourXo;
+        case "sqFiveXo":
+            return sqFiveXo;
+        case "sqSixXo":
+            return sqSixXo;
+        case "sqSevenXo":
+            return sqSevenXo;
+        case "sqEightXo":
+            return sqEightXo;
+        case "sqNineXo":
+            return sqNineXo;
+        default:
+            return null;
+    }
+}
+private void handlePcMove(Button choosenBtn){
        // Get AI move and update the board
         if (pc != null) {
             int[] move = pc.getMove();

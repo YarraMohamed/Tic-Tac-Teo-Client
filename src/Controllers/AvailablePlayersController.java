@@ -6,11 +6,13 @@
 package Controllers;
 
 
+import Utils.Navigation;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -41,7 +44,11 @@ public class AvailablePlayersController implements Initializable {
     @FXML
     private VBox  userContainer;
     
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     
+    private Navigation nav= new Navigation();
     @FXML
     public void onNavBack(Event event) {
     try {
@@ -52,8 +59,10 @@ public class AvailablePlayersController implements Initializable {
         stage.show();
     } catch (IOException ex) {
         Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
+        }
     }
-}
+    
+    
     
     
     @Override
@@ -66,12 +75,9 @@ public class AvailablePlayersController implements Initializable {
         addCompoent("yara");
         addCompoent("mariem");
         addCompoent("amira");
-
-
-    
-
      
     }
+    
     private void addCompoent(String user){
          // Create a box
         HBox box = new HBox();
@@ -92,8 +98,25 @@ public class AvailablePlayersController implements Initializable {
         Label label = new Label(user);
         label.setStyle("-fx-text-fill: black;");
         box.getChildren().add(label);
-        userContainer.getChildren().add(box);
-        
+        Button btn=new Button("Click me");
+        btn.addEventHandler(ActionEvent.ACTION, event->{
+            System.out.println("box clicked");
+            try {
+             FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
+             root = x.load();
+             GameBoardController c = x.getController();
+             c.setp2ID(11);
+             c.setMode("pvp_online");
+             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+             scene = new Scene(root);
+             stage.setScene(scene);
+             stage.show();
+         } catch (IOException ex) {
+             Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        });
+        box.getChildren().add(btn);
+        userContainer.getChildren().add(box);    
     
     }
     
