@@ -129,7 +129,7 @@ public class GameBoardController implements Initializable {
 
     private OnlineGame onlineGame;
     private int p2ID;
-
+    private boolean isWaiting;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -197,6 +197,9 @@ public class GameBoardController implements Initializable {
                 break;
             case "pvp_online":
                 onlineGame=new OnlineGame(p2ID);
+                waitP2Move();
+                isWaiting=false;
+//                isWaiting=true;
                 break;
         }
     }
@@ -241,6 +244,7 @@ public class GameBoardController implements Initializable {
             updateButtonStyle(buttonPressed);
              if ("pvp_online".equals(mode)) {
                 onlineGame.sendMove(buttonPressed.getId());
+                isWaiting=true;
             }
             // Switch turns between players
             
@@ -272,18 +276,22 @@ public class GameBoardController implements Initializable {
 //                pc = new Hard(board, 'O', 'X');
                 handlePcMove(choosenBtn);
                 break;
-            case "pvp_online":
-                waitP2Move();
-                break;
+//            case "pvp_online":
+//                if (isWaiting) {
+//                    waitP2Move();
+//                }
+//                break;
         }
     }
 }
+   /*
 private void waitP2Move(){
     Task<Void> task = new Task<Void>() {
         @Override
         protected Void call() throws Exception {
             System.out.println("in call function");
-            while (!winner && turn == 2) {
+//            while (!winner && turn == 2) {
+                while (true) {
                 System.out.println("in the while loop!!");
                 // Replace this with your actual logic to check for server response
                 String response = onlineGame.reciveMove() ;
@@ -300,10 +308,40 @@ private void waitP2Move(){
     };
 
     Thread thread = new Thread(task);
-//    thread.setDaemon(true); 
+    thread.setDaemon(true); 
     thread.start();
 
+}*/
+private void waitP2Move() {
+    Thread thread = new Thread(() -> {
+        isWaiting=false;
+        while (true) {
+            try {
+                System.out.println("Waiting for opponent's move...");
+                String response = onlineGame.reciveMove(); // Get move from the server
+                System.out.println("Server Response: " + response);
+
+                if (response != null && !response.isEmpty()) {
+                    Platform.runLater(() -> {
+                        processOpponentMove(response); // Update UI with opponent's move
+                    });
+                    isWaiting=true;
+                    break; // Exit the loop after processing the move
+                }
+
+                Thread.sleep(500); // Polling interval to avoid overloading the server
+            } catch (Exception e) {
+                System.err.println("Error in waitP2Move: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    });
+
+    thread.setDaemon(true); // Ensure the thread stops when the application exits
+    thread.start(); // Start the background thread
 }
+
+
 public void processOpponentMove(String response){
     Button recivedBtn=findButtonById(response);
     if (recivedBtn != null) {

@@ -72,15 +72,16 @@ public class OnlineGame {
 
         // Send request to the server
         String responseJSON = connection.sendRequest(message);
-
+        
         // Parse and validate JSON response
         JSONObject jsonReceived = new JSONObject(responseJSON);
+        
         if (jsonReceived.has("response")) {
             String response = jsonReceived.getString("response");
             String rmessage = jsonReceived.getString("message");
 
             if ("Success".equalsIgnoreCase(response)) {
-                System.out.println("Move sent successfully to server.");
+                System.out.println("Move sent successfully to server+ "+rmessage);
                 return true;
             } else {
                 System.out.println("Server returned an error: " + rmessage);
@@ -98,6 +99,7 @@ public class OnlineGame {
     public String reciveMove(){
         try {
             String response=connection.reciveRequset();
+            System.out.println("run");
             JSONObject jsonReceived = new JSONObject(response);
             
             if(jsonReceived.has("requestType")){
