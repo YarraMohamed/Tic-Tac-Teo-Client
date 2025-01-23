@@ -398,7 +398,7 @@ private void updateButtonStyle(Button button) {
                  }
         return null;
     }    
-    private void drawLine(Button startButton, Button endButton){
+    public void drawLine(Button startButton, Button endButton){
     
         Bounds bound1 = startButton.localToScene(startButton.getBoundsInLocal());
         Bounds bound2 = endButton.localToScene(endButton.getBoundsInLocal());
