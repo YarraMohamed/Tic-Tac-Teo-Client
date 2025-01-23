@@ -67,10 +67,7 @@ public class ReplayBoardController {
     }
 
     public void setFileName(String fileName) {
-        fileName += ".txt";
         this.fileName = System.getProperty("user.home") + "/TicTacToeRecordings/" + fileName;
-        System.out.println(this.fileName);
-
         replay();
     }
 
@@ -85,13 +82,13 @@ public class ReplayBoardController {
         try (BufferedReader reader = new BufferedReader(new FileReader(this.fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" ");
+                String[] parts = line.split(",");
                 if (parts.length >= 2) {
                     String buttonID = parts[0];
                     String buttonChar = parts[1];
                     Button button = getButtonById(buttonID);
                     if (button != null) {
-                        if(buttonChar.equals("x")){
+                        if(buttonChar.equals("X")){
                             button.setStyle("-fx-text-fill: Black;");
                         }else{
                              button.setStyle("-fx-text-fill: Orange;");
