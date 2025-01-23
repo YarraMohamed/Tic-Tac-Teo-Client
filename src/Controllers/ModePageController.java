@@ -25,7 +25,30 @@ public class ModePageController {
     private ServerConnection connection = ServerConnection.getInstance();
 
     public void goToProfile(ActionEvent event) throws IOException {
-        nav.goToPage("ProfilePageFXML", event);
+        
+        
+        String message = Encapsulator.encapsulateID("USER_NAME",SharedData.getInstance().getPlayerID());
+        boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        
+        if(result){
+            
+            String responseJSON = connection.sendRequest(message);
+            JSONObject jsonReceived = new JSONObject(responseJSON);
+            String response = jsonReceived.getString("response");
+            
+            if(response.equals("Success")){
+                
+                String userName = jsonReceived.getString("Name");
+                int score = jsonReceived.getInt("Score"); 
+                SharedData.getInstance().setUserName(userName);
+                SharedData.getInstance().setScore(score);
+                System.out.println(SharedData.getInstance().getScore());
+                System.out.println(SharedData.getInstance().getUserName());
+                nav.goToPage("ProfilePageFXML", event);
+            }            
+        }else{
+            nav.ShowAlerts("ErrorAlert", event);
+        }
         
     }
     

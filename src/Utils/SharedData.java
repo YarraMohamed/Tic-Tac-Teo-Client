@@ -4,6 +4,24 @@ public class SharedData {
     private static SharedData instance;
     private String serverIp;
     private int playerID = 0;
+    private String userName;
+    private int score;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public int getPlayerID() {
         return playerID;

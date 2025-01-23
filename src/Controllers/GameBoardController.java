@@ -217,6 +217,11 @@ public class GameBoardController implements Initializable {
 
             // Mark the button with the current player's card
             buttonPressed.setText(card);
+             movesMade++;
+             if(movesMade > 0 && gameRecorder == null){
+                recordButton.setDisable(true);
+             }
+            
             updateButtonStyle(buttonPressed);
 
             // Switch turns between players
@@ -263,6 +268,11 @@ public class GameBoardController implements Initializable {
             System.out.println("Error: PC mode is not set correctly.");
         }
     }
+    if(winner){
+        movesMade = 0;
+        resetButton.setDisable(true);
+        leaveButton.setDisable(true);
+        }
 }
 
 // Method to update button style based on card
@@ -624,6 +634,8 @@ private void updateButtonStyle(Button button) {
         winMessage = "Computer Wins!!";  // Adjusted message
         winVideo = "/Resources/loser.mp4";  // No video for computer win
         playAgainWindow();
+        playAgainStage.close();
+
     } else {
         winMessage = "Player Two Wins!!";
         winVideo = "/Resources/player2Wins.mp4";
@@ -852,6 +864,7 @@ private void updateButtonStyle(Button button) {
             leaveButton.setDisable(false);
             playAgainStage.close();
 
+           playAgainStage.close();  
         }
     }
     

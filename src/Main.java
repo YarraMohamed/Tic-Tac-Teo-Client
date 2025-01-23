@@ -28,7 +28,7 @@ public class Main extends Application {
         
         Navigation nav = new Navigation();
         
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/ProfilePageFXML.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/HomePage.fxml"));
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
