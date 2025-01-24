@@ -1,11 +1,25 @@
 package Utils;
 
+import java.util.HashMap;
+import java.util.Map;
+import javafx.stage.Stage;
+
 public class SharedData {
     private static SharedData instance;
     private String serverIp;
     private int playerID = 0;
     private String userName;
     private int score;
+
+    public Map<String, Integer> getAvailablePlayers() {
+        return availablePlayers;
+    }
+
+    public void setAvailablePlayers(Map<String, Integer> availablePlayers) {
+        this.availablePlayers = availablePlayers;
+    }
+    private Map<String, Integer> availablePlayers = new HashMap<>();
+
 
     public String getUserName() {
         return userName;

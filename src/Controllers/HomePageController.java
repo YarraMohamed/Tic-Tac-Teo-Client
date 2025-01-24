@@ -72,7 +72,7 @@ public class HomePageController implements Initializable {
                 SharedData.getInstance().setServerIp(serverIP);
                 nav.goToPage("SignIn", event);
             } else {
-                nav.ShowAlerts("ErrorAlert", event);
+                nav.ShowAlerts("ErrorAlert");
             }
             
         }

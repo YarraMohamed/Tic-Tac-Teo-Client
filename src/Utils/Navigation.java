@@ -1,6 +1,7 @@
 
 package Utils;
 
+import Controllers.GameRequestNotificationController;
 import Controllers.InvalidMessageController;
 import Controllers.ServerIPController;
 
@@ -19,7 +20,24 @@ public class Navigation {
     private Scene scene;
     private Parent root;
     
-    public void ShowAlerts(String path ,ActionEvent event) throws IOException{
+    private static Stage primaryStage;
+    
+    public static void setPrimaryStage(Stage stage) {
+        primaryStage = stage;
+    }
+    
+     public static void goToPage(String path) throws IOException {
+        if (primaryStage == null) {
+            throw new IllegalStateException("Primary stage is not set!");
+        }
+
+        Parent root = FXMLLoader.load(Navigation.class.getResource("/FXML/" + path + ".fxml"));
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setTitle("Tic Tac Toe");
+        primaryStage.show();
+    }
+    
+    public void ShowAlerts(String path) throws IOException{
         FXMLLoader alertLoader = new FXMLLoader(getClass().getResource("/FXML/"+path+".fxml"));
         Parent alertRoot = alertLoader.load();
 
@@ -27,9 +45,10 @@ public class Navigation {
 
         Stage alertStage = new Stage();
         alertStage.initModality(Modality.APPLICATION_MODAL);
-        alertStage.initOwner(((Node) event.getSource()).getScene().getWindow());
         alertStage.setScene(new Scene(alertRoot));
-        alertStage.setTitle("Error Message");
+        alertStage.setTitle("Invalid inputs");
+ 
+  
         alertStage.showAndWait(); 
         
     }
@@ -59,4 +78,27 @@ public class Navigation {
         stage.setScene(scene);
         stage.show();   
     }  
+     
+     public void showGameRequestNotification(String requestingPlayerUsername) {
+        System.out.println("Showing game request notification for: " + requestingPlayerUsername); // log message
+        try {
+            FXMLLoader gameRequestLoader = new FXMLLoader(getClass().getResource("/FXML/GameRequestNotification.fxml"));
+            System.out.println("FXMLLoader initialized"); // log message
+            Parent gameRequestRoot = gameRequestLoader.load();
+            System.out.println("FXML loaded successfully"); // log message
+            
+            GameRequestNotificationController gameRequestController = gameRequestLoader.getController();
+            gameRequestController.setRequestingPlayerUsername(requestingPlayerUsername);
+            
+            Stage gameRequestStage = new Stage();
+            gameRequestStage.setScene(new Scene(gameRequestRoot));
+            gameRequestStage.setTitle("Game Request");
+            gameRequestStage.show();
+            
+        } catch (IOException e) {
+           e.printStackTrace();
+           System.out.println("Error while trying to show the game request notification.");
+        } 
+   
+    }
 }

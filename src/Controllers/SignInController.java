@@ -30,7 +30,7 @@ public class SignInController  {
     @FXML private TextField passTextField;
 
     public void goToSignUp(ActionEvent event) throws IOException {
-       nav.goToPage("SignUp", event);
+        nav.goToPage("SignUp", event);
     }
     
     public void goToModePage(ActionEvent event) throws IOException {
@@ -39,31 +39,12 @@ public class SignInController  {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            
             connection.openConnection();
-            String responseJSON = connection.sendRequest(message);
-            JSONObject jsonReceived = new JSONObject(responseJSON);
-            String response = jsonReceived.getString("response");
-            
-            if(response.equals("Success")){
-                int playerID = jsonReceived.optInt("Player_ID");
-                SharedData.getInstance().setPlayerID(playerID);
-                System.out.println(SharedData.getInstance().getPlayerID());
-                nav.goToPage("ModePage", event);
-            } else {
-                nav.ShowAlerts("InvalidMessage", event);
-            }
-            
+            connection.sendRequest(message);
         }else{
-            nav.ShowAlerts("ErrorAlert", event);
+            nav.ShowAlerts("ErrorAlert");
         }
        
     }
-//    public String getAvailablePlayers() throws IOException 
-//    {
-//    String requestMessage = Encapsulator.encapsulateGetPlayers();
-//    String responseJSON = connection.sendRequest(requestMessage);
-//    return responseJSON;
-//    }
  
 }
