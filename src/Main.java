@@ -26,24 +26,26 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         
-        Navigation nav = new Navigation();
+        Navigation.setPrimaryStage(stage);
         
         Parent root = FXMLLoader.load(getClass().getResource("/FXML/HomePage.fxml"));
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+        stage.setTitle("Tic Tac Toe game");
         
-        stage.setOnCloseRequest(event -> {
+       stage.setOnCloseRequest(event -> {
             try {
                 if(SharedData.getInstance().getPlayerID() != 0){
-                    String message = ServerConnection.getInstance().sendRequest(
-                        Encapsulator.encapsulateID("SIGN_OUT", SharedData.getInstance().getPlayerID())
-                );
-                
-                   JSONObject jsonReceived = new JSONObject(message);
-                   if(jsonReceived.getString("response").equals("Success")){
-                    ServerConnection.getInstance().closeConnection();
-                  }
+                    if(ServerConnection.getInstance().checkServerAvailibily(SharedData.getInstance().getServerIp())){
+                        ServerConnection.getInstance().openConnection();
+                        ServerConnection.getInstance().sendRequest(
+                           Encapsulator.encapsulateID("SIGN_OUT", SharedData.getInstance().getPlayerID())
+                        );
+                        ServerConnection.getInstance().closeConnection();
+                    }else{
+                        stage.close();
+                    } 
                 } 
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

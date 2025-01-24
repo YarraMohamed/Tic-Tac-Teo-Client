@@ -25,7 +25,16 @@ public class ModePageController {
     private ServerConnection connection = ServerConnection.getInstance();
 
     public void goToProfile(ActionEvent event) throws IOException {
-        nav.goToPage("ProfilePageFXML", event);
+ 
+        String message = Encapsulator.encapsulateID("USER_NAME",SharedData.getInstance().getPlayerID());
+        boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        
+        if(result){
+            connection.openConnection();
+            connection.sendRequest(message);       
+        }else{
+            nav.ShowAlerts("ErrorAlert");
+        }
         
     }
     
@@ -35,19 +44,12 @@ public class ModePageController {
         
         if(result){
             
-            String responseJSON = connection.sendRequest(message);
-            JSONObject jsonReceived = new JSONObject(responseJSON);
-            String response = jsonReceived.getString("response");
-            
-            if(response.equals("Success")){
-                SharedData.getInstance().setPlayerID(0);
-                System.out.println(SharedData.getInstance().getPlayerID());
-                nav.goToPage("HomePage", event);
-                connection.closeConnection();
-            }
-            
+            connection.openConnection();
+            connection.sendRequest(message); 
+            nav.goToPage("HomePage", event);
+            connection.closeConnection();
         }else{
-            nav.ShowAlerts("ErrorAlert", event);
+            nav.ShowAlerts("ErrorAlert");
         }
     }
     
@@ -61,9 +63,18 @@ public class ModePageController {
         nav.goToPage("DifficultyPage", event);
     }
     public void getPlayersList(ActionEvent event) throws IOException {
-        nav.goToPage("AvailablePlayers", event);
+        
+        String requestMessage = Encapsulator.encapsulateID("GET_AVAILABLE_PLAYERS",SharedData.getInstance().getPlayerID());
+        boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        if(result){
+            connection.openConnection();
+            connection.sendRequest(requestMessage); 
+        }else{
+            nav.ShowAlerts("ErrorAlert");
+        }
         
     }
     
 
 }
+

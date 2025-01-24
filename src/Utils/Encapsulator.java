@@ -27,6 +27,15 @@ public class Encapsulator {
         return json.toString();
     }
     
+     public static String encapsulateGameRequest(int requestingPlayerId, int requestedPlayerId) {
+        JSONObject gameRequestRequest = new JSONObject();
+        gameRequestRequest.put("requestType", "GAME_REQUEST");
+        gameRequestRequest.put("requestingPlayer_ID", requestingPlayerId);
+        gameRequestRequest.put("requestedPlayer_ID", requestedPlayerId);
+       // System.out.println("Sending GAME_REQUEST: " + gameRequestRequest); // log message
+        return gameRequestRequest.toString();
+    }
+    
 //public static String encapsulateGetPlayers(int playerID) {
 //    JSONObject json = new JSONObject();
 //    json.put("requestType", "GET_AVAILABLE_PLAYERS");

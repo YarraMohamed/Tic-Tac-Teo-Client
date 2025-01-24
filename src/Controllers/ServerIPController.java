@@ -33,7 +33,7 @@ public class ServerIPController {
         if(result){
            enterButton.getScene().getWindow().hide();
         } else {
-           nav.ShowAlerts("InvalidMessage", event);
+           nav.ShowAlerts("InvalidMessage");
         }
     }
 
