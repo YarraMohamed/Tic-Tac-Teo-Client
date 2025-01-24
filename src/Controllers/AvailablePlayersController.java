@@ -106,8 +106,8 @@ public class AvailablePlayersController implements Initializable {
              FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
              root = x.load();
              GameBoardController c = x.getController();
-             c.setp2ID(12);
-             c.setTurn(1);
+             c.setp2ID(11);
+             c.setTurn(2);
              c.setMode("pvp_online");
              stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
              scene = new Scene(root);

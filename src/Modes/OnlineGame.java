@@ -111,13 +111,13 @@ public class OnlineGame {
         connection.openConnection();
 
 //        Send request to the server
-//        String responseJSON = connection.sendRequest(message);
-            connection.sendRequest2(message);
+        String responseJSON = connection.sendRequest(message);
+//            connection.sendRequest2(message);
 
         
         // Parse and validate JSON response
-//        JSONObject jsonReceived = new JSONObject(responseJSON);
-        /*
+        JSONObject jsonReceived = new JSONObject(responseJSON);
+        
         if (jsonReceived.has("response")) {
             String response = jsonReceived.getString("response");
             String rmessage = jsonReceived.getString("message");
@@ -132,12 +132,11 @@ public class OnlineGame {
         } else {
             System.out.println("Invalid response received from the server: " + responseJSON);
             return false;
-        }*/
+        }
     } catch (IOException ex) {
         Logger.getLogger(OnlineGame.class.getName()).log(Level.SEVERE, "Error communicating with server", ex);
         return false;
         }
-        return false;
     }
     public String reciveMove(){
         try {
