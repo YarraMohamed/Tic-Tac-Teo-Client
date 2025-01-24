@@ -51,14 +51,14 @@ public class AvailablePlayersController implements Initializable {
     private Scene scene;
     private Parent root;
     private ServerConnection connection = ServerConnection.getInstance();
-    
+
     private Navigation nav;
     
     int currentPlayerID = SharedData.getInstance().getPlayerID();
 
     
     
-    private Navigation nav= new Navigation();
+//    private Navigation nav= new Navigation();
     @FXML
     public void onNavBack(Event event) {
     try {
@@ -71,7 +71,7 @@ public class AvailablePlayersController implements Initializable {
         Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
         }
     }
-}
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         

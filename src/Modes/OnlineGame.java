@@ -97,13 +97,13 @@ public class OnlineGame {
         return false;
         }
     }*/
-    public boolean sendMove(String btnId) {
+    public void sendMove(String btnId) {
     String message = Encapsulator.encapsulateGameMove(player1Id, player2Id, btnId);
     boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
 
     if (!result) {
         System.out.println("Server is not available!");
-        return false;
+//        return false;
     }
 
     try {
@@ -111,10 +111,11 @@ public class OnlineGame {
         connection.openConnection();
 
 //        Send request to the server
-        String responseJSON = connection.sendRequest(message);
+//        String responseJSON = connection.sendRequest(message);
+        connection.sendRequest(message);
 //            connection.sendRequest2(message);
 
-        
+        /*
         // Parse and validate JSON response
         JSONObject jsonReceived = new JSONObject(responseJSON);
         
@@ -132,10 +133,10 @@ public class OnlineGame {
         } else {
             System.out.println("Invalid response received from the server: " + responseJSON);
             return false;
-        }
+        }*/
     } catch (IOException ex) {
         Logger.getLogger(OnlineGame.class.getName()).log(Level.SEVERE, "Error communicating with server", ex);
-        return false;
+//        return false;
         }
     }
     public String reciveMove(){

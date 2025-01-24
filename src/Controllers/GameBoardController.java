@@ -133,8 +133,7 @@ public class GameBoardController implements Initializable {
     private String mode ="";
     
 
-    // GameRecorder instance to be intialized only when record button is clicked
-    private GameRecorder gameRecorder;
+    
     
     private int turn;
 
@@ -180,14 +179,7 @@ public class GameBoardController implements Initializable {
     public void setTurn(int n){
         turn=n;
     }
-    // Button to record the game
-    public void recordButtonAction(ActionEvent recordGameAction){
-        if (gameRecorder == null) {
-            gameRecorder = new GameRecorder();
-            gameRecorder.prepareRecordingFile();
-        }
     
-    }
     
     public void setp2ID(int id){
         p2ID=id;
@@ -439,14 +431,14 @@ private void handlePcMove(Button choosenBtn){
         } else {
             System.out.println("Error: PC mode is not set correctly.");
         }
-    }
+    
     if(winner){
         movesMade = 0;
         resetButton.setDisable(true);
         leaveButton.setDisable(true);
         }
-}
 
+}
 // Method to update button style based on card
 private void updateButtonStyle(Button button) {
     button.setStyle((card.equals("X")) ? "-fx-text-fill: Black;" : "-fx-text-fill: #FFA500;");
