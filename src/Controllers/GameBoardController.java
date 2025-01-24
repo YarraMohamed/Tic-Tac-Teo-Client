@@ -5,6 +5,8 @@ import Modes.Hard;
 import Modes.Medium;
 import Modes.Mode;
 import Modes.OnlineGame;
+import Utils.Navigation;
+import Utils.SharedData;
 import com.sun.rowset.internal.Row;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -72,6 +74,7 @@ public class GameBoardController implements Initializable {
     private boolean winner;
     private Line line;
     private Stage playAgainStage;
+    private Stage recordAgainStage;
     private Stage winStage; 
 
     private Stage stage;
@@ -81,15 +84,21 @@ public class GameBoardController implements Initializable {
     
    
     
+    private int movesMade;
+    private GameRecorder gameRecorder;
     
+       
     @FXML
     private AnchorPane anchorPane;
     
     ///////////////buttons
+    
+    @FXML
+    private Button recordButton;
     @FXML
     private Button leaveButton;
     @FXML
-    private Button recordButton;
+    private Button resetButton;
     @FXML
     private Button sqOneXo;
     @FXML
@@ -108,6 +117,8 @@ public class GameBoardController implements Initializable {
     private Button sqEightXo;
     @FXML
     private Button sqNineXo;
+    
+    private Navigation nav ;
     
      private Button[][] board;
     
@@ -137,7 +148,6 @@ public class GameBoardController implements Initializable {
         turn=1;
         resetGame();
         
-        
         board = new Button[3][3];
         board[0][0] = sqOneXo;
         board[0][1] = sqTwoXo;
@@ -157,6 +167,9 @@ public class GameBoardController implements Initializable {
         isP2Win = false;
         winner = false;
         line = null;
+        movesMade = 0;
+        gameRecorder = null;
+        nav = new Navigation();
     } 
     
     /*
@@ -231,6 +244,15 @@ public class GameBoardController implements Initializable {
         }
         card = "X";
     }
+    
+    public void recordButtonAction(ActionEvent recordGameAction){
+                
+        if (gameRecorder == null) {
+            gameRecorder = new GameRecorder();    
+            gameRecorder.prepareRecordingFile();
+        }
+        recordButton.setDisable(true);
+    }
        
    public void gamePlayAction(ActionEvent e) {
     if (!winner && turn ==1) {
@@ -244,6 +266,11 @@ public class GameBoardController implements Initializable {
 
             // Mark the button with the current player's card
             buttonPressed.setText(card);
+             movesMade++;
+             if(movesMade > 0 && gameRecorder == null){
+                recordButton.setDisable(true);
+             }
+            
             updateButtonStyle(buttonPressed);
              if ("pvp_online".equals(mode)) {
                 onlineGame.sendMove(buttonPressed.getId());
@@ -412,7 +439,14 @@ private void handlePcMove(Button choosenBtn){
         } else {
             System.out.println("Error: PC mode is not set correctly.");
         }
-   }
+    }
+    if(winner){
+        movesMade = 0;
+        resetButton.setDisable(true);
+        leaveButton.setDisable(true);
+        }
+}
+
 // Method to update button style based on card
 private void updateButtonStyle(Button button) {
     button.setStyle((card.equals("X")) ? "-fx-text-fill: Black;" : "-fx-text-fill: #FFA500;");
@@ -429,6 +463,14 @@ private void updateButtonStyle(Button button) {
                 }
                 
                 buttonPressed.setText(card);
+                movesMade++;
+                
+                if(movesMade > 0 && gameRecorder == null){
+                
+                    recordButton.setDisable(true);
+                    
+                }
+                
                 if(card.equals("X")){
                     buttonPressed.setStyle("-fx-text-fill: Black;");
                     
@@ -488,6 +530,10 @@ private void updateButtonStyle(Button button) {
             checkState();
         }
         
+        if(winner){
+        movesMade = 0;
+        resetButton.setDisable(true);
+        leaveButton.setDisable(true);
         }
     }
     */
@@ -534,7 +580,7 @@ private void updateButtonStyle(Button button) {
                  }
         return null;
     }    
-    private void drawLine(Button startButton, Button endButton){
+    public void drawLine(Button startButton, Button endButton){
     
         Bounds bound1 = startButton.localToScene(startButton.getBoundsInLocal());
         Bounds bound2 = endButton.localToScene(endButton.getBoundsInLocal());
@@ -553,10 +599,10 @@ private void updateButtonStyle(Button button) {
     private void checkRows(){
     
         if(sqOneXo.getText().equals(sqTwoXo.getText()) && sqTwoXo.getText().equals(sqThreeXo.getText()) && !sqOneXo.getText().equals("")){
-        
-            drawLine(sqOneXo,sqThreeXo);
-            
-            if(sqOneXo.getText().equals("X")){
+           if(line == null){
+                drawLine(sqOneXo,sqThreeXo);
+                
+                if(sqOneXo.getText().equals("X")){
             
                 isP1Win = true;
                 p1Score += 1;
@@ -569,31 +615,36 @@ private void updateButtonStyle(Button button) {
                 p2Text.setText("Player 2 : " + String.valueOf(p2Score));
                 
             }
+           }
+            
             winner = true;
         
         }else if(sqFourXo.getText().equals(sqFiveXo.getText()) && sqFiveXo.getText().equals(sqSixXo.getText()) && !sqFourXo.getText().equals("")){
-        
-            drawLine(sqFourXo,sqSixXo);
-            
-            if(sqFourXo.getText().equals("X")){
+          
+            if(line == null){
+                drawLine(sqFourXo,sqSixXo);
+                
+                if(sqFourXo.getText().equals("X")){
             
                 isP1Win = true;
                 p1Score += 1;
                 p1Text.setText("Player 1 : " + String.valueOf(p1Score));
             
-            }else{
+             }else{
             
                 isP2Win = true;
                 p2Score += 1;
                 p2Text.setText("Player 2 : " + String.valueOf(p2Score));
                 
-            }
+             } 
+           }
+            
             winner = true;
         }else if(sqSevenXo.getText().equals(sqEightXo.getText()) && sqEightXo.getText().equals(sqNineXo.getText())&& !sqSevenXo.getText().equals("")){
-        
-            drawLine(sqSevenXo,sqNineXo);
-            
-            if(sqSevenXo.getText().equals("X")){
+            if(line == null){
+                drawLine(sqSevenXo,sqNineXo);
+                
+                if(sqSevenXo.getText().equals("X")){
             
                 isP1Win = true;
                 p1Score += 1;
@@ -606,20 +657,21 @@ private void updateButtonStyle(Button button) {
                 p2Text.setText("Player 2 : " + String.valueOf(p2Score));
                 
             }
+           }
+            
             winner = true;
         
         }
     
     }
     
-    
     private void checkColumns(){
     
         if(sqOneXo.getText().equals(sqFourXo.getText()) && sqFourXo.getText().equals(sqSevenXo.getText()) && !sqOneXo.getText().equals("")){
-        
-            drawLine(sqOneXo,sqSevenXo);
+           if(line == null){
+                drawLine(sqOneXo,sqSevenXo);
             
-            if(sqOneXo.getText().equals("X")){
+                if(sqOneXo.getText().equals("X")){
             
                 isP1Win = true;
                 p1Score += 1;
@@ -632,12 +684,14 @@ private void updateButtonStyle(Button button) {
                 p2Text.setText("Player 2 : " + String.valueOf(p2Score));
                 
             }
+           }
+           
             winner = true;
-        
+ 
         }else if(sqTwoXo.getText().equals(sqFiveXo.getText()) && sqFiveXo.getText().equals(sqEightXo.getText()) && !sqTwoXo.getText().equals("")){
-        
+            if(line == null){
             drawLine(sqTwoXo,sqEightXo);
-            
+            }
             if(sqTwoXo.getText().equals("X")){
             
                 isP1Win = true;
@@ -654,9 +708,9 @@ private void updateButtonStyle(Button button) {
             winner = true;
         
         }else if(sqThreeXo.getText().equals(sqSixXo.getText()) && sqSixXo.getText().equals(sqNineXo.getText())&& !sqThreeXo.getText().equals("")){
-        
+            if(line == null){
             drawLine(sqThreeXo,sqNineXo);
-            
+            }
             if(sqThreeXo.getText().equals("X")){
             
                 isP1Win = true;
@@ -678,41 +732,44 @@ private void updateButtonStyle(Button button) {
     private void checkDiagonals(){
     
         if(sqOneXo.getText().equals(sqFiveXo.getText()) && sqFiveXo.getText().equals(sqNineXo.getText()) && !sqOneXo.getText().equals("")){
-        
-            drawLine(sqOneXo,sqNineXo);
+            if(line == null){
+                    drawLine(sqOneXo,sqNineXo);
+                    if(sqOneXo.getText().equals("X")){
             
-            if(sqOneXo.getText().equals("X")){
+                        isP1Win = true;
+                         p1Score += 1;
+                        p1Text.setText("Player 1 : " + String.valueOf(p1Score));
             
-                isP1Win = true;
-                p1Score += 1;
-                p1Text.setText("Player 1 : " + String.valueOf(p1Score));
+                }else{
             
-            }else{
-            
-                isP2Win = true;
-                p2Score += 1;
-                p2Text.setText("Player 2 : " + String.valueOf(p2Score));
+                        isP2Win = true;
+                        p2Score += 1;
+                        p2Text.setText("Player 2 : " + String.valueOf(p2Score));
                 
-            }
+                }
             
+            }
+                        
             winner = true;
         }else if(sqThreeXo.getText().equals(sqFiveXo.getText()) && sqFiveXo.getText().equals(sqSevenXo.getText()) && !sqThreeXo.getText().equals("")){
-        
-            drawLine(sqThreeXo,sqSevenXo);
-            
-            if(sqThreeXo.getText().equals("X")){
-            
-                isP1Win = true;
-                p1Score += 1;
-                p1Text.setText("Player 1 : " + String.valueOf(p1Score));
-            
-            }else{
-            
-                isP2Win = true;
-                p2Score += 1;
-                p2Text.setText("Player 2 : " + String.valueOf(p2Score));
+            if(line == null){
+                drawLine(sqThreeXo,sqSevenXo);
                 
+                if(sqThreeXo.getText().equals("X")){
+            
+                  isP1Win = true;
+                    p1Score += 1;
+                    p1Text.setText("Player 1 : " + String.valueOf(p1Score));
+            
+             }else{
+            
+                  isP2Win = true;
+                    p2Score += 1;
+                    p2Text.setText("Player 2 : " + String.valueOf(p2Score));
+                
+                }
             }
+            
             winner = true;
         }
     
@@ -725,6 +782,7 @@ private void updateButtonStyle(Button button) {
                 &&!sqNineXo.getText().equals("")){
         
             return true;
+            
         }else{
         
             return false;
@@ -746,8 +804,10 @@ private void updateButtonStyle(Button button) {
         winVideo = "/Resources/player1Wins.mp4";
     } else if (pc != null && pc.isComputerPlayerWon()) {
         winMessage = "Computer Wins!!";  // Adjusted message
-        winVideo = null;  // No video for computer win
+        winVideo = "/Resources/loser.mp4";  // No video for computer win
         playAgainWindow();
+        playAgainStage.close();
+
     } else {
         winMessage = "Player Two Wins!!";
         winVideo = "/Resources/player2Wins.mp4";
@@ -763,7 +823,7 @@ private void updateButtonStyle(Button button) {
             mediaPlayer.setAutoPlay(true);
 
             Text winText = new Text(winMessage);
-            winText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
+            winText.setFont(Font.font("Chewy", FontWeight.BOLD, 35));
             winText.setFill(Color.RED);
 
             StackPane root = new StackPane(mediaView, winText);
@@ -800,11 +860,11 @@ private void updateButtonStyle(Button button) {
 }
 
 /*
+        
     public void winAnimation(){
        
         String winMessage;
         String winVideo;
-        
         
         winStage = new Stage();
         winStage.setTitle("Game Over");
@@ -812,15 +872,13 @@ private void updateButtonStyle(Button button) {
          if(isP1Win){
             winMessage = "Player One Wins!!";
             winVideo = "/Resources/player1Wins.mp4";
-        }
-         else if(pc.isComputerPlayerWon())
-         {
-            winMessage = "Player One Wins!!";
-            winVideo=null;
+        }else if (pc != null && pc.isComputerPlayerWon()) {
+        
+            winMessage = "Computer Wins!!";  // Adjusted message
+            winVideo = null;  // No video for computer win
             playAgainWindow();
 
-         }
-         else {        
+        }else {        
              
             winMessage = "Player Two Wins!!"; 
             winVideo = "/Resources/player2Wins.mp4";
@@ -828,9 +886,9 @@ private void updateButtonStyle(Button button) {
         
         Media media = new Media(getClass().getResource(winVideo).toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-        MediaView mediaView = new MediaView(mediaPlayer);
-                
+        MediaView mediaView = new MediaView(mediaPlayer);        
         mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         
         Text winText = new Text(winMessage);
         winText.setFont(Font.font("Chewy",FontWeight.BOLD,50));
@@ -850,12 +908,70 @@ private void updateButtonStyle(Button button) {
     }
     */
     
+    public void recordAgainWindow() {
+        
+        recordAgainStage = new Stage();
+        recordAgainStage.setTitle("Message From Recorder");
+        
+        recordAgainStage.initStyle(StageStyle.UNDECORATED);
+
+        Text recordAgainText = new Text("Continue Recording?");
+        recordAgainText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
+        recordAgainText.setFill(Color.WHITE);
+
+        Button sureButton = new Button("Sure!");
+        Button nopeButton = new Button("Nope");
+        
+        sureButton.setOnAction(e->recordAgainAction(e));
+        nopeButton.setOnAction(e->recordAgainAction(e));
+        
+        sureButton.setFont(Font.font("Chewy", FontWeight.BOLD, 30));
+        sureButton.setStyle("-fx-background-color: linear-gradient(to bottom,#1F60C1,#8D9CB3); -fx-background-radius: 30; -fx-text-fill:#ffffff;");
+
+        nopeButton.setFont(Font.font("Chewy", FontWeight.BOLD, 30));
+        nopeButton.setStyle("-fx-background-color: linear-gradient(to bottom,#1F60C1,#8D9CB3); -fx-background-radius: 30; -fx-text-fill:#ffffff;");
+ 
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(recordAgainText);
+
+        HBox buttonBox = new HBox(30);
+        buttonBox.getChildren().addAll(sureButton, nopeButton);
+        buttonBox.setAlignment(Pos.CENTER); 
+
+        borderPane.setBottom(buttonBox);
+        
+        borderPane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #86AEE9, #09316D);");
+
+        Scene scene = new Scene(borderPane, 450, 250);
+
+        recordAgainStage.setScene(scene);
+        recordAgainStage.show();
+    }
+    
+    
+    public void recordAgainAction(ActionEvent e) {
+    
+        buttonPressed = (Button) e.getSource();
+    
+            if (buttonPressed.getText().equals("Sure!")) {
+            
+                gameRecorder.prepareRecordingFile();
+                recordAgainStage.close();
+            
+            } else if (buttonPressed.getText().equals("Nope")) {
+            
+                gameRecorder = null;
+                recordButton.setDisable(true);
+                recordAgainStage.close();
+            
+            }
+    }
+    
     
     public void playAgainWindow() {
+        
         playAgainStage = new Stage();
         playAgainStage.setTitle("Run it Back");
-
-        
         playAgainStage.initStyle(StageStyle.UNDECORATED);
 
 
@@ -866,7 +982,15 @@ private void updateButtonStyle(Button button) {
         Button yesButton = new Button("Yes");
         Button noButton = new Button("No");
         
-        yesButton.setOnAction(e->againAction(e));
+        yesButton.setOnAction(e -> {
+                againAction(e);
+
+                if (gameRecorder != null) {
+                    recordAgainWindow();
+                }
+                            
+        });
+        
         noButton.setOnAction(e->againAction(e));
         
         yesButton.setFont(Font.font("Chewy", FontWeight.BOLD, 30));
@@ -887,7 +1011,7 @@ private void updateButtonStyle(Button button) {
         borderPane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #86AEE9, #09316D);");
 
         Scene scene = new Scene(borderPane, 400, 225);
-
+        
         playAgainStage.setScene(scene);
         playAgainStage.show();
     }
@@ -904,13 +1028,15 @@ private void updateButtonStyle(Button button) {
             isP1Win = false;
             isP2Win = false;
             playAgainStage.close();
-        
+            if(gameRecorder == null){recordButton.setDisable(false);}   
+            resetButton.setDisable(false);
+            leaveButton.setDisable(false);
+                    
         }else if(buttonPressed.getText().equals("No")){
-
+            leaveButton.setDisable(false);
             playAgainStage.close();
 
-            playAgainStage.close();  
-
+           playAgainStage.close();  
         }
     }
     
@@ -927,6 +1053,8 @@ private void updateButtonStyle(Button button) {
         }else if(isFull()){
             tieScore += 1;
             tieText.setText("Tie : " + String.valueOf(tieScore));
+            resetButton.setDisable(true);
+            leaveButton.setDisable(true);
             PauseTransition pauseAgain = new PauseTransition(Duration.seconds(1));
             pauseAgain.setOnFinished(e->playAgainWindow());
             pauseAgain.play();
@@ -950,10 +1078,18 @@ private void updateButtonStyle(Button button) {
     yesButton.setOnAction(e -> {
         confirmExitStage.close();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            if(SharedData.getInstance().getPlayerID()!=0){
+                Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }else{
+                Parent root = FXMLLoader.load(getClass().getResource("/FXML/DifficultyPage.fxml"));
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }
+            
         } catch (IOException ex) {
             ex.printStackTrace();
         }

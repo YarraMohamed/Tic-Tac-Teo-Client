@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ServerConnection {
     
@@ -16,6 +20,8 @@ public class ServerConnection {
     private BufferedReader  in;
     private PrintStream out;
     private static ServerConnection instance;
+    
+    private Navigation nav = new Navigation();
     
     private ServerConnection(){
     }
@@ -42,20 +48,43 @@ public class ServerConnection {
         socket = new Socket(serverIP,5005);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintStream(socket.getOutputStream());
+        handlerServer();
     }
     
-    public String sendRequest(String request) throws IOException {
-        String response ="sending data";
+
+    private void handlerServer() {
+        new Thread(() -> {
+        try {
+            String message;
+            
+            while (socket != null && !socket.isClosed() && instance.checkServerAvailibily(SharedData.getInstance().getServerIp())) {
+                message = in.readLine();
+
+                if (message == null) {
+                    System.out.println("Received null message from server. Continuing to listen...");
+                    continue;
+                }
+                ServerMessagesRouter.routeServerMessage(message);
+            }
+        } catch (IOException e) {
+            System.err.println("Error while listening for messages from server: " + e.getMessage());
+            e.printStackTrace();
+        } catch (JSONException e) {
+            System.err.println("Error parsing JSON message from server: " + e.getMessage());
+            e.printStackTrace();
+        } 
+    }).start();
+    } 
+    
+    
+    public synchronized void sendRequest(String request) throws IOException {
+        
         if (socket == null || socket.isClosed()) {
-            response = "Connection is not open";
+            return;
         }
         
         out.println(request);
         out.flush();
-        
-        response = in.readLine();
-        System.out.println("call recived");
-        return response;
     }
     public void sendRequest2(String request) throws IOException {
         String response ="sending data";
@@ -103,6 +132,7 @@ public class ServerConnection {
 
 
     
+            
    public void closeConnection() {
     try {
         if (in != null) in.close();
@@ -112,5 +142,7 @@ public class ServerConnection {
         System.err.println("Error closing client resources: " + e.getMessage());
     }
 }
+   
+   
     
 }

@@ -5,6 +5,8 @@ import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class SignInController  {
@@ -27,7 +30,7 @@ public class SignInController  {
     @FXML private TextField passTextField;
 
     public void goToSignUp(ActionEvent event) throws IOException {
-       nav.goToPage("SignUp", event);
+        nav.goToPage("SignUp", event);
     }
     
     public void goToModePage(ActionEvent event) throws IOException {
@@ -36,23 +39,12 @@ public class SignInController  {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            
             connection.openConnection();
-            String responseJSON = connection.sendRequest(message);
-            JSONObject jsonReceived = new JSONObject(responseJSON);
-            String response = jsonReceived.getString("response");
-            
-            if(response.equals("Success")){
-                int playerID = jsonReceived.optInt("Player_ID");
-                SharedData.getInstance().setPlayerID(playerID);
-                nav.goToPage("ModePage", event);
-            } else {
-                nav.ShowAlerts("InvalidMessage", event);
-            }
-            
+            connection.sendRequest(message);
         }else{
-            nav.ShowAlerts("ErrorAlert", event);
+            nav.ShowAlerts("ErrorAlert");
         }
        
     }
+ 
 }

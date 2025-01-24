@@ -1,14 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controllers;
 
 
+import Utils.Encapsulator;
 import Utils.Navigation;
+import Utils.ServerConnection;
+import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,11 +31,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author Ziad
  */
+
 public class AvailablePlayersController implements Initializable {
     
     @FXML
@@ -47,6 +50,13 @@ public class AvailablePlayersController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private ServerConnection connection = ServerConnection.getInstance();
+    
+    private Navigation nav;
+    
+    int currentPlayerID = SharedData.getInstance().getPlayerID();
+
+    
     
     private Navigation nav= new Navigation();
     @FXML
@@ -61,24 +71,32 @@ public class AvailablePlayersController implements Initializable {
         Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
         }
     }
-    
-    
-    
-    
+}
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        nav = new Navigation();
+        
         VBox.setVgrow(userContainer, Priority.ALWAYS);
         label.setText("Let’s Play");
-        addCompoent("ziad");
-        addCompoent("fawzy");
-        addCompoent("yara");
-        addCompoent("mariem");
-        addCompoent("amira");
-     
+        Map<String, Integer> availablePlayers = SharedData.getInstance().getAvailablePlayers();
+        if (availablePlayers.isEmpty()) {
+            System.out.println("No online players available.");
+        } else {
+            for (Map.Entry<String, Integer> player : availablePlayers.entrySet()) { 
+                addCompoent(player);
+            }
+        }
+
     }
     
-    private void addCompoent(String user){
+    
+    private void addCompoent(Map.Entry<String, Integer> playerEntry){
+        
+        // Extract player ID and username
+         int playerId = playerEntry.getValue();
+         String username = playerEntry.getKey();
+         
          // Create a box
         HBox box = new HBox();
         
@@ -95,10 +113,10 @@ public class AvailablePlayersController implements Initializable {
             Insets.EMPTY
         );
         box.setBackground(new Background(backgroundFill));
-        Label label = new Label(user);
+        Label label = new Label(username);
         label.setStyle("-fx-text-fill: black;");
         box.getChildren().add(label);
-        Button btn=new Button("Click me");
+        /*Button btn=new Button("Click me");
         btn.addEventHandler(ActionEvent.ACTION, event->{
             System.out.println("box clicked");
            
@@ -119,8 +137,30 @@ public class AvailablePlayersController implements Initializable {
         });
         box.getChildren().add(btn);
         userContainer.getChildren().add(box);    
-    
+    */
+        
+        box.setOnMouseClicked(avaliablePlayerClicked -> {
+           try {
+               
+               boolean result=connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+               
+               if(result){
+                   String gameRequest = Encapsulator.encapsulateGameRequest(currentPlayerID, playerId);
+                   ServerConnection.getInstance().openConnection();
+                   ServerConnection.getInstance().sendRequest(gameRequest);
+               }else{
+                   System.out.println("error");
+               }   
+            } 
+            catch(IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to send game request.");
+            }
+        });
+                
+        userContainer.getChildren().add(box);
+        
     }
     
-    
+
 }
