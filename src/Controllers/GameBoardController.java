@@ -164,7 +164,9 @@ public class GameBoardController implements Initializable {
     
     
     }*/ 
-    
+    public void setTurn(int n){
+        turn=n;
+    }
     // Button to record the game
     public void recordButtonAction(ActionEvent recordGameAction){
         if (gameRecorder == null) {
@@ -198,6 +200,7 @@ public class GameBoardController implements Initializable {
             case "pvp_online":
                 onlineGame=new OnlineGame(p2ID);
                 waitP2Move();
+//                send2server();
                 isWaiting=false;
 //                isWaiting=true;
                 break;
@@ -210,7 +213,7 @@ public class GameBoardController implements Initializable {
     } 
     
     public void resetGame(){
-    
+        turn=1;
         sqOneXo.setText("");
         sqTwoXo.setText("");
         sqThreeXo.setText("");
@@ -250,6 +253,7 @@ public class GameBoardController implements Initializable {
             
             card = (card.equals("X")) ? "O" : "X";
             turn=2;
+            System.out.println("turn is : "+turn);
             
             checkState();
         } else {
@@ -312,9 +316,18 @@ private void waitP2Move(){
     thread.start();
 
 }*/
+   
+private void send2server(){
+    Thread th=new Thread(()->{
+        while (true) {            
+            onlineGame.sendMove("mooove");
+        }
+    });
+    th.start();
+}
 private void waitP2Move() {
     Thread thread = new Thread(() -> {
-        isWaiting=false;
+//        isWaiting=false;
         while (true) {
             try {
                 System.out.println("Waiting for opponent's move...");
@@ -325,11 +338,11 @@ private void waitP2Move() {
                     Platform.runLater(() -> {
                         processOpponentMove(response); // Update UI with opponent's move
                     });
-                    isWaiting=true;
-                    break; // Exit the loop after processing the move
+//                    isWaiting=true;
+                   // break; // Exit the loop after processing the move
                 }
 
-                Thread.sleep(500); // Polling interval to avoid overloading the server
+//                Thread.sleep(500); // Polling interval to avoid overloading the server
             } catch (Exception e) {
                 System.err.println("Error in waitP2Move: " + e.getMessage());
                 e.printStackTrace();
@@ -349,6 +362,7 @@ public void processOpponentMove(String response){
         updateButtonStyle(recivedBtn);
         card = card.equals("X") ? "O" : "X";
         turn=1;
+                    System.out.println("turn is : "+turn);
         checkState();
     }
 }

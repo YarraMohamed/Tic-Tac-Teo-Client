@@ -101,11 +101,13 @@ public class AvailablePlayersController implements Initializable {
         Button btn=new Button("Click me");
         btn.addEventHandler(ActionEvent.ACTION, event->{
             System.out.println("box clicked");
+           
             try {
              FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
              root = x.load();
              GameBoardController c = x.getController();
-             c.setp2ID(11);
+             c.setp2ID(12);
+             c.setTurn(1);
              c.setMode("pvp_online");
              stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
              scene = new Scene(root);

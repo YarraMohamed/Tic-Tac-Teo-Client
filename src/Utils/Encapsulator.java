@@ -34,5 +34,12 @@ public class Encapsulator {
         json.put("btn",btnId);
         return json.toString();
     }
+    public static String encapsulateUpdateScore(int playerID,int score){
+        JSONObject json = new JSONObject();
+        json.put("requestType", "UPDATE_SCORE");
+        json.put("Player_ID", playerID);
+        json.put("score", score);
+        return json.toString();
+    }
 }
 

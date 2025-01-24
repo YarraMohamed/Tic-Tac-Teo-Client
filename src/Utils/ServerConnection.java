@@ -57,6 +57,16 @@ public class ServerConnection {
         System.out.println("call recived");
         return response;
     }
+    public void sendRequest2(String request) throws IOException {
+        String response ="sending data";
+        if (socket == null || socket.isClosed()) {
+            System.out.println( "Connection is not open");
+        }
+        
+        out.println(request);
+        out.flush();
+        System.out.println("call sent"+request);
+    }
     
    /* public String reciveRequset() throws IOException{
         System.out.println("try to recive request");
