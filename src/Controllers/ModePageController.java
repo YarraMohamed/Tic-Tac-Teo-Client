@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONObject;
 
 public class ModePageController {
@@ -30,7 +32,7 @@ public class ModePageController {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            connection.openConnection();
+            //connection.openConnection();
             connection.sendRequest(message);       
         }else{
             nav.ShowAlerts("ErrorAlert");
@@ -43,8 +45,7 @@ public class ModePageController {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            
-            connection.openConnection();
+            SharedData.getInstance().setPlayerID(0);
             connection.sendRequest(message); 
             nav.goToPage("HomePage", event);
             connection.closeConnection();
@@ -55,7 +56,19 @@ public class ModePageController {
     
 
     public void goToLocalMode(ActionEvent event) throws IOException {
-       nav.goToPage("GameBoard", event);
+//       nav.goToPage("GameBoard", event);
+try {
+             FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
+             root = x.load();
+             GameBoardController c = x.getController();
+             c.setMode("pvp_local");
+             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+             scene = new Scene(root);
+             stage.setScene(scene);
+             stage.show();
+         } catch (IOException ex) {
+             Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
+         }
        
     }
     
@@ -67,7 +80,7 @@ public class ModePageController {
         String requestMessage = Encapsulator.encapsulateID("GET_AVAILABLE_PLAYERS",SharedData.getInstance().getPlayerID());
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         if(result){
-            connection.openConnection();
+//            connection.openConnection();
             connection.sendRequest(requestMessage); 
         }else{
             nav.ShowAlerts("ErrorAlert");

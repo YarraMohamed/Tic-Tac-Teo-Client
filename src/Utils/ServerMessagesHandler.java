@@ -1,5 +1,7 @@
 package Utils;
 
+
+import Controllers.GameBoardController;
 import Controllers.GameRequestNotificationController;
 import Utils.Navigation;
 import java.io.IOException;
@@ -21,6 +23,11 @@ public class ServerMessagesHandler {
     public void respondToGameRequest(JSONObject jsonReceived) {
         
         try {
+            int requestingPlayerUsername = jsonReceived.getInt("requestingPlayer_ID");
+             System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
+             Platform.runLater( () -> {
+                System.out.println("Showing game request notification for: " + requestingPlayerUsername);
+                nav.showGameRequestNotification(requestingPlayerUsername+"");
             String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
             Platform.runLater( () -> {
                 nav.showGameRequestNotification(requestingPlayerUsername);
@@ -99,12 +106,15 @@ public class ServerMessagesHandler {
             }
         });
      }
-         
-         
+
+    public void inGameMove(JSONObject jsonReceived){
+        String move=jsonReceived.getString("btn");
+        GameBoardController.updateBoard(move);
+        
+    }
+       
     public void printResponse(String response) {
         System.out.println("Response to client request: " + response);
     }
     
-    
-
 }

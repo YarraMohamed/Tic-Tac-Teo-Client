@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -43,24 +45,30 @@ public class AvailablePlayersController implements Initializable {
     @FXML
     private VBox  userContainer;
     
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     private ServerConnection connection = ServerConnection.getInstance();
-    
+
     private Navigation nav;
     
     int currentPlayerID = SharedData.getInstance().getPlayerID();  
-
+    
+    
+//    private Navigation nav= new Navigation();
     @FXML
     public void onNavBack(Event event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
+    try {
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    } catch (IOException ex) {
+        Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
         }
-   }
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -105,6 +113,7 @@ public class AvailablePlayersController implements Initializable {
         Label label = new Label(username);
         label.setStyle("-fx-text-fill: black;");
         box.getChildren().add(label);
+
         box.setOnMouseClicked(avaliablePlayerClicked -> {
             
 
@@ -116,9 +125,9 @@ public class AvailablePlayersController implements Initializable {
                 if(result){
                    System.out.println("Current player ID from Availabe controller  is: " + currentPlayerID);
                    String gameRequest = Encapsulator.encapsulateGameRequest(currentPlayerID, playerId);
-                   ServerConnection.getInstance().openConnection();
                    ServerConnection.getInstance().sendRequest(gameRequest);
-               }else {
+                   
+               }else{
                    System.out.println("error");
                }
   

@@ -1,6 +1,7 @@
 package Controllers;
 
 import Utils.Navigation;
+import Utils.ServerConnection;
 import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
@@ -25,13 +26,15 @@ public class ServerIPController {
     private Button enterButton;
     private String ipAddress;
     private Navigation nav = new Navigation();
+    private ServerConnection connection = ServerConnection.getInstance();
 
     @FXML
     private void ShowDialog(ActionEvent event) throws IOException{
         ipAddress = ipTextField.getText();
         boolean result = SharedData.isValidIP(ipAddress);
         if(result){
-           enterButton.getScene().getWindow().hide();
+            SharedData.getInstance().setServerIp(ipAddress);
+            enterButton.getScene().getWindow().hide();
         } else {
            nav.ShowAlerts("InvalidMessage");
         }
