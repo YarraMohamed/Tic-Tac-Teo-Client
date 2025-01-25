@@ -1,11 +1,8 @@
-import Controllers.DifficultyPageController;
-import Controllers.GameBoardController;
 import Utils.Encapsulator;
 import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
 import java.io.IOException;
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;

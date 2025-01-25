@@ -17,7 +17,7 @@ public class Hard extends Mode {
         super(board, computerSymbol, playerSymbol);
     }
 
-      public static  final int Max_Depth=9;
+      public static  final int Max_Depth=4;
      private int minimax(int depth,boolean isMaximizing) { //The isMaximizing flag indicates whether it is the maximizing player's (the computer's) turn or the minimizing player's (the player’s) turn.
         if (checkWin(computerSymbol))
             return 1;
