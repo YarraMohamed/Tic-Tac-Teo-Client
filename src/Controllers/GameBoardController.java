@@ -169,6 +169,7 @@ public class GameBoardController implements Initializable {
         initializeMode();
     }
     public void initializeMode(){
+//        resetButton.setDisable(false);
         switch (mode) {
             case "pc_Easy":
                 pc = new Easy(board, 'O', 'X');
@@ -184,6 +185,7 @@ public class GameBoardController implements Initializable {
                 break;
             case "pvp_online":
                 onlineGame=new OnlineGame(p2ID);
+                resetButton.setDisable(true);
                 waitP2Move();
                 break;
         }
@@ -244,13 +246,13 @@ public class GameBoardController implements Initializable {
              if ("pvp_online".equals(mode)) {
                 onlineGame.sendMove(buttonPressed.getId());
             }
-            // Switch turns between players
+             
+            checkState();
             
             card = (card.equals("X")) ? "O" : "X";
             turn=2;
             System.out.println("turn is : "+turn);
             
-            checkState();
         } else {
             System.out.println("Error: Button is either null or already marked.");
         }
@@ -280,162 +282,163 @@ public class GameBoardController implements Initializable {
                 p1Text.setText("palyer 1");
 
                 break;
+            }
         }
     }
-}
 
-private static boolean hasNewMove;
-private static String newMove;
-public static void updateBoard(String btn){
-    newMove=btn;
-    hasNewMove=true;
-    System.out.println("Game Board recived :  "+newMove+" "+hasNewMove);
-}
+    private static boolean hasNewMove;
+    private static String newMove;
+    public static void updateBoard(String btn){
+        newMove=btn;
+        hasNewMove=true;
+        System.out.println("Game Board recived :  "+newMove+" "+hasNewMove);
+    }
 
-private void waitP2Move() {
-    thread = new Thread(() -> {
-        while (true) {
-            try {
-                System.out.println("thread running......");
-                System.out.println("has new move>>>>>"+hasNewMove);
-                if (hasNewMove) {
-                    Platform.runLater(()->{
-                        hasNewMove=false;
-                        processOpponentMove(newMove);
-                    });
-                }else{
-                    System.out.println("has no move....................");
+    private void waitP2Move() {
+        thread = new Thread(() -> {
+            while (true) {
+                try {
+                    System.out.println("thread running......");
+                    if (hasNewMove) {
+                        System.out.println("has new move>>>>>"+hasNewMove);
+                        Platform.runLater(()->{
+                            hasNewMove=false;
+                            processOpponentMove(newMove);
+                        });
+                    }
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GameBoardController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GameBoardController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-    });
+        });
 
-    thread.setDaemon(true); // Ensure the thread stops when the application exits
-    thread.start(); // Start the background thread
-}
-
-
-public void processOpponentMove(String response) {
-    Button receivedBtn = findButtonById(response);
-    if (receivedBtn != null && !winner) {
-        receivedBtn.setText(card);
-        updateButtonStyle(receivedBtn);
-        p2Text.setText("Player 2");
-        p1Text.setText("Waitting....");
-        card = card.equals("X") ? "O" : "X";
-        turn = 1;
-        checkState();
+        thread.setDaemon(true); 
+        thread.start();
     }
-}
 
-public Button findButtonById(String Id){
-    switch(Id){
-        case "sqOneXo":
-            return sqOneXo;
-        case "sqTwoXo":
-            return sqTwoXo;
-        case "sqThreeXo":
-            return sqThreeXo;
-        case "sqFourXo":
-            return sqFourXo;
-        case "sqFiveXo":
-            return sqFiveXo;
-        case "sqSixXo":
-            return sqSixXo;
-        case "sqSevenXo":
-            return sqSevenXo;
-        case "sqEightXo":
-            return sqEightXo;
-        case "sqNineXo":
-            return sqNineXo;
-        default:
-            return null;
-    }
-}
-private void handlePcMove(Button choosenBtn){
-       // Get AI move and update the board
-        if (pc != null) {
-            int[] move = pc.getMove();
-            int row = move[0];
-            int col = move[1];
-            choosenBtn = clikedButton(row, col);
 
-            if (choosenBtn != null) {
-                choosenBtn.setText(card);
-                updateButtonStyle(choosenBtn);
-
-                // Switch turns between players
-                card = (card.equals("X")) ? "O" : "X";
-                turn=1;
-                checkState();
-            } else {
-                System.out.println("Error: Button at position (" + row + "," + col + ") is not valid.");
+    public void processOpponentMove(String response) {
+        Button receivedBtn = findButtonById(response);
+        if (receivedBtn != null && !winner) {
+            if (gameRecorder != null) {
+                gameRecorder.saveMovement(buttonPressed.getId(), card);
             }
-        } else {
-            System.out.println("Error: PC mode is not set correctly.");
+            receivedBtn.setText(card);
+            updateButtonStyle(receivedBtn);
+            p2Text.setText("Player 2");
+            p1Text.setText("Waitting....");
+            checkState();
+            card = card.equals("X") ? "O" : "X";
+            turn = 1;
         }
-    
-    if(winner){
-        movesMade = 0;
-        resetButton.setDisable(true);
-        leaveButton.setDisable(true);
-        }
+    }
 
-}
-// Method to update button style based on card
-private void updateButtonStyle(Button button) {
-    button.setStyle((card.equals("X")) ? "-fx-text-fill: Black;" : "-fx-text-fill: #FFA500;");
-}
-    
-private Button clikedButton(int row,int col){
-    if(row == 0){
-        switch(col){
-            case 0:{
+    public Button findButtonById(String Id){
+        switch(Id){
+            case "sqOneXo":
                 return sqOneXo;
-            }
-            case 1:{
+            case "sqTwoXo":
                 return sqTwoXo;
-            }
-            case 2:{
+            case "sqThreeXo":
                 return sqThreeXo;
-            }
-        }
-    }else if(row==1){
-        switch(col){
-            case 0:{
+            case "sqFourXo":
                 return sqFourXo;
-            }
-            case 1:{
+            case "sqFiveXo":
                 return sqFiveXo;
-            }
-            case 2:{
+            case "sqSixXo":
                 return sqSixXo;
-            }
-        }
-    }else if(row==2){
-        switch(col){
-            case 0:{
+            case "sqSevenXo":
                 return sqSevenXo;
-            }
-            case 1:{
+            case "sqEightXo":
                 return sqEightXo;
-            }
-            case 2:{
+            case "sqNineXo":
                 return sqNineXo;
-            }
+            default:
+                return null;
         }
     }
-    return null;
-}    
+    private void handlePcMove(Button choosenBtn){
+           // Get AI move and update the board
+            if (pc != null) {
+                int[] move = pc.getMove();
+                int row = move[0];
+                int col = move[1];
+                choosenBtn = clikedButton(row, col);
+
+                if (choosenBtn != null) {
+                    if (gameRecorder != null) {
+                        gameRecorder.saveMovement(buttonPressed.getId(), card);
+                    }
+                    choosenBtn.setText(card);
+                    updateButtonStyle(choosenBtn);
+
+                    // Switch turns between players
+                    card = (card.equals("X")) ? "O" : "X";
+                    turn=1;
+                    checkState();
+                } else {
+                    System.out.println("Error: Button at position (" + row + "," + col + ") is not valid.");
+                }
+            } else {
+                System.out.println("Error: PC mode is not set correctly.");
+            }
+
+        if(winner){
+            movesMade = 0;
+            resetButton.setDisable(true);
+            leaveButton.setDisable(true);
+        }
+
+    }
+    // Method to update button style based on card
+    private void updateButtonStyle(Button button) {
+        button.setStyle((card.equals("X")) ? "-fx-text-fill: Black;" : "-fx-text-fill: #FFA500;");
+    }
+
+    private Button clikedButton(int row,int col){
+        if(row == 0){
+            switch(col){
+                case 0:{
+                    return sqOneXo;
+                }
+                case 1:{
+                    return sqTwoXo;
+                }
+                case 2:{
+                    return sqThreeXo;
+                }
+            }
+        }else if(row==1){
+            switch(col){
+                case 0:{
+                    return sqFourXo;
+                }
+                case 1:{
+                    return sqFiveXo;
+                }
+                case 2:{
+                    return sqSixXo;
+                }
+            }
+        }else if(row==2){
+            switch(col){
+                case 0:{
+                    return sqSevenXo;
+                }
+                case 1:{
+                    return sqEightXo;
+                }
+                case 2:{
+                    return sqNineXo;
+                }
+            }
+        }
+        return null;
+    }
     public void drawLine(Button startButton, Button endButton){
-    
         Bounds bound1 = startButton.localToScene(startButton.getBoundsInLocal());
         Bounds bound2 = endButton.localToScene(endButton.getBoundsInLocal());
-        
         double x1 = (bound1.getMaxX() + bound1.getMinX())/2;
         double y1 = (bound1.getMaxY() + bound1.getMinY())/2;
         double x2 = (bound2.getMaxX() + bound2.getMinX())/2;
@@ -444,7 +447,6 @@ private Button clikedButton(int row,int col){
         line.setStroke(Color.RED);
         line.setStrokeWidth(10);
         anchorPane.getChildren().add(line);
-        
     }
     
     private void checkRows(){
@@ -648,9 +650,16 @@ private Button clikedButton(int row,int col){
 
     winStage = new Stage();
     winStage.setTitle("Game Over");
-
-    // Ensure the necessary objects are not null
-    if (isP1Win) {
+    
+    if (mode.equals("pvp_online")) {
+            if (isP1Win) {
+                winMessage = "Player One Wins!!";
+                winVideo = "/Resources/player1Wins.mp4";
+            }else{
+                winMessage = "Player Two Wins!!";  
+                winVideo = "/Resources/loser.mp4"; 
+            }
+    }else if (isP1Win) {
         winMessage = "Player One Wins!!";
         winVideo = "/Resources/player1Wins.mp4";
     } else if (pc != null && pc.isComputerPlayerWon()) {
@@ -848,8 +857,18 @@ private Button clikedButton(int row,int col){
         checkRows();
         checkColumns();
         checkDiagonals();
-        
-        if(isP1Win || isP2Win){
+        if (mode.equals("pvp_online")) {
+            if (isP1Win||isP2Win) {
+                if (turn==1) {
+                    isP1Win=true;
+                    onlineGame.updateScore(100);
+                }else{
+                    isP2Win=true;
+                    onlineGame.updateScore(-100);
+                }
+            }
+            
+        }else if(isP1Win || isP2Win){
             System.out.println("player1 => "+isP1Win+"  palyer2 => "+isP2Win);
            PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
            pause.setOnFinished(e->winAnimation());           
