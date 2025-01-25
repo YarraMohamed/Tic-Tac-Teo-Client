@@ -3,3 +3,11 @@
 
 /nbproject/
 /test/
+
+*.log
+
+/lib/
+/manifest.mf
+/nbbuild.xml
+/build.xml
+

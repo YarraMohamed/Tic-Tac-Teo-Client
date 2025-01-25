@@ -1,5 +1,6 @@
 package Controllers;
 
+import Utils.Encapsulator;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,52 +12,68 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import Utils.Navigation;
+import Utils.ServerConnection;
+import Utils.SharedData;
+import org.json.JSONObject;
+
 public class ModePageController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private Navigation nav = new Navigation();
+    private ServerConnection connection = ServerConnection.getInstance();
 
     public void goToProfile(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/FXML/ProfilePageFXML.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+ 
+        String message = Encapsulator.encapsulateID("USER_NAME",SharedData.getInstance().getPlayerID());
+        boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        
+        if(result){
+            connection.openConnection();
+            connection.sendRequest(message);       
+        }else{
+            nav.ShowAlerts("ErrorAlert");
+        }
+        
     }
     
     public void signout(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/SignIn.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        String message = Encapsulator.encapsulateID("SIGN_OUT",SharedData.getInstance().getPlayerID());
+        boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        
+        if(result){
+            
+            connection.openConnection();
+            connection.sendRequest(message); 
+            nav.goToPage("HomePage", event);
+            connection.closeConnection();
+        }else{
+            nav.ShowAlerts("ErrorAlert");
+        }
     }
     
+
     public void goToLocalMode(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/GameBoard.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+       nav.goToPage("GameBoard", event);
+       
     }
     
      public void goToDifficultyMode(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/DifficultyPage.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        nav.goToPage("DifficultyPage", event);
     }
     public void getPlayersList(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signout");
-        root = FXMLLoader.load(getClass().getResource("/FXML/AvailablePlayers.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        
+        String requestMessage = Encapsulator.encapsulateID("GET_AVAILABLE_PLAYERS",SharedData.getInstance().getPlayerID());
+        boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        if(result){
+            connection.openConnection();
+            connection.sendRequest(requestMessage); 
+        }else{
+            nav.ShowAlerts("ErrorAlert");
+        }
+        
     }
     
+
 }

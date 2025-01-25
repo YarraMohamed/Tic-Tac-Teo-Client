@@ -1,5 +1,6 @@
 package Controllers;
 
+import Utils.Encapsulator;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import Utils.Navigation;
+import Utils.ServerConnection;
+import Utils.SharedData;
+import org.json.JSONObject;
 
 public class SignUpController  {
 
@@ -19,14 +24,26 @@ public class SignUpController  {
     @FXML TextField nameTextField;
     @FXML TextField passTextField;
     @FXML TextField emailTextField;
+    private Navigation nav = new Navigation();
+    private ServerConnection connection = ServerConnection.getInstance();
     
     
     public void goToModePage(ActionEvent event) throws IOException {
-        String message = Encapsulator.encapsulate("signup",nameTextField.getText(), passTextField.getText(),emailTextField.getText());
-        root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        
+        if(!emailTextField.getText().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
+            nav.ShowAlerts("InvalidMessage");
+            return;
+        }
+        
+        String message = Encapsulator.encapsulateSignUp(nameTextField.getText(), 
+                                                         emailTextField.getText() ,passTextField.getText());
+        boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+        
+        if(result){
+            connection.openConnection();
+            connection.sendRequest(message);  
+        }else{
+            nav.ShowAlerts("ErrorAlert");
+        }
     }
 }
