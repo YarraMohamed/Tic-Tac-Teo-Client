@@ -66,14 +66,17 @@ public class HomePageController implements Initializable {
             String serverIP = nav.ShowServerDialog(event);
         
         if (serverIP != null && !serverIP.isEmpty() && SharedData.isValidIP(serverIP)) {
-            boolean result = ServerConnection.getInstance().checkServerAvailibily(serverIP);
-            System.out.println(result);
-            if(result){
-                SharedData.getInstance().setServerIp(serverIP);
-                nav.goToPage("SignIn", event);
-            } else {
-                nav.ShowAlerts("ErrorAlert");
-            }
+//            boolean result = ServerConnection.getInstance().checkServerAvailibily(serverIP);
+//            System.out.println(result);
+//            if(result){
+//                SharedData.getInstance().setServerIp(serverIP);
+//                nav.goToPage("SignIn", event);
+//            } else {
+//                nav.ShowAlerts("ErrorAlert");
+//            }
+            SharedData.getInstance().setServerIp(serverIP);
+            ServerConnection.getInstance().openConnection();
+            nav.goToPage("SignIn", event);
             
         }
     } catch (IOException ex) {

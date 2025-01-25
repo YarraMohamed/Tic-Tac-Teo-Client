@@ -146,7 +146,7 @@ public class AvailablePlayersController implements Initializable {
                
                if(result){
                    String gameRequest = Encapsulator.encapsulateGameRequest(currentPlayerID, playerId);
-                   ServerConnection.getInstance().openConnection();
+//                   ServerConnection.getInstance().openConnection();
                    ServerConnection.getInstance().sendRequest(gameRequest);
                    nav.goToBoardOnlineMode(1, playerId, avaliablePlayerClicked);
                    

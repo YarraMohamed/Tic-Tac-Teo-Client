@@ -34,14 +34,16 @@ public class ServerConnection {
     }
     
     public boolean checkServerAvailibily(String serverIP){
-        try {
-            socket = new Socket(serverIP,5005);
-            socket.close();
-            return true;
-        } catch (IOException ex) {
-           return false;
-        }
+//        try {
+//            socket = new Socket(serverIP,5005);
+//            socket.close();
+//            return true;
+//        } catch (IOException ex) {
+//           return false;
+//        }
+          return !socket.isClosed();
     }
+    
     
     public void openConnection() throws IOException{
         String serverIP = SharedData.getInstance().getServerIp();
@@ -60,7 +62,7 @@ public class ServerConnection {
             while (socket != null && !socket.isClosed() && instance.checkServerAvailibily(SharedData.getInstance().getServerIp())) {
                 System.out.println("wait to lisent.....");
                 message = in.readLine();
-//                System.out.println("respooooonse"+message.toString());
+                System.out.println("respooooonse"+message.toString());
 
                 if (message == null) {
                     System.out.println("Received null message from server. Continuing to listen...");

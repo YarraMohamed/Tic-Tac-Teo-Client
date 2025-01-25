@@ -39,7 +39,7 @@ public class SignInController  {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            connection.openConnection();
+            //connection.openConnection();
             connection.sendRequest(message);
         }else{
             nav.ShowAlerts("ErrorAlert");

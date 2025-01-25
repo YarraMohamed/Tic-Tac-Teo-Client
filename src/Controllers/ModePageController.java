@@ -81,7 +81,7 @@ try {
         String requestMessage = Encapsulator.encapsulateID("GET_AVAILABLE_PLAYERS",SharedData.getInstance().getPlayerID());
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         if(result){
-            connection.openConnection();
+//            connection.openConnection();
             connection.sendRequest(requestMessage); 
         }else{
             nav.ShowAlerts("ErrorAlert");

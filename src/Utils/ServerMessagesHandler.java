@@ -21,11 +21,11 @@ public class ServerMessagesHandler {
     public void respondToGameRequest(JSONObject jsonReceived) {
         
         try {
-            String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
+            int requestingPlayerUsername = jsonReceived.getInt("requestingPlayer_ID");
         System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
         Platform.runLater( () -> {
                 System.out.println("Showing game request notification for: " + requestingPlayerUsername);
-                nav.showGameRequestNotification(requestingPlayerUsername);
+                nav.showGameRequestNotification(requestingPlayerUsername+"");
         });
         } catch (Exception e) {
             e.printStackTrace();

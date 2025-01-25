@@ -108,7 +108,7 @@ public class OnlineGame {
 
     try {
         System.out.println("Connection to server is OK!!");
-        connection.openConnection();
+//        connection.openConnection();
 
 //        Send request to the server
 //        String responseJSON = connection.sendRequest(message);
