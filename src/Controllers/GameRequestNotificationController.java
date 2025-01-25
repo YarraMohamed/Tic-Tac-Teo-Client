@@ -9,6 +9,7 @@ import Utils.ServerConnection;
 import Utils.ServerMessagesRouter;
 import Utils.SharedData;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -47,6 +48,7 @@ public class GameRequestNotificationController  {
     private void onAcceptButtonClicked(ActionEvent acceptEvent) {
         try {
             System.out.println("Game request accepted");
+//            Platform.exit();
             nav.goToBoardOnlineMode(2, 11, acceptEvent);/////////////
         } catch (IOException ex) {
             Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);

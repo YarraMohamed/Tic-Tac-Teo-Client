@@ -20,7 +20,7 @@ public class ServerMessagesRouter {
                     serverMessagesHandler.respondToGameRequest(serverMessageJson);
                     break;
                 case "MOVE":
-                    System.out.println("galk mooove");
+//                    System.out.println("galk mooove");
                     serverMessagesHandler.inGameMove(serverMessageJson);
                     break;
                 default:
