@@ -1,4 +1,3 @@
-
 package Utils;
 
 import Controllers.DifficultyPageController;
@@ -80,6 +79,7 @@ public class Navigation {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();   
+
     }  
     public void goToBoardOnlineMode(int turn,int p2Id,Event event) throws IOException{
         
@@ -99,15 +99,17 @@ public class Navigation {
     
      public void showGameRequestNotification(String requestingPlayerUsername) {
         System.out.println("Showing game request notification for: " + requestingPlayerUsername); // log message
+    }
+    
+    
+    public void showGameRequestNotification(String requestingPlayerUsername) {
         try {
             FXMLLoader gameRequestLoader = new FXMLLoader(getClass().getResource("/FXML/GameRequestNotification.fxml"));
-            System.out.println("FXMLLoader initialized"); // log message
             Parent gameRequestRoot = gameRequestLoader.load();
-            System.out.println("FXML loaded successfully"); // log message
             
             GameRequestNotificationController gameRequestController = gameRequestLoader.getController();
             gameRequestController.setRequestingPlayerUsername(requestingPlayerUsername);
-            
+
             Stage gameRequestStage = new Stage();
             gameRequestStage.setScene(new Scene(gameRequestRoot));
             gameRequestStage.setTitle("Game Request");
@@ -119,4 +121,5 @@ public class Navigation {
         } 
    
     }
+ 
 }

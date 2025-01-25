@@ -1,13 +1,11 @@
 package Controllers;
 
-
 import Utils.Encapsulator;
 import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -54,8 +52,7 @@ public class AvailablePlayersController implements Initializable {
 
     private Navigation nav;
     
-    int currentPlayerID = SharedData.getInstance().getPlayerID();
-
+    int currentPlayerID = SharedData.getInstance().getPlayerID();  
     
     
 //    private Navigation nav= new Navigation();
@@ -71,6 +68,7 @@ public class AvailablePlayersController implements Initializable {
         Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
         }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,7 +94,6 @@ public class AvailablePlayersController implements Initializable {
         // Extract player ID and username
          int playerId = playerEntry.getValue();
          String username = playerEntry.getKey();
-         
          // Create a box
         HBox box = new HBox();
         
@@ -116,48 +113,30 @@ public class AvailablePlayersController implements Initializable {
         Label label = new Label(username);
         label.setStyle("-fx-text-fill: black;");
         box.getChildren().add(label);
-        /*Button btn=new Button("Click me");
-        btn.addEventHandler(ActionEvent.ACTION, event->{
-            System.out.println("box clicked");
-           
-            try {
-             FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
-             root = x.load();
-             GameBoardController c = x.getController();
-             c.setp2ID(11);
-             c.setTurn(2);
-             c.setMode("pvp_online");
-             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-             scene = new Scene(root);
-             stage.setScene(scene);
-             stage.show();
-         } catch (IOException ex) {
-             Logger.getLogger(DifficultyPageController.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        });
-        box.getChildren().add(btn);
-        userContainer.getChildren().add(box);    
-    */
-        
+
         box.setOnMouseClicked(avaliablePlayerClicked -> {
-           try {
-               
-               boolean result=connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
-               
-               if(result){
+            
+
+            System.out.println("Chosen username: " + username);
+
+            try {
+                boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+                
+                if(result){
+                   System.out.println("Current player ID from Availabe controller  is: " + currentPlayerID);
                    String gameRequest = Encapsulator.encapsulateGameRequest(currentPlayerID, playerId);
                    ServerConnection.getInstance().sendRequest(gameRequest);
-                   nav.goToBoardOnlineMode(1, playerId, avaliablePlayerClicked);
                    
                }else{
                    System.out.println("error");
-               }   
-            } 
-            catch(IOException e) {
+               }
+  
+            } catch(IOException e) {
                 e.printStackTrace();
                 System.out.println("Failed to send game request.");
             }
         });
+        
                 
         userContainer.getChildren().add(box);
         

@@ -1,6 +1,5 @@
 package Utils;
 
-import java.io.DataInputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 
 public class ServerConnection {
     
@@ -91,16 +90,7 @@ public class ServerConnection {
             nav.ShowAlerts("ErrorAlert");
         }
     }
-    public void sendRequest2(String request) throws IOException {
-        String response ="sending data";
-        if (socket == null || socket.isClosed()) {
-            System.out.println( "Connection is not open");
-        }
-        
-        out.println(request);
-        out.flush();
-        System.out.println("call sent"+request);
-    }
+
     
    /* public String reciveRequset() throws IOException{
         System.out.println("try to recive request");
