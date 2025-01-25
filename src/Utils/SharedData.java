@@ -2,7 +2,6 @@ package Utils;
 
 import java.util.HashMap;
 import java.util.Map;
-import javafx.stage.Stage;
 
 public class SharedData {
     private static SharedData instance;
@@ -10,7 +9,7 @@ public class SharedData {
     private int playerID = 0;
     private String userName;
     private int score;
-
+    
     public Map<String, Integer> getAvailablePlayers() {
         return availablePlayers;
     }

@@ -1,17 +1,12 @@
 package Utils;
 
-import java.io.DataInputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 
 public class ServerConnection {
     
@@ -74,9 +69,8 @@ public class ServerConnection {
         } 
     }).start();
     } 
-    
-    
-    public synchronized void sendRequest(String request) throws IOException {
+
+    public void sendRequest(String request) throws IOException {
         
         if (socket == null || socket.isClosed()) {
             return;

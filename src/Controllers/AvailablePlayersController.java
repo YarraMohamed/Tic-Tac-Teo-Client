@@ -1,13 +1,11 @@
 package Controllers;
 
-
 import Utils.Encapsulator;
 import Utils.Navigation;
 import Utils.ServerConnection;
 import Utils.SharedData;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -49,22 +47,21 @@ public class AvailablePlayersController implements Initializable {
     
     private Navigation nav;
     
-    int currentPlayerID = SharedData.getInstance().getPlayerID();
+    int currentPlayerID = SharedData.getInstance().getPlayerID();  
 
-    
-    
     @FXML
     public void onNavBack(Event event) {
-    try {
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    } catch (IOException ex) {
-        Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
-    }
-}
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/FXML/ModePage.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(AvailablePlayersController.class.getName()).log(Level.SEVERE, "Failed to load SignIn.fxml", ex);
+        }
+   }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -89,7 +86,6 @@ public class AvailablePlayersController implements Initializable {
         // Extract player ID and username
          int playerId = playerEntry.getValue();
          String username = playerEntry.getKey();
-         
          // Create a box
         HBox box = new HBox();
         
@@ -109,25 +105,29 @@ public class AvailablePlayersController implements Initializable {
         Label label = new Label(username);
         label.setStyle("-fx-text-fill: black;");
         box.getChildren().add(label);
-        
         box.setOnMouseClicked(avaliablePlayerClicked -> {
-           try {
-               
-               boolean result=connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
-               
-               if(result){
+            
+
+            System.out.println("Chosen username: " + username);
+
+            try {
+                boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
+                
+                if(result){
+                   System.out.println("Current player ID from Availabe controller  is: " + currentPlayerID);
                    String gameRequest = Encapsulator.encapsulateGameRequest(currentPlayerID, playerId);
                    ServerConnection.getInstance().openConnection();
                    ServerConnection.getInstance().sendRequest(gameRequest);
-               }else{
+               }else {
                    System.out.println("error");
-               }   
-            } 
-            catch(IOException e) {
+               }
+  
+            } catch(IOException e) {
                 e.printStackTrace();
                 System.out.println("Failed to send game request.");
             }
         });
+        
                 
         userContainer.getChildren().add(box);
         

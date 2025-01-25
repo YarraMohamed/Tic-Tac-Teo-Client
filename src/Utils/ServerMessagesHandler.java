@@ -1,5 +1,6 @@
 package Utils;
 
+import Controllers.GameRequestNotificationController;
 import Utils.Navigation;
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,41 +17,36 @@ public class ServerMessagesHandler {
     
     private Navigation nav = new Navigation();
     
-
+    
     public void respondToGameRequest(JSONObject jsonReceived) {
         
         try {
             String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
-        System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
-        Platform.runLater( () -> {
-                System.out.println("Showing game request notification for: " + requestingPlayerUsername);
+            Platform.runLater( () -> {
                 nav.showGameRequestNotification(requestingPlayerUsername);
         });
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error handling game request.");
         }    
-        
-        
+          
     }
     
-    public void printResponse(String response) {
-        System.out.println("Response to client request: " + response);
-    }
     
-     public void Auth(int player_id) throws IOException{
+    public void Auth(int player_id) throws IOException{
         SharedData.getInstance().setPlayerID(player_id);
         Platform.runLater(() -> {
             try {
-                Navigation.goToPage("ModePage");
+                nav.goToPage("ModePage");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error navigating to ModePage.");
             }
         });
     }
-     
-     public void failedMessage(){
+    
+
+    public void failedMessage(){
          Platform.runLater(() -> {
             try {
                 nav.ShowAlerts("InvalidMessage");
@@ -60,8 +56,9 @@ public class ServerMessagesHandler {
             }
         });
      }
-     
-     public void viewProfile( String userName,int score){
+    
+    
+    public void viewProfile( String userName,int score){
          SharedData.getInstance().setUserName(userName);
          SharedData.getInstance().setScore(score);
          Platform.runLater(() -> {
@@ -72,9 +69,10 @@ public class ServerMessagesHandler {
                 System.out.println("Error navigating to ModePage.");
             }
         });
-     }
-     
-     public void avaliablePlayers(JSONObject jsonReceived ){
+    }
+    
+    
+    public void avaliablePlayers(JSONObject jsonReceived ){
          
          Map<String, Integer> playersMap = new HashMap<>();
          if (jsonReceived == null || jsonReceived.isEmpty()) {
@@ -101,6 +99,12 @@ public class ServerMessagesHandler {
             }
         });
      }
-     
-       
+         
+         
+    public void printResponse(String response) {
+        System.out.println("Response to client request: " + response);
+    }
+    
+    
+
 }
