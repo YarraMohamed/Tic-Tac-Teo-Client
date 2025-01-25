@@ -11,7 +11,9 @@ public class ServerMessagesRouter {
             System.out.println("message in routeServer " + message);
             JSONObject serverMessageJson = new JSONObject(message);
             ServerMessagesHandler serverMessagesHandler = new ServerMessagesHandler();
-            
+            if (message.contains("SERVER_DOWN")) {
+                serverMessagesHandler.onServerColsed();
+            }
             if (serverMessageJson.has("requestType")) {
             String requestType = serverMessageJson.getString("requestType");
             
@@ -61,5 +63,6 @@ public class ServerMessagesRouter {
         
     
     }
+    
     
 }

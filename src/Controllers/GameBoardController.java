@@ -32,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -121,7 +122,6 @@ public class GameBoardController implements Initializable {
     private int p2ID;
     private Thread thread;
     
-//    private OnlineMode2 onlineMode2;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -308,7 +308,7 @@ public class GameBoardController implements Initializable {
                     }
                     Thread.sleep(500);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(GameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+                    break;
                 }
             }
         });
@@ -694,7 +694,15 @@ public class GameBoardController implements Initializable {
 
             winStage.setOnCloseRequest(event -> {
                 mediaPlayer.stop();
-                playAgainWindow();
+                if (mode.equals("pvp_online")) {
+                    try {
+                        nav.goToPage("ModePage", p1Text);
+                    } catch (IOException ex) {
+                        Logger.getLogger(GameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    playAgainWindow();
+                };
             });
         } catch (Exception e) {
             // Handle potential errors in loading the video or media file
@@ -861,28 +869,34 @@ public class GameBoardController implements Initializable {
             if (isP1Win||isP2Win) {
                 if (turn==1) {
                     isP1Win=true;
+                    isP2Win=false;
                     onlineGame.updateScore(100);
                 }else{
+                    isP1Win=false;
                     isP2Win=true;
                     onlineGame.updateScore(-100);
                 }
+                thread.interrupt();
+                PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+                pause.setOnFinished(e->winAnimation());           
+                pause.play();
             }
             
         }else if(isP1Win || isP2Win){
             System.out.println("player1 => "+isP1Win+"  palyer2 => "+isP2Win);
-           PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
-           pause.setOnFinished(e->winAnimation());           
-           pause.play();
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+            pause.setOnFinished(e->winAnimation());           
+            pause.play();
         }else if(isFull()){
             tieScore += 1;
             tieText.setText("Tie : " + String.valueOf(tieScore));
             resetButton.setDisable(true);
             leaveButton.setDisable(true);
-            PauseTransition pauseAgain = new PauseTransition(Duration.seconds(1));
-            pauseAgain.setOnFinished(e->playAgainWindow());
-            pauseAgain.play();
-            
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+            pause.setOnFinished(e->winAnimation());           
+            pause.play();
         }
+        
     }
 
     

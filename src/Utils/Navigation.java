@@ -72,7 +72,7 @@ public class Navigation {
         
     }
     
-     public void goToPage(String Path,ActionEvent event) throws IOException{
+     public void goToPage(String Path,Event event) throws IOException{
         root = FXMLLoader.load(getClass().getResource("/FXML/"+Path+".fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Tic Tac Toe game");
@@ -81,6 +81,17 @@ public class Navigation {
         stage.show();   
 
     }  
+     
+      public void goToPage(String Path,Node node) throws IOException{
+        root = FXMLLoader.load(getClass().getResource("/FXML/"+Path+".fxml"));
+        stage = (Stage) node.getScene().getWindow();
+        stage.setTitle("Tic Tac Toe game");
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();   
+
+    }  
+     
     public void goToBoardOnlineMode(int turn,int p2Id,Event event) throws IOException{
         
         FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
