@@ -7,16 +7,10 @@ import Modes.Mode;
 import Modes.OnlineGame;
 import Utils.Navigation;
 import Utils.SharedData;
-import com.sun.rowset.internal.Row;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -30,27 +24,13 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import java.net.URL;
-import java.util.Random;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
- 
-
+import javafx.util.Duration; 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -139,7 +119,8 @@ public class GameBoardController implements Initializable {
 
     private OnlineGame onlineGame;
     private int p2ID;
-    private boolean isWaiting;
+    private Thread thread;
+    
 //    private OnlineMode2 onlineMode2;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -157,8 +138,7 @@ public class GameBoardController implements Initializable {
         board[2][0] = sqSevenXo;
         board[2][1] = sqEightXo;
         board[2][2] = sqNineXo;
-
-        card = "X";
+        card="X";
         p1Score = 0;
         p2Score = 0;
         tieScore = 0;
@@ -263,7 +243,6 @@ public class GameBoardController implements Initializable {
             updateButtonStyle(buttonPressed);
              if ("pvp_online".equals(mode)) {
                 onlineGame.sendMove(buttonPressed.getId());
-                isWaiting=true;
             }
             // Switch turns between players
             
@@ -296,115 +275,63 @@ public class GameBoardController implements Initializable {
 //                pc = new Hard(board, 'O', 'X');
                 handlePcMove(choosenBtn);
                 break;
-//            case "pvp_online":
-//                if (isWaiting) {
-//                    waitP2Move();
-//                }
-//                break;
+            case "pvp_online":
+                p2Text.setText("Waitting...");
+                p1Text.setText("palyer 1");
+
+                break;
         }
     }
 }
-   /*
-private void waitP2Move(){
-    Task<Void> task = new Task<Void>() {
-        @Override
-        protected Void call() throws Exception {
-            System.out.println("in call function");
-//            while (!winner && turn == 2) {
-                while (true) {
-                System.out.println("in the while loop!!");
-                // Replace this with your actual logic to check for server response
-                String response = onlineGame.reciveMove() ;
-                System.out.println(response);
-                if (response != null && !response.isEmpty()) {
-                    System.out.println(response);
-                    Platform.runLater(() -> processOpponentMove(response));
-                    break;
-                }
-                Thread.sleep(500); // Polling interval
-            }
-            return null;
-        }
-    };
 
-    Thread thread = new Thread(task);
-    thread.setDaemon(true); 
-    thread.start();
-
-}*/
 private static boolean hasNewMove;
 private static String newMove;
 public static void updateBoard(String btn){
     newMove=btn;
     hasNewMove=true;
+    System.out.println("Game Board recived :  "+newMove+" "+hasNewMove);
 }
 
 private void waitP2Move() {
-    Thread thread = new Thread(() -> {
-//        isWaiting=false;
-        while (hasNewMove) {
-            Platform.runLater(()->{
-                    hasNewMove=false;
-                    processOpponentMove(newMove);
-            });
-        }
-    });
-
-    thread.setDaemon(true); // Ensure the thread stops when the application exits
-    thread.start(); // Start the background thread
-}
-/*
-private void waitP2Move() {
-    Thread thread = new Thread(() -> {
-//        isWaiting=false;
+    thread = new Thread(() -> {
         while (true) {
             try {
-                System.out.println("Waiting for opponent's move...");
-                String response = onlineGame.reciveMove(); // Get move from the server
-                System.out.println("Server Response: " + response);
-
-                if (response != null && !response.isEmpty()) {
-                    Platform.runLater(() -> {
-                        processOpponentMove(response); // Update UI with opponent's move
+                System.out.println("thread running......");
+                System.out.println("has new move>>>>>"+hasNewMove);
+                if (hasNewMove) {
+                    Platform.runLater(()->{
+                        hasNewMove=false;
+                        processOpponentMove(newMove);
                     });
-//                    isWaiting=true;
-                   // break; // Exit the loop after processing the move
+                }else{
+                    System.out.println("has no move....................");
                 }
-
-//                Thread.sleep(500); // Polling interval to avoid overloading the server
-            } catch (Exception e) {
-                System.err.println("Error in waitP2Move: " + e.getMessage());
-                e.printStackTrace();
+            
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GameBoardController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     });
 
     thread.setDaemon(true); // Ensure the thread stops when the application exits
     thread.start(); // Start the background thread
-}*/
+}
+
 
 public void processOpponentMove(String response) {
     Button receivedBtn = findButtonById(response);
     if (receivedBtn != null && !winner) {
         receivedBtn.setText(card);
         updateButtonStyle(receivedBtn);
+        p2Text.setText("Player 2");
+        p1Text.setText("Waitting....");
         card = card.equals("X") ? "O" : "X";
         turn = 1;
         checkState();
     }
 }
-/*
-public void processOpponentMove(String response){
-    Button recivedBtn=findButtonById(response);
-    if (recivedBtn != null) {
-        recivedBtn.setText(card);
-        updateButtonStyle(recivedBtn);
-        card = card.equals("X") ? "O" : "X";
-        turn=1;
-                    System.out.println("turn is : "+turn);
-        checkState();
-    }
-}*/
+
 public Button findButtonById(String Id){
     switch(Id){
         case "sqOneXo":
@@ -464,134 +391,46 @@ private void updateButtonStyle(Button button) {
     button.setStyle((card.equals("X")) ? "-fx-text-fill: Black;" : "-fx-text-fill: #FFA500;");
 }
     
-    /*
-    public void gamePlayAction(ActionEvent e){
-        if(!winner){ 
-            buttonPressed = (Button) e.getSource();
-            if(buttonPressed.getText().equals("")){
-
-                if (gameRecorder != null) {
-                    gameRecorder.saveMovement(buttonPressed.getId(), card);
-                }
-                
-                buttonPressed.setText(card);
-                movesMade++;
-                
-                if(movesMade > 0 && gameRecorder == null){
-                
-                    recordButton.setDisable(true);
-                    
-                }
-                
-                if(card.equals("X")){
-                    buttonPressed.setStyle("-fx-text-fill: Black;");
-                    
-                    card = "O";
-                    
-                }else{ 
-                    buttonPressed.setStyle("-fx-text-fill: #FFA500;");
-                    card = "X";
-                    
-                    
-                }
-               checkState();     
+private Button clikedButton(int row,int col){
+    if(row == 0){
+        switch(col){
+            case 0:{
+                return sqOneXo;
+            }
+            case 1:{
+                return sqTwoXo;
+            }
+            case 2:{
+                return sqThreeXo;
             }
         }
-        if(!winner){
-            Button choosenBtn;
-            switch(mode){
-                case "pc_Easy":
-                {
-                     pc = new Easy(board,'O','X');
-                     int[] move = pc.getMove();
-                    int row = move[0];
-                    int col = move[1];
-                    choosenBtn=clikedButton(row, col);
-                    choosenBtn.setText(card);
-                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
-                    card=(card.equals("X"))?"O":"X";
-
-                    break;
-                }
-                    case "pc_Medium":
-                    {
-                     pc = new Medium(board,'O','X');
-                     int[] move = pc.getMove();
-                    int row = move[0];
-                    int col = move[1];
-                    choosenBtn=clikedButton(row, col);
-                    choosenBtn.setText(card);
-                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
-                    card=(card.equals("X"))?"O":"X";
-
-                    break;
-                    }
-                    case "pc_Hard":
-                    {
-                     pc = new Hard(board,'O','X');
-                     int[] move = pc.getMove();
-                    int row = move[0];
-                    int col = move[1];
-                    choosenBtn=clikedButton(row, col);
-                    choosenBtn.setText(card);
-                    choosenBtn.setStyle((card.equals("X"))?"-fx-text-fill: Black;":"-fx-text-fill: #FFA500;");
-                    card=(card.equals("X"))?"O":"X";
-
-                    }
-                    
-            checkState();
+    }else if(row==1){
+        switch(col){
+            case 0:{
+                return sqFourXo;
+            }
+            case 1:{
+                return sqFiveXo;
+            }
+            case 2:{
+                return sqSixXo;
+            }
         }
-        
-        if(winner){
-        movesMade = 0;
-        resetButton.setDisable(true);
-        leaveButton.setDisable(true);
+    }else if(row==2){
+        switch(col){
+            case 0:{
+                return sqSevenXo;
+            }
+            case 1:{
+                return sqEightXo;
+            }
+            case 2:{
+                return sqNineXo;
+            }
         }
     }
-    */
-    private Button clikedButton(int row,int col){
-        if(row == 0){
-                     switch(col){
-                         case 0:{
-                             return sqOneXo;
-                             
-                         }
-                         case 1:{
-                             return sqTwoXo;
-                             
-                         }
-                         case 2:{
-                             return sqThreeXo;
-                         }
-                     }
-                 }else if(row==1){
-                     switch(col){
-                         case 0:{
-                            return sqFourXo;
-                            
-                         }
-                         case 1:{
-                             return sqFiveXo;
-                         }
-                         case 2:{
-                            return sqSixXo;
-                         }
-                     }
-                 }else if(row==2){
-                     switch(col){
-                         case 0:{
-                             return sqSevenXo;
-                         }
-                         case 1:{
-                            return sqEightXo;
-                         }
-                         case 2:{
-                            return sqNineXo;
-                         }
-                     }
-                 }
-        return null;
-    }    
+    return null;
+}    
     public void drawLine(Button startButton, Button endButton){
     
         Bounds bound1 = startButton.localToScene(startButton.getBoundsInLocal());
@@ -870,55 +709,6 @@ private void updateButtonStyle(Button button) {
         });
     }
 }
-
-/*
-        
-    public void winAnimation(){
-       
-        String winMessage;
-        String winVideo;
-        
-        winStage = new Stage();
-        winStage.setTitle("Game Over");
-        
-         if(isP1Win){
-            winMessage = "Player One Wins!!";
-            winVideo = "/Resources/player1Wins.mp4";
-        }else if (pc != null && pc.isComputerPlayerWon()) {
-        
-            winMessage = "Computer Wins!!";  // Adjusted message
-            winVideo = null;  // No video for computer win
-            playAgainWindow();
-
-        }else {        
-             
-            winMessage = "Player Two Wins!!"; 
-            winVideo = "/Resources/player2Wins.mp4";
-        }
-        
-        Media media = new Media(getClass().getResource(winVideo).toExternalForm());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        MediaView mediaView = new MediaView(mediaPlayer);        
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        
-        Text winText = new Text(winMessage);
-        winText.setFont(Font.font("Chewy",FontWeight.BOLD,50));
-        winText.setFill(Color.RED);
-        
-        
-        StackPane root = new StackPane(mediaView,winText);
-        StackPane.setAlignment(winText,Pos.TOP_CENTER);
-        Scene scene = new Scene(root,800,450);
-        winStage.setScene(scene);
-        winStage.show();
-        winStage.setOnCloseRequest(event -> {
-    
-            mediaPlayer.stop();
-            playAgainWindow();
-        });  
-    }
-    */
     
     public void recordAgainWindow() {
         
@@ -1058,7 +848,9 @@ private void updateButtonStyle(Button button) {
         checkRows();
         checkColumns();
         checkDiagonals();
+        
         if(isP1Win || isP2Win){
+            System.out.println("player1 => "+isP1Win+"  palyer2 => "+isP2Win);
            PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
            pause.setOnFinished(e->winAnimation());           
            pause.play();

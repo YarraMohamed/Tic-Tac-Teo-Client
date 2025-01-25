@@ -139,6 +139,7 @@ public class OnlineGame {
 //        return false;
         }
     }
+    /*
     public String reciveMove(){
         try {
             String response=connection.reciveRequset();
@@ -156,7 +157,7 @@ public class OnlineGame {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
     public boolean updateScore(int score){
         String message = Encapsulator.encapsulateUpdateScore(player1Id, score);
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());

@@ -105,6 +105,7 @@ public class ServerMessagesHandler {
      
     public void inGameMove(JSONObject jsonReceived){
         String move=jsonReceived.getString("btn");
+        System.out.println(move);
         GameBoardController.updateBoard(move);
         
     }
