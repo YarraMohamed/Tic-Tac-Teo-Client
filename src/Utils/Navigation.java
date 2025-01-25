@@ -96,14 +96,16 @@ public class Navigation {
         stage.show();
     }
      
-    public void showGameRequestNotification(String requestingPlayerUsername) {
+    public void showGameRequestNotification(String requestingPlayerUsername , int requestingPlayerID,int requestedPlayerID ) {
         try {
             FXMLLoader gameRequestLoader = new FXMLLoader(getClass().getResource("/FXML/GameRequestNotification.fxml"));
             Parent gameRequestRoot = gameRequestLoader.load();
             
             GameRequestNotificationController gameRequestController = gameRequestLoader.getController();
             gameRequestController.setRequestingPlayerUsername(requestingPlayerUsername);
-
+            gameRequestController.setRequestedPlayerID(requestedPlayerID);
+            gameRequestController.setRequestingPlayerID(requestingPlayerID);
+           
             Stage gameRequestStage = new Stage();
             gameRequestStage.setScene(new Scene(gameRequestRoot));
             gameRequestStage.setTitle("Game Request");

@@ -32,6 +32,23 @@ public class GameRequestNotificationController  {
     private Label gameRequestMessage;
     
     private String requestingPlayerUsername; 
+    private int requestedPlayerID, requestingPlayerID;
+
+    public int getRequestedPlayerID() {
+        return requestedPlayerID;
+    }
+
+    public void setRequestedPlayerID(int requestedPlayerID) {
+        this.requestedPlayerID = requestedPlayerID;
+    }
+
+    public int getRequestingPlayerID() {
+        return requestingPlayerID;
+    }
+
+    public void setRequestingPlayerID(int requestingPlayerID) {
+        this.requestingPlayerID = requestingPlayerID;
+    }
 
     private ServerConnection connection = ServerConnection.getInstance();
     private Navigation nav=new Navigation();
@@ -45,9 +62,10 @@ public class GameRequestNotificationController  {
     
     @FXML
     private void onAcceptButtonClicked(ActionEvent acceptEvent) {
+        String message = Encapsulator.encapsulateAcceptiance(requestedPlayerID);
         try {
-            System.out.println("Game request accepted");
-            nav.goToBoardOnlineMode(2, 11, acceptEvent);/////////////
+            ServerConnection.getInstance().sendRequest(message);
+            nav.goToBoardOnlineMode(requestedPlayerID, requestedPlayerID, acceptEvent);
         } catch (IOException ex) {
             Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -56,6 +74,13 @@ public class GameRequestNotificationController  {
     
     @FXML
     private void onRejectButtonClicked(ActionEvent rejectEvent) {
+        String message = Encapsulator.encapsulateRejection(requestedPlayerID);
+        System.out.println(requestedPlayerID);
+        try {
+            ServerConnection.getInstance().sendRequest(message);
+        } catch (IOException ex) {
+            Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("Reject button clicked.");
     }
         

@@ -23,6 +23,9 @@ public class ServerMessagesRouter {
                     System.out.println("galk mooove");
                     serverMessagesHandler.inGameMove(serverMessageJson);
                     break;
+                case "rejectedNotificationAccepted" :
+                    serverMessagesHandler.rejection();
+                    break;
                 default:
                     System.out.println("Unhandled requestType: " + requestType);
                     break;
@@ -48,7 +51,13 @@ public class ServerMessagesRouter {
                     break;    
                 case "List_Of_Players" :
                     serverMessagesHandler.avaliablePlayers(serverMessageJson);
-                    
+                    break;
+                case "GAME_REQUEST_SUCCESS" :
+                    serverMessagesHandler.waitResponse();
+                    break;
+                case "GAME_REQUEST_FAILED" :
+                    serverMessagesHandler.Errormessage();
+                    break;
             }
         } else {
             System.out.println("Invalid message format: " + message);
