@@ -21,21 +21,31 @@ public class ServerMessagesHandler {
     
     
     public void respondToGameRequest(JSONObject jsonReceived) {
-        
         try {
             int requestingPlayerUsername = jsonReceived.getInt("requestingPlayer_ID");
-             System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
-             Platform.runLater( () -> {
+            System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
+            Platform.runLater( () -> {
                 System.out.println("Showing game request notification for: " + requestingPlayerUsername);
                 nav.showGameRequestNotification(requestingPlayerUsername+"");
-            String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
-            Platform.runLater( () -> {
-                nav.showGameRequestNotification(requestingPlayerUsername);
-        });
+            });
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error handling game request.");
-        }    
+        }
+//        try {
+//            int requestingPlayerUsername = jsonReceived.getInt("requestingPlayer_ID");
+//             System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
+//             Platform.runLater( () -> {
+//                System.out.println("Showing game request notification for: " + requestingPlayerUsername);
+//                nav.showGameRequestNotification(requestingPlayerUsername+"");
+////            String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
+////            Platform.runLater( () -> {
+////                nav.showGameRequestNotification(requestingPlayerUsername);
+////        });
+//             }}catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("Error handling game request.");
+//        }    
           
     }
     
