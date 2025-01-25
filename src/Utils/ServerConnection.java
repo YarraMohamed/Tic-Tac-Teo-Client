@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class ServerConnection {
     
     private Socket socket;
-    private BufferedReader  in;
+    private DataInputStream  in;
     private PrintStream out;
     private static ServerConnection instance;
     
@@ -46,19 +46,21 @@ public class ServerConnection {
     public void openConnection() throws IOException{
         String serverIP = SharedData.getInstance().getServerIp();
         socket = new Socket(serverIP,5005);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        in = new DataInputStream(socket.getInputStream());
         out = new PrintStream(socket.getOutputStream());
         handlerServer();
     }
     
 
     private void handlerServer() {
-        new Thread(() -> {
+        Thread th=new Thread(() -> {
         try {
             String message;
             
             while (socket != null && !socket.isClosed() && instance.checkServerAvailibily(SharedData.getInstance().getServerIp())) {
+                System.out.println("wait to lisent.....");
                 message = in.readLine();
+//                System.out.println("respooooonse"+message.toString());
 
                 if (message == null) {
                     System.out.println("Received null message from server. Continuing to listen...");
@@ -73,7 +75,9 @@ public class ServerConnection {
             System.err.println("Error parsing JSON message from server: " + e.getMessage());
             e.printStackTrace();
         } 
-    }).start();
+    });
+        th.setDaemon(true);
+        th.start();
     } 
     
     
@@ -107,6 +111,7 @@ public class ServerConnection {
     try {
         System.out.println("Waiting to read line...");
         String line = in.readLine(); // Read a line from the server
+        System.out.println("response recive req"+line);
 
         if (line == null) {
             System.err.println("Error: No data received. The server may have closed the connection.");

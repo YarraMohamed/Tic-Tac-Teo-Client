@@ -1,5 +1,6 @@
 package Utils;
 
+import Controllers.GameBoardController;
 import Utils.Navigation;
 import java.io.IOException;
 import java.util.HashMap;
@@ -102,5 +103,10 @@ public class ServerMessagesHandler {
         });
      }
      
+    public void inGameMove(JSONObject jsonReceived){
+        String move=jsonReceived.getString("btn");
+        GameBoardController.updateBoard(move);
+        
+    }
        
 }

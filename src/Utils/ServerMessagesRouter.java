@@ -20,6 +20,10 @@ public class ServerMessagesRouter {
                 case "GAME_REQUEST":
                     serverMessagesHandler.respondToGameRequest(serverMessageJson);
                     break;
+                case "MOVE":
+                    System.out.println("galk mooove");
+                    serverMessagesHandler.inGameMove(serverMessageJson);
+                    break;
                 default:
                     System.out.println("Unhandled requestType: " + requestType);
                     break;
@@ -32,6 +36,9 @@ public class ServerMessagesRouter {
                
             
             switch(response){
+                case "MOVED":
+                    System.out.println("Bravooo 3leek");
+                    break;
                 case "LOGGED_IN" :
                     serverMessagesHandler.Auth(playerid);
                     break;

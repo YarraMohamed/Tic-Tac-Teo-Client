@@ -1,5 +1,9 @@
 package Controllers;
 
+import Utils.Navigation;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,6 +27,7 @@ public class GameRequestNotificationController  {
     
     private String requestingPlayerUsername; 
     
+    private Navigation nav=new Navigation();
     
     public void setRequestingPlayerUsername(String requestingPlayerUsername) {
         this.requestingPlayerUsername = requestingPlayerUsername;
@@ -33,7 +38,12 @@ public class GameRequestNotificationController  {
     
     @FXML
     private void onAcceptButtonClicked(ActionEvent acceptEvent) {
-        System.out.println("Game request accepted");
+        try {
+            System.out.println("Game request accepted");
+            nav.goToBoardOnlineMode(2, 11, acceptEvent);/////////////
+        } catch (IOException ex) {
+            Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

@@ -1,12 +1,15 @@
 
 package Utils;
 
+import Controllers.DifficultyPageController;
+import Controllers.GameBoardController;
 import Controllers.GameRequestNotificationController;
 import Controllers.InvalidMessageController;
 import Controllers.ServerIPController;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -78,7 +81,22 @@ public class Navigation {
         stage.setScene(scene);
         stage.show();   
     }  
-     
+    public void goToBoardOnlineMode(int turn,int p2Id,Event event) throws IOException{
+        
+        FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
+        root = x.load();
+        GameBoardController c = x.getController();
+        c.setp2ID(p2Id);
+        c.setTurn(turn);
+        c.setMode("pvp_online");
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Tic Tac Toe game");
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    
      public void showGameRequestNotification(String requestingPlayerUsername) {
         System.out.println("Showing game request notification for: " + requestingPlayerUsername); // log message
         try {

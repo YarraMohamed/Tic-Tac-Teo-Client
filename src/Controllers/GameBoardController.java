@@ -140,7 +140,7 @@ public class GameBoardController implements Initializable {
     private OnlineGame onlineGame;
     private int p2ID;
     private boolean isWaiting;
-    
+//    private OnlineMode2 onlineMode2;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -205,9 +205,6 @@ public class GameBoardController implements Initializable {
             case "pvp_online":
                 onlineGame=new OnlineGame(p2ID);
                 waitP2Move();
-//                send2server();
-                isWaiting=false;
-//                isWaiting=true;
                 break;
         }
     }
@@ -335,15 +332,28 @@ private void waitP2Move(){
     thread.start();
 
 }*/
-   
-private void send2server(){
-    Thread th=new Thread(()->{
-        while (true) {            
-            onlineGame.sendMove("mooove");
+private static boolean hasNewMove;
+private static String newMove;
+public static void updateBoard(String btn){
+    newMove=btn;
+    hasNewMove=true;
+}
+
+private void waitP2Move() {
+    Thread thread = new Thread(() -> {
+//        isWaiting=false;
+        while (hasNewMove) {
+            Platform.runLater(()->{
+                    hasNewMove=false;
+                    processOpponentMove(newMove);
+            });
         }
     });
-    th.start();
+
+    thread.setDaemon(true); // Ensure the thread stops when the application exits
+    thread.start(); // Start the background thread
 }
+/*
 private void waitP2Move() {
     Thread thread = new Thread(() -> {
 //        isWaiting=false;
@@ -371,9 +381,19 @@ private void waitP2Move() {
 
     thread.setDaemon(true); // Ensure the thread stops when the application exits
     thread.start(); // Start the background thread
+}*/
+
+public void processOpponentMove(String response) {
+    Button receivedBtn = findButtonById(response);
+    if (receivedBtn != null && !winner) {
+        receivedBtn.setText(card);
+        updateButtonStyle(receivedBtn);
+        card = card.equals("X") ? "O" : "X";
+        turn = 1;
+        checkState();
+    }
 }
-
-
+/*
 public void processOpponentMove(String response){
     Button recivedBtn=findButtonById(response);
     if (recivedBtn != null) {
@@ -384,7 +404,7 @@ public void processOpponentMove(String response){
                     System.out.println("turn is : "+turn);
         checkState();
     }
-}
+}*/
 public Button findButtonById(String Id){
     switch(Id){
         case "sqOneXo":
