@@ -95,13 +95,7 @@ public class Navigation {
         stage.setScene(scene);
         stage.show();
     }
-    
-    
-     public void showGameRequestNotification(String requestingPlayerUsername) {
-        System.out.println("Showing game request notification for: " + requestingPlayerUsername); // log message
-    }
-    
-    
+     
     public void showGameRequestNotification(String requestingPlayerUsername) {
         try {
             FXMLLoader gameRequestLoader = new FXMLLoader(getClass().getResource("/FXML/GameRequestNotification.fxml"));
