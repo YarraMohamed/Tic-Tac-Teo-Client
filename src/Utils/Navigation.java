@@ -1,5 +1,6 @@
 package Utils;
 
+import Controllers.GameRejectionNotificationController;
 import Controllers.GameRequestNotificationController;
 import Controllers.InvalidMessageController;
 import Controllers.ServerIPController;
@@ -96,6 +97,54 @@ public class Navigation {
         } catch (IOException e) {
            e.printStackTrace();
            System.out.println("Error while trying to show the game request notification.");
+        } 
+   
+    }
+    
+    
+        /*public void showGameRejectNotification(String rejectingPlayerUsername) {
+            
+        try {
+            FXMLLoader gameRejectLoader = new FXMLLoader(getClass().getResource("/FXML/GameRejectionNotification.fxml"));
+            System.out.println("FXMLLoader initialized"); // log message
+            Parent gameRejectRoot = gameRejectLoader.load();
+            System.out.println("FXML loaded successfully"); // log message
+            
+            GameRejectionNotificationController gameRejectController = gameRejectLoader.getController();
+            gameRejectController.setRejectingPlayerUsername(rejectingPlayerUsername);
+            
+            Stage gameRejectStage = new Stage();
+            gameRejectStage.setScene(new Scene(gameRejectRoot));
+            gameRejectStage.setTitle("Game Rejection");
+            gameRejectStage.show();
+            
+        } catch (IOException e) {
+           e.printStackTrace();
+           System.out.println("Error while trying to show the game rejection notification.");
+        } 
+   
+    }*/
+    
+    public void showGameRejectNotification() {
+            
+        try {
+            FXMLLoader gameRejectLoader = new FXMLLoader(getClass().getResource("/FXML/GameRejectionNotification.fxml"));
+            System.out.println("FXMLLoader initialized"); // log message
+            Parent gameRejectRoot = gameRejectLoader.load();
+            System.out.println("FXML loaded successfully"); // log message
+            
+            GameRejectionNotificationController gameRejectController = gameRejectLoader.getController();
+            //gameRejectController.setRejectingPlayerUsername(rejectingPlayerUsername);
+            gameRejectController.displayRejectionMessage();
+            
+            Stage gameRejectStage = new Stage();
+            gameRejectStage.setScene(new Scene(gameRejectRoot));
+            gameRejectStage.setTitle("Game Rejection");
+            gameRejectStage.show();
+            
+        } catch (IOException e) {
+           e.printStackTrace();
+           System.out.println("Error while trying to show the game rejection notification.");
         } 
    
     }

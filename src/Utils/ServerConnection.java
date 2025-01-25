@@ -72,7 +72,7 @@ public class ServerConnection {
     
     
     public synchronized void sendRequest(String request) throws IOException {
-        
+        System.out.println("Sending request to server: " + request); // log message
         if (socket == null || socket.isClosed()) {
             return;
         }

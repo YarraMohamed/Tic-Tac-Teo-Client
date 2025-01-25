@@ -17,17 +17,67 @@ public class ServerMessagesHandler {
     
     private Navigation nav = new Navigation();
     
-    
     public void respondToGameRequest(JSONObject jsonReceived) {
+    String requestType = jsonReceived.getString("requestType");
+    int rejectedPlayerId = jsonReceived.getInt("requestingPlayer_ID");
+    GameRequestNotificationController.rejectedPlayerId = rejectedPlayerId;
+    if ("GAME_REQUEST".equals(requestType)) {
+        String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
+        Platform.runLater(() -> {
+            nav.showGameRequestNotification(requestingPlayerUsername);
+        });
+    } else {
+        System.out.println("Unhandled requestType: " + requestType);
+    }
+}
+    
+    /*public void respondToGameRequest(JSONObject jsonReceived) {
         
         try {
-            String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
+            int rejectedPlayerId = jsonReceived.getInt("requestingPlayer_ID");
+            /*GameRequestNotificationController grc = new GameRequestNotificationController();
+            grc.setRejectedPlayerId(rejectedPlayerId);*/
+            /*String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
+            GameRequestNotificationController.rejectedPlayerId = rejectedPlayerId;
+            System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
             Platform.runLater( () -> {
                 nav.showGameRequestNotification(requestingPlayerUsername);
         });
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error handling game request.");
+        }    
+          
+    }*/
+    
+    
+    /*public void respondToGameReject(JSONObject jsonReceived) {
+        
+        try {
+            String rejectingPlayerUsername = jsonReceived.getString("rejectingPlayerUsername");
+            System.out.println("Parsed rejectingPlayerUsername: " + rejectingPlayerUsername); // log message
+            Platform.runLater( () -> {
+                nav.showGameRejectNotification(rejectingPlayerUsername);
+        });
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error handling game rejection.");
+        }    
+          
+    }*/
+    
+    
+    public void respondToGameReject(JSONObject jsonReceived) {
+        
+        try {
+            //String rejectingPlayerUsername = jsonReceived.getString("rejectingPlayerUsername");
+            //System.out.println("Parsed rejectingPlayerUsername: " + rejectingPlayerUsername); // log message
+            Platform.runLater( () -> {
+                nav.showGameRejectNotification();
+        });
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error handling game rejection.");
         }    
           
     }

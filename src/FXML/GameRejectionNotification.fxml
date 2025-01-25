@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="gameRejectNotification" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="274.0" prefWidth="500.0" styleClass="game-request-background" stylesheets="@../Resources/Pages.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.GameRejectionNotificationController">
+   <children>
+      <Button fx:id="cancelButton" layoutX="177.0" layoutY="198.0" mnemonicParsing="false" onAction="#onCancelButtonClicked" prefHeight="39.0" prefWidth="146.0" styleClass="game-request-buttons" stylesheets="@../Resources/Pages.css" text="Cancel" />
+      <Text fx:id="gameRejectTitle" fill="WHITE" layoutX="107.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="game-request-text" text="Request Rejected!" />
+      <Label fx:id="gameRejectMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="107.0" text="Requested player has rejected your gam." textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

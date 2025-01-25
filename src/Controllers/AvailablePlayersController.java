@@ -44,7 +44,10 @@ public class AvailablePlayersController implements Initializable {
     
     private Navigation nav;
     
-    int currentPlayerID = SharedData.getInstance().getPlayerID();  
+    int currentPlayerID = SharedData.getInstance().getPlayerID();
+    //public static int rejectedPlayerId = SharedData.getInstance().getPlayerID();
+            
+    //private GameRequestNotificationController gameRequestNotification = new GameRequestNotificationController();
 
     @FXML
     public void onNavBack(Event event) {
@@ -82,6 +85,7 @@ public class AvailablePlayersController implements Initializable {
         
         // Extract player ID and username
          int playerId = playerEntry.getValue();
+         //gameRequestNotification.setRejectingPlayerId(playerId);
          String username = playerEntry.getKey();
 
          // Create a box
@@ -114,6 +118,8 @@ public class AvailablePlayersController implements Initializable {
                 if(result){
                    System.out.println("Current player ID from Availabe controller  is: " + currentPlayerID);
                    String gameRequest = Encapsulator.encapsulateGameRequest(currentPlayerID, playerId);
+                   //GameRequestNotificationController.rejectingPlayerId = playerId;
+                   //gameRequestNotification.setRejectingPlayerId(playerId);
                    ServerConnection.getInstance().openConnection();
                    ServerConnection.getInstance().sendRequest(gameRequest);
                }else {

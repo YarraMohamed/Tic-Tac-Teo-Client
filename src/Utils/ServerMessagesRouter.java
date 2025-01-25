@@ -19,6 +19,9 @@ public class ServerMessagesRouter {
                 case "GAME_REQUEST":
                     serverMessagesHandler.respondToGameRequest(serverMessageJson);
                     break;
+            case "GAME_REJECTED":
+                    serverMessagesHandler.respondToGameReject(serverMessageJson);
+                    break;
                 default:
                     System.out.println("Unhandled requestType: " + requestType);
                     break;
