@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,13 +22,15 @@ public class ServerMessagesHandler {
     
     
     public void respondToGameRequest(JSONObject jsonReceived) {
+        GameRequestNotificationController n = new GameRequestNotificationController();
         
         try {
-            int requestingPlayerUsername = jsonReceived.getInt("requestingPlayer_ID");
-        System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
+            int requestingPlayerID = jsonReceived.getInt("requestingPlayer_ID");
+            int requestedPlayerID = jsonReceived.getInt("requestedPlayerID"); 
+             String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
         Platform.runLater( () -> {
                 System.out.println("Showing game request notification for: " + requestingPlayerUsername);
-                nav.showGameRequestNotification(requestingPlayerUsername+"");
+                nav.showGameRequestNotification(requestingPlayerUsername+"" ,requestingPlayerID,requestedPlayerID );
         });
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,6 +64,35 @@ public class ServerMessagesHandler {
         });
      }
     
+      public void Errormessage(){
+         Platform.runLater(() -> {
+            try {
+                nav.ShowAlerts("ErrorAlert");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error navigating to ModePage.");
+            }
+        });
+     }
+    public void waitResponse(){
+         Platform.runLater(() -> {
+           Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Please wait");
+        alert.setHeaderText(null);
+        alert.setContentText("wait for the player response");
+        alert.show();
+        });
+     }
+    
+    public void rejection(){
+         Platform.runLater(() -> {
+           Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Rejection");
+        alert.setHeaderText(null);
+        alert.setContentText("Please choose antoher player");
+        alert.show();
+        });
+     }
     
     public void viewProfile( String userName,int score){
          SharedData.getInstance().setUserName(userName);
