@@ -60,29 +60,32 @@ public class GameRequestNotificationController  {
     }
     
     
-    @FXML
-    private void onAcceptButtonClicked(ActionEvent acceptEvent) {
-        String message = Encapsulator.encapsulateAcceptiance(requestedPlayerID);
-        try {
-            ServerConnection.getInstance().sendRequest(message);
-            nav.goToBoardOnlineMode(requestedPlayerID, requestedPlayerID, acceptEvent);
-        } catch (IOException ex) {
-            Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+   @FXML
+private void onAcceptButtonClicked(ActionEvent acceptEvent) {
+    // Send acceptance message to notify the sender
+    String message = Encapsulator.encapsulateAcceptance(requestingPlayerID, requestedPlayerID);
+    try {
+        ServerConnection.getInstance().sendRequest(message);
+        // Navigate to the game board for the receiver
+        nav.goToBoardOnlineMode(requestedPlayerID, requestingPlayerID, acceptEvent);
+    } catch (IOException ex) {
+        Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
     }
+    System.out.println("Accept button clicked by requested player.");
+}
     
-    
+   
     @FXML
-    private void onRejectButtonClicked(ActionEvent rejectEvent) {
-        String message = Encapsulator.encapsulateRejection(requestedPlayerID);
-        System.out.println(requestedPlayerID);
-        try {
-            ServerConnection.getInstance().sendRequest(message);
-        } catch (IOException ex) {
-            Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println("Reject button clicked.");
+private void onRejectButtonClicked(ActionEvent rejectEvent) {
+    // Send rejection message to notify the sender
+    String message = Encapsulator.encapsulateRejection(requestingPlayerID);
+    try {
+        ServerConnection.getInstance().sendRequest(message);
+    } catch (IOException ex) {
+        Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
     }
+    System.out.println("Reject button clicked by requested player.");
+}
         
         
 }

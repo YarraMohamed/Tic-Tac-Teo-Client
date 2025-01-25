@@ -59,9 +59,12 @@ public class Encapsulator {
         return gameRequestRequest.toString();
     }
       
-    public static String encapsulateAcceptiance( int requestedPlayerId) {
+    public static String encapsulateAcceptance( int requestingPlayreId,int requestedPlayerId) 
+    {
         JSONObject gameRequestRequest = new JSONObject();
         gameRequestRequest.put("requestType", "ACCEPT");
+       gameRequestRequest.put("requestingPlayer_ID", requestingPlayreId); // Receiver
+
         gameRequestRequest.put("requestedPlayer_ID", requestedPlayerId);
         return gameRequestRequest.toString();
     }

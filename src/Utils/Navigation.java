@@ -72,6 +72,8 @@ public class Navigation {
         
     }
     
+    
+    
      public void goToPage(String Path,ActionEvent event) throws IOException{
         root = FXMLLoader.load(getClass().getResource("/FXML/"+Path+".fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -96,6 +98,7 @@ public class Navigation {
         stage.show();
     }
      
+    
     public void showGameRequestNotification(String requestingPlayerUsername , int requestingPlayerID,int requestedPlayerID ) {
         try {
             FXMLLoader gameRequestLoader = new FXMLLoader(getClass().getResource("/FXML/GameRequestNotification.fxml"));

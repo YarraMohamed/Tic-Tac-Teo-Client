@@ -19,7 +19,8 @@ import org.json.JSONObject;
 public class ServerMessagesHandler {
     
     private Navigation nav = new Navigation();
-    
+        private Alert waitAlert;
+
     
     public void respondToGameRequest(JSONObject jsonReceived) {
         GameRequestNotificationController n = new GameRequestNotificationController();
@@ -74,25 +75,31 @@ public class ServerMessagesHandler {
             }
         });
      }
-    public void waitResponse(){
-         Platform.runLater(() -> {
-           Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Please wait");
-        alert.setHeaderText(null);
-        alert.setContentText("wait for the player response");
-        alert.show();
-        });
-     }
-    
-    public void rejection(){
-         Platform.runLater(() -> {
-           Alert alert = new Alert(Alert.AlertType.WARNING);
+
+public void waitResponse() {
+    Platform.runLater(() -> {
+        waitAlert = new Alert(Alert.AlertType.INFORMATION);
+        waitAlert.setTitle("Please wait");
+        waitAlert.setHeaderText(null);
+        waitAlert.setContentText("Waiting for the other player's response...");
+        waitAlert.show();
+    });
+}
+
+public void closeWaitAlert() {
+    if (waitAlert != null) {
+        Platform.runLater(() -> waitAlert.close());
+    }
+}
+   public void rejection() {
+    Platform.runLater(() -> {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Rejection");
         alert.setHeaderText(null);
-        alert.setContentText("Please choose antoher player");
+        alert.setContentText("Your game request was rejected by the other player.");
         alert.show();
-        });
-     }
+    });
+}
     
     public void viewProfile( String userName,int score){
          SharedData.getInstance().setUserName(userName);
