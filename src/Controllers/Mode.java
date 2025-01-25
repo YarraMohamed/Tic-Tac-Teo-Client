@@ -5,16 +5,16 @@
  */
 
 
-package Controllers;
+/*package Controllers;
 
 import java.util.Random;
-import javafx.scene.control.Button;
+import javafx.scene.control.Button;*/
 
 /**
  *
  * @author Maryam Muhammad
  */
-public abstract class Mode {
+/*public abstract class Mode {
     protected Button[][] board;
     protected char computerSymbol;
     protected char playerSymbol;

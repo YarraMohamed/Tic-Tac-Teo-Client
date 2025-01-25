@@ -31,7 +31,7 @@ public class SignUpController  {
     public void goToModePage(ActionEvent event) throws IOException {
         
         if(!emailTextField.getText().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")){
-            nav.ShowAlerts("InvalidMessage", event);
+            nav.ShowAlerts("InvalidMessage");
             return;
         }
         
@@ -40,22 +40,10 @@ public class SignUpController  {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            
             connection.openConnection();
-            String responseJSON = connection.sendRequest(message);
-            JSONObject jsonReceived = new JSONObject(responseJSON);
-            String response = jsonReceived.getString("response");
-            
-            if(response.equals("Success")){
-                int playerID = jsonReceived.optInt("Player_ID");
-                SharedData.getInstance().setPlayerID(playerID);
-                nav.goToPage("ModePage", event);
-            } else {
-                nav.ShowAlerts("InvalidMessage", event);
-            }
-            
+            connection.sendRequest(message);  
         }else{
-            nav.ShowAlerts("ErrorAlert", event);
+            nav.ShowAlerts("ErrorAlert");
         }
     }
 }
