@@ -32,7 +32,7 @@ public class ModePageController {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            connection.openConnection();
+            //connection.openConnection();
             connection.sendRequest(message);       
         }else{
             nav.ShowAlerts("ErrorAlert");
@@ -45,8 +45,7 @@ public class ModePageController {
         boolean result = connection.checkServerAvailibily(SharedData.getInstance().getServerIp());
         
         if(result){
-            
-            connection.openConnection();
+            SharedData.getInstance().setPlayerID(0);
             connection.sendRequest(message); 
             nav.goToPage("HomePage", event);
             connection.closeConnection();

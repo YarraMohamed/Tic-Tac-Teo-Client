@@ -58,8 +58,7 @@ public class ServerConnection {
         Thread th=new Thread(() -> {
         try {
             String message;
-            
-            while (socket != null && !socket.isClosed() && instance.checkServerAvailibily(SharedData.getInstance().getServerIp())) {
+            while (socket!=null &&!socket.isClosed()&& instance.checkServerAvailibily(SharedData.getInstance().getServerIp())) {
                 System.out.println("wait to lisent.....");
                 message = in.readLine();
                 System.out.println("respooooonse"+message.toString());
@@ -69,13 +68,14 @@ public class ServerConnection {
                     continue;
                 }
                 ServerMessagesRouter.routeServerMessage(message);
+                if(SharedData.getInstance().getPlayerID()== 0) {
+                    break;
+                }
             }
         } catch (IOException e) {
-            System.err.println("Error while listening for messages from server: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Logged out");
         } catch (JSONException e) {
-            System.err.println("Error parsing JSON message from server: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error parsing JSON message from server: ");
         } 
     });
         th.setDaemon(true);
@@ -83,14 +83,13 @@ public class ServerConnection {
     } 
     
     
-    public synchronized void sendRequest(String request) throws IOException {
-        
-        if (socket == null || socket.isClosed()) {
-            return;
+    public void sendRequest(String request) throws IOException {
+        if(instance.checkServerAvailibily(SharedData.getInstance().getServerIp())){
+            out.println(request);
+            out.flush();
+        }else{
+            nav.ShowAlerts("ErrorAlert");
         }
-        
-        out.println(request);
-        out.flush();
     }
     public void sendRequest2(String request) throws IOException {
         String response ="sending data";
@@ -136,10 +135,7 @@ public class ServerConnection {
         throw e; // Re-throw the exception if necessary
     }
 }
-
-
     
-            
    public void closeConnection() {
     try {
         if (in != null) in.close();
