@@ -50,19 +50,12 @@ public class Encapsulator {
        // System.out.println("Sending GAME_REQUEST: " + gameRequestRequest); // log message
         return gameRequestRequest.toString();
     }
-     
-      public static String encapsulateRejection( int requestedPlayerId) {
-        JSONObject gameRequestRequest = new JSONObject();
-        gameRequestRequest.put("requestType", "REJECT");
-        gameRequestRequest.put("requestedPlayer_ID", requestedPlayerId);
-       // System.out.println("Sending GAME_REQUEST: " + gameRequestRequest); // log message
-        return gameRequestRequest.toString();
-    }
-      
-    public static String encapsulateAcceptiance( int requestedPlayerId) {
+     public static String encapsulateAcceptiance( int requestedPlayerId) {
         JSONObject gameRequestRequest = new JSONObject();
         gameRequestRequest.put("requestType", "ACCEPT");
-        gameRequestRequest.put("requestedPlayer_ID", requestedPlayerId);
+        gameRequestRequest.put("reciverID", requestedPlayerId);
+        gameRequestRequest.put("senderID", SharedData.getInstance().getPlayerID());
+
         return gameRequestRequest.toString();
     }
     

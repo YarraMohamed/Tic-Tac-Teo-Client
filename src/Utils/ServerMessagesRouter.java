@@ -9,9 +9,16 @@ public class ServerMessagesRouter {
         
         try {
             System.out.println("message in routeServer " + message);
+            if (message.toString().equals("DONE")) {
+                System.out.println("doooone");
+                return;
+            }
             JSONObject serverMessageJson = new JSONObject(message);
             ServerMessagesHandler serverMessagesHandler = new ServerMessagesHandler();
             
+            if (message.contains("SERVER_DOWN")) {
+                serverMessagesHandler.onServerColsed();
+            }
             if (serverMessageJson.has("requestType")) {
             String requestType = serverMessageJson.getString("requestType");
             
@@ -20,15 +27,16 @@ public class ServerMessagesRouter {
                     serverMessagesHandler.respondToGameRequest(serverMessageJson);
                     break;
                 case "MOVE":
-                    System.out.println("galk mooove");
+//                    System.out.println("galk mooove");
                     serverMessagesHandler.inGameMove(serverMessageJson);
                     break;
-                case "rejectedNotificationAccepted" :
-                    serverMessagesHandler.rejection();
+                case "ACCEPTED":
+                    serverMessagesHandler.onAccept(serverMessageJson);
                     break;
                 default:
                     System.out.println("Unhandled requestType: " + requestType);
                     break;
+                    
             }
         } else if (serverMessageJson.has("response")) {
             String response = serverMessageJson.getString("response");
@@ -51,13 +59,7 @@ public class ServerMessagesRouter {
                     break;    
                 case "List_Of_Players" :
                     serverMessagesHandler.avaliablePlayers(serverMessageJson);
-                    break;
-                case "GAME_REQUEST_SUCCESS" :
-                    serverMessagesHandler.waitResponse();
-                    break;
-                case "GAME_REQUEST_FAILED" :
-                    serverMessagesHandler.Errormessage();
-                    break;
+                    
             }
         } else {
             System.out.println("Invalid message format: " + message);
@@ -70,5 +72,6 @@ public class ServerMessagesRouter {
         
     
     }
+    
     
 }

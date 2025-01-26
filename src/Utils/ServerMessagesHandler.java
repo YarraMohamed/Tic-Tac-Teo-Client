@@ -9,16 +9,26 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import sun.applet.Main;
 
 public class ServerMessagesHandler {
     
     private Navigation nav = new Navigation();
+//    private Stage stage;
     
     
     public void respondToGameRequest(JSONObject jsonReceived) {
@@ -39,6 +49,16 @@ public class ServerMessagesHandler {
         
         
     }
+    
+    public void onServerColsed() {        
+            try {
+                nav.goToPage("HomePage");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.out.println("Error navigating to Home Page.");
+            }
+    }
+
     
     public void Auth(int player_id) throws IOException{
         SharedData.getInstance().setPlayerID(player_id);
@@ -64,35 +84,6 @@ public class ServerMessagesHandler {
         });
      }
     
-      public void Errormessage(){
-         Platform.runLater(() -> {
-            try {
-                nav.ShowAlerts("ErrorAlert");
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Error navigating to ModePage.");
-            }
-        });
-     }
-    public void waitResponse(){
-         Platform.runLater(() -> {
-           Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Please wait");
-        alert.setHeaderText(null);
-        alert.setContentText("wait for the player response");
-        alert.show();
-        });
-     }
-    
-    public void rejection(){
-         Platform.runLater(() -> {
-           Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Rejection");
-        alert.setHeaderText(null);
-        alert.setContentText("Please choose antoher player");
-        alert.show();
-        });
-     }
     
     public void viewProfile( String userName,int score){
          SharedData.getInstance().setUserName(userName);
@@ -135,9 +126,14 @@ public class ServerMessagesHandler {
             }
         });
      }
+    public void onAccept(JSONObject json) throws IOException{
+        int p2=json.getInt("p2ID");
+//        nav.goToBoardOnlineMode2(1,p2);
+    }
 
     public void inGameMove(JSONObject jsonReceived){
         String move=jsonReceived.getString("btn");
+        System.out.println(move);
         GameBoardController.updateBoard(move);
         
     }

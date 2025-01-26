@@ -126,7 +126,7 @@ public class AvailablePlayersController implements Initializable {
                    System.out.println("Current player ID from Availabe controller  is: " + currentPlayerID);
                    String gameRequest = Encapsulator.encapsulateGameRequest(currentPlayerID, playerId);
                    ServerConnection.getInstance().sendRequest(gameRequest);
-                   
+                   nav.goToBoardOnlineMode(1, playerId);
                }else{
                    System.out.println("error");
                }
