@@ -127,8 +127,16 @@ public class ServerMessagesHandler {
         });
      }
     public void onAccept(JSONObject json) throws IOException{
-        int p2=json.getInt("p2ID");
-//        nav.goToBoardOnlineMode2(1,p2);
+        Platform.runLater(() -> {
+            try {
+                int p2=json.getInt("p2ID");
+                nav.goToBoardOnlineMode(1,p2);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error navigating to ModePage.");
+            }
+        });
+        
     }
 
     public void inGameMove(JSONObject jsonReceived){
