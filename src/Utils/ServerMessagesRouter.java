@@ -8,17 +8,19 @@ public class ServerMessagesRouter {
     public static void routeServerMessage(String message) {
         
         try {
+            ServerMessagesHandler serverMessagesHandler = new ServerMessagesHandler();
+
             System.out.println("message in routeServer " + message);
             if (message.toString().equals("DONE")) {
                 System.out.println("doooone");
                 return;
             }
-            JSONObject serverMessageJson = new JSONObject(message);
-            ServerMessagesHandler serverMessagesHandler = new ServerMessagesHandler();
-            
             if (message.contains("SERVER_DOWN")) {
                 serverMessagesHandler.onServerColsed();
             }
+            JSONObject serverMessageJson = new JSONObject(message);
+            
+            
             if (serverMessageJson.has("requestType")) {
             String requestType = serverMessageJson.getString("requestType");
             

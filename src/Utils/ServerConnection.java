@@ -65,6 +65,14 @@ public class ServerConnection {
 
                 if (message == null) {
                     System.out.println("Received null message from server. Continuing to listen...");
+                    Platform.runLater(()->{
+                        try {
+                            nav.goToPage("HomePage");
+                        } catch (IOException ex) {
+                            Logger.getLogger(ServerConnection.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    );
                     continue;
                 }
                 ServerMessagesRouter.routeServerMessage(message);
