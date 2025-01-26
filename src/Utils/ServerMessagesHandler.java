@@ -23,69 +23,40 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import sun.applet.Main;
 
 public class ServerMessagesHandler {
     
     private Navigation nav = new Navigation();
-    private Stage stage;
+//    private Stage stage;
+    
     
     public void respondToGameRequest(JSONObject jsonReceived) {
+        GameRequestNotificationController n = new GameRequestNotificationController();
+        
         try {
-            int requestingPlayerUsername = jsonReceived.getInt("requestingPlayer_ID");
-            System.out.println("Parsed requestingPlayerUsername: " + requestingPlayerUsername); // log message
-            Platform.runLater( () -> {
+            int requestingPlayerID = jsonReceived.getInt("requestingPlayer_ID");
+            int requestedPlayerID = jsonReceived.getInt("requestedPlayerID"); 
+             String requestingPlayerUsername = jsonReceived.getString("requestingPlayerUsername");
+        Platform.runLater( () -> {
                 System.out.println("Showing game request notification for: " + requestingPlayerUsername);
-                nav.showGameRequestNotification(requestingPlayerUsername+"");
-            });
+                nav.showGameRequestNotification(requestingPlayerUsername+"" ,requestingPlayerID,requestedPlayerID );
+        });
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error handling game request.");
-        }
-          
+        }    
+        
+        
     }
     
-    public void onServerColsed() {
-        
-        stage = new Stage();
-        stage.setTitle("Run it Back");
-        stage.initStyle(StageStyle.UNDECORATED);
-
-
-        Text againText = new Text("Server is Closed");
-        againText.setFont(Font.font("Chewy", FontWeight.BOLD, 50));
-        againText.setFill(Color.WHITE);
-
-        Button yesButton = new Button("OK");
-        
-        yesButton.setOnAction(e -> {
-            Platform.runLater(() -> {
+    public void onServerColsed() {        
             try {
                 nav.goToPage("HomePage");
             } catch (IOException ex) {
                 ex.printStackTrace();
                 System.out.println("Error navigating to Home Page.");
             }
-        });
-        });
-        
-        yesButton.setFont(Font.font("Chewy", FontWeight.BOLD, 30));
-        yesButton.setStyle("-fx-background-color: linear-gradient(to bottom,#1F60C1,#8D9CB3); -fx-background-radius: 30; -fx-text-fill:#ffffff;");
-
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(againText);
-
-        HBox buttonBox = new HBox(30);
-        buttonBox.getChildren().addAll(yesButton);
-        buttonBox.setAlignment(Pos.CENTER); 
-
-        borderPane.setBottom(buttonBox);
-        
-        borderPane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #86AEE9, #09316D);");
-
-        Scene scene = new Scene(borderPane, 400, 225);
-        
-        stage.setScene(scene);
-        stage.show();
     }
 
     
@@ -155,6 +126,10 @@ public class ServerMessagesHandler {
             }
         });
      }
+    public void onAccept(JSONObject json) throws IOException{
+        int p2=json.getInt("p2ID");
+//        nav.goToBoardOnlineMode2(1,p2);
+    }
 
     public void inGameMove(JSONObject jsonReceived){
         String move=jsonReceived.getString("btn");

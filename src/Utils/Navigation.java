@@ -7,6 +7,8 @@ import Controllers.InvalidMessageController;
 import Controllers.ServerIPController;
 
 import java.io.IOException;
+import java.util.function.Consumer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +28,19 @@ public class Navigation {
     
     public static void setPrimaryStage(Stage stage) {
         primaryStage = stage;
+    }
+    public static void switchScene(String fxmlPath, String title, Consumer<Object> controllerConsumer) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Navigation.class.getResource(fxmlPath));
+        Parent root = loader.load();
+        
+        // Pass the controller to the consumer for initialization
+        if (controllerConsumer != null) {
+            controllerConsumer.accept(loader.getController());
+        }
+
+        primaryStage.setTitle(title);
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
     }
     
      public static void goToPage(String path) throws IOException {
@@ -91,8 +106,23 @@ public class Navigation {
         stage.show();   
 
     }  
-     
-    public void goToBoardOnlineMode(int turn,int p2Id,Event event) throws IOException{
+    public void goToBoardOnlineMode2(Stage stage, int turn, int p2Id) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
+        Parent root = loader.load();
+
+        // Get the controller and set parameters
+        GameBoardController controller = loader.getController();
+        controller.setp2ID(p2Id);
+        controller.setTurn(turn);
+        controller.setMode("pvp_online");
+        
+        // Set the new scene
+        Scene scene = new Scene(root);
+        stage.setTitle("Tic Tac Toe game");
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void goToBoardOnlineMode(int turn,int p2Id) throws IOException{
         
         FXMLLoader x = new FXMLLoader(getClass().getResource("/FXML/GameBoard.fxml"));
         root = x.load();
@@ -100,14 +130,37 @@ public class Navigation {
         c.setp2ID(p2Id);
         c.setTurn(turn);
         c.setMode("pvp_online");
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Tic Tac Toe game");
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        if (primaryStage == null) {
+            throw new IllegalStateException("Primary stage is not set!");
+        }
+
+//        Parent root = FXMLLoader.load(Navigation.class.getResource("/FXML/" + path + ".fxml"));
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setTitle("Tic Tac Toe");
+        primaryStage.show();
     }
-    
-    
+    public void showGameRequestNotification(String requestingPlayerUsername , int requestingPlayerID,int requestedPlayerID ) {
+        try {
+            FXMLLoader gameRequestLoader = new FXMLLoader(getClass().getResource("/FXML/GameRequestNotification.fxml"));
+            Parent gameRequestRoot = gameRequestLoader.load();
+            
+            GameRequestNotificationController gameRequestController = gameRequestLoader.getController();
+            gameRequestController.setRequestingPlayerUsername(requestingPlayerUsername);
+            gameRequestController.setRequestedPlayerID(requestedPlayerID);
+            gameRequestController.setRequestingPlayerID(requestingPlayerID);
+           
+            Stage gameRequestStage = new Stage();
+            gameRequestStage.setScene(new Scene(gameRequestRoot));
+            gameRequestStage.setTitle("Game Request");
+            gameRequestStage.show();
+            
+        } catch (IOException e) {
+           e.printStackTrace();
+           System.out.println("Error while trying to show the game request notification.");
+        } 
+   
+    }
+    /*
     public void showGameRequestNotification(String requestingPlayerUsername) {
         try {
             FXMLLoader gameRequestLoader = new FXMLLoader(getClass().getResource("/FXML/GameRequestNotification.fxml"));
@@ -126,6 +179,6 @@ public class Navigation {
            System.out.println("Error while trying to show the game request notification.");
         } 
    
-    }
+    }*/
  
 }

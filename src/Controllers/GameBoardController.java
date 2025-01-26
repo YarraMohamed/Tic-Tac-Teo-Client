@@ -58,7 +58,7 @@ public class GameBoardController implements Initializable {
     private Stage recordAgainStage;
     private Stage winStage; 
 
-    private Stage stage;
+    private static Stage stage;
     private Scene scene;
     private Parent root;
 
@@ -67,7 +67,23 @@ public class GameBoardController implements Initializable {
     
     private int movesMade;
     private GameRecorder gameRecorder;
-    
+  
+    public  void load( int turn, int p2Id) throws IOException {
+        FXMLLoader loader = new FXMLLoader(GameBoardController.class.getResource("/FXML/GameBoard.fxml"));
+        Parent root = loader.load();
+
+        // Get the controller and pass necessary data
+        GameBoardController controller = loader.getController();
+        controller.setTurn(turn);
+        controller.setp2ID(p2Id);
+        controller.setMode("pvp_online");
+
+        // Set the scene
+        Scene scene = new Scene(root);
+        stage.setTitle("Tic Tac Toe game");
+        stage.setScene(scene);
+        stage.show();
+    }
        
     @FXML
     private AnchorPane anchorPane;
@@ -298,7 +314,7 @@ public class GameBoardController implements Initializable {
         thread = new Thread(() -> {
             while (true) {
                 try {
-                    System.out.println("thread running......");
+//                    System.out.println("thread running......");
                     if (hasNewMove) {
                         System.out.println("has new move>>>>>"+hasNewMove);
                         Platform.runLater(()->{

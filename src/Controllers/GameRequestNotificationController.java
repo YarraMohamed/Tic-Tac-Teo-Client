@@ -12,10 +12,12 @@ import java.io.IOException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.json.JSONException;
 
 
@@ -42,14 +44,35 @@ public class GameRequestNotificationController  {
         System.out.println("Setting requestingPlayerUsername: " + requestingPlayerUsername); // log message
         gameRequestMessage.setText(requestingPlayerUsername + " is asking you to a game.\nYou can either accept or reject the request.");
     }
-    
-    
+    private int requestedPlayerID, requestingPlayerID;
+
+    public int getRequestedPlayerID() {
+        return requestedPlayerID;
+    }
+
+    public void setRequestedPlayerID(int requestedPlayerID) {
+        this.requestedPlayerID = requestedPlayerID;
+    }
+
+    public int getRequestingPlayerID() {
+        return requestingPlayerID;
+    }
+
+    public void setRequestingPlayerID(int requestingPlayerID) {
+        this.requestingPlayerID = requestingPlayerID;
+    }
+    private Stage stage;
+
     @FXML
     private void onAcceptButtonClicked(ActionEvent acceptEvent) {
         try {
             System.out.println("Game request accepted");
-//            Platform.exit();
-            nav.goToBoardOnlineMode(2, 11, acceptEvent);/////////////
+            connection.sendRequest(Encapsulator.encapsulateAcceptiance(requestingPlayerID));
+            nav.goToBoardOnlineMode(2, requestingPlayerID);
+            acceptButton.getScene().getWindow().hide();
+
+//            stage =(Stage) ((Node) acceptEvent.getSource()).getScene().getWindow();
+//            stage.getScene().;
         } catch (IOException ex) {
             Logger.getLogger(GameRequestNotificationController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -58,7 +81,7 @@ public class GameRequestNotificationController  {
     
     @FXML
     private void onRejectButtonClicked(ActionEvent rejectEvent) {
-        System.out.println("Reject button clicked.");
+        acceptButton.getScene().getWindow().hide();
     }
         
         

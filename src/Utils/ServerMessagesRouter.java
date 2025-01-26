@@ -9,8 +9,13 @@ public class ServerMessagesRouter {
         
         try {
             System.out.println("message in routeServer " + message);
+            if (message.toString().equals("DONE")) {
+                System.out.println("doooone");
+                return;
+            }
             JSONObject serverMessageJson = new JSONObject(message);
             ServerMessagesHandler serverMessagesHandler = new ServerMessagesHandler();
+            
             if (message.contains("SERVER_DOWN")) {
                 serverMessagesHandler.onServerColsed();
             }
@@ -25,9 +30,13 @@ public class ServerMessagesRouter {
 //                    System.out.println("galk mooove");
                     serverMessagesHandler.inGameMove(serverMessageJson);
                     break;
+                case "ACCEPTED":
+                    serverMessagesHandler.onAccept(serverMessageJson);
+                    break;
                 default:
                     System.out.println("Unhandled requestType: " + requestType);
                     break;
+                    
             }
         } else if (serverMessageJson.has("response")) {
             String response = serverMessageJson.getString("response");
