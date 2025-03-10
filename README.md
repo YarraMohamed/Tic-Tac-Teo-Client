@@ -34,7 +34,7 @@ A network-based Tic-Tac-Toe game that allows players to compete in different gam
 * Framework: JavaFX
 
 ## **🎥 Demo Video**
-
+https://vimeo.com/1064435366
 
 ## **📥 Installation**
 
@@ -45,11 +45,8 @@ A network-based Tic-Tac-Toe game that allows players to compete in different gam
     * Build the project and run Main.java.
 
 ## **👩‍💻👨‍💻Contributors**
-Amira Mohamed 
-
-Team Members: 
-
 * Yara Mohamed
 * Ahmed Fawzy
 * Mariam Mohamed
 * Ziad Helal
+* Amira Mohamed
